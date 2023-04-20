@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Budgify-backend", "Budgify-backend\Budgify-backend.csproj", "{A52D18B8-EF80-40F2-AF9F-9DCF7FBB85DF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgifyApi", "BudgifyApi\BudgifyApi.csproj", "{7FCCBBD3-6C4A-4742-90BD-53E429DE6CE0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A52D18B8-EF80-40F2-AF9F-9DCF7FBB85DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A52D18B8-EF80-40F2-AF9F-9DCF7FBB85DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A52D18B8-EF80-40F2-AF9F-9DCF7FBB85DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A52D18B8-EF80-40F2-AF9F-9DCF7FBB85DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FCCBBD3-6C4A-4742-90BD-53E429DE6CE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FCCBBD3-6C4A-4742-90BD-53E429DE6CE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FCCBBD3-6C4A-4742-90BD-53E429DE6CE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FCCBBD3-6C4A-4742-90BD-53E429DE6CE0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {94D5CAF4-6C49-49B9-AF62-2AE8CB5C7AF9}
+		SolutionGuid = {DDC6A406-1B77-490D-AE3A-0F31E9D09AB4}
 	EndGlobalSection
 EndGlobal
