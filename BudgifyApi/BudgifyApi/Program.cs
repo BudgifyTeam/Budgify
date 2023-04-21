@@ -40,4 +40,49 @@ app.MapGet("/users/{id:int}", async (int id, UsersDB db) =>
         : Results.NotFound();
 });
 
+app.MapGet("/users", async (UsersDB db) => await db.usuarios.ToListAsync());
+
+app.MapPut("/users/{id:int}", async (int id, Usuario e, UsersDB db)=>
+{
+    if (e.Id != id)
+        return Results.BadRequest();
+
+    var user = await db.usuarios.FindAsync(id);
+
+    if (user is null) return Results.NotFound();
+
+    user.Nombre = e.Nombre;
+    user.Apellido = e.Apellido;
+    user.Email = e.Email;
+    user.Contraseña = e.Contraseña;
+
+    await db.SaveChangesAsync();
+
+    return Results.Ok(user);
+}
+);
+
+app.MapDelete("/users/{id:int}", async (int id, UsersDB db) => 
+{
+    var user = await db.usuarios.FindAsync(id);
+
+    if (user is null) return Results.NotFound();
+
+    db.usuarios.Remove(user);
+    await db.SaveChangesAsync();
+
+    return Results.NoContent();
+});
+
+app.UseSwagger(options =>
+{
+    options.SerializeAsV2 = true;
+});
+
+app.UseSwaggerUI(options =>
+{
+    options.SwaggerEndpoint("/applicationName/swagger/v1/swagger.json", "v1");
+    options.RoutePrefix = "info/swagger";
+});
+
 app.Run();
