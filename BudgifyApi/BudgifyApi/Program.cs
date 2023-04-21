@@ -42,6 +42,8 @@ app.MapGet("/users/{id:int}", async (int id, UsersDB db) =>
 
 app.MapGet("/users", async (UsersDB db) => await db.usuarios.ToListAsync());
 
+app.MapGet("/", () => "Index");
+
 app.MapPut("/users/{id:int}", async (int id, Usuario e, UsersDB db)=>
 {
     if (e.Id != id)
@@ -74,15 +76,5 @@ app.MapDelete("/users/{id:int}", async (int id, UsersDB db) =>
     return Results.NoContent();
 });
 
-app.UseSwagger(options =>
-{
-    options.SerializeAsV2 = true;
-});
-
-app.UseSwaggerUI(options =>
-{
-    options.SwaggerEndpoint("/applicationName/swagger/v1/swagger.json", "v1");
-    options.RoutePrefix = "info/swagger";
-});
 
 app.Run();
