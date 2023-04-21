@@ -40,4 +40,15 @@ app.MapGet("/users/{id:int}", async (int id, UsersDB db) =>
         : Results.NotFound();
 });
 
+app.UseSwagger(options =>
+{
+    options.SerializeAsV2 = true;
+});
+
+app.UseSwaggerUI(options =>
+{
+    options.SwaggerEndpoint("/applicationName/swagger/v1/swagger.json", "v1");
+    options.RoutePrefix = "info/swagger";
+});
+
 app.Run();
