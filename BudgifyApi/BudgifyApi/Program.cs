@@ -13,14 +13,25 @@ var connectionString = builder.Configuration.GetConnectionString("PostgreSQLConn
 builder.Services.AddDbContext<UsersDB>(options => 
     options.UseNpgsql(connectionString));
 
-var app = builder.Build();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("NewPolicy", app =>
+    {
+        app.AllowAnyOrigin()
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+    });
+});
 
+var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("NewPolicy");
 
 app.UseHttpsRedirection();
 
@@ -42,13 +53,12 @@ app.MapGet("/users/{id:int}", async (int id, UsersDB db) =>
 
 app.MapGet("/users", async (UsersDB db) => await db.usuarios.ToListAsync());
 
-app.MapGet("/", () => "Index");
+app.MapGet("/", () => "Online Back");
 
 app.MapPut("/users/{id:int}", async (int id, Usuario e, UsersDB db)=>
 {
     if (e.Id != id)
         return Results.BadRequest();
-
     var user = await db.usuarios.FindAsync(id);
 
     if (user is null) return Results.NotFound();
@@ -75,6 +85,5 @@ app.MapDelete("/users/{id:int}", async (int id, UsersDB db) =>
 
     return Results.NoContent();
 });
-
 
 app.Run();
