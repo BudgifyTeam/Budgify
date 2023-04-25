@@ -66,7 +66,7 @@ app.MapPut("/users/{id:int}", async (int id, Usuario e, UsersDB db)=>
     user.Nombre = e.Nombre;
     user.Apellido = e.Apellido;
     user.Email = e.Email;
-    user.Contraseña = e.Contraseña;
+    user.Password = e.Password;
 
     await db.SaveChangesAsync();
 
