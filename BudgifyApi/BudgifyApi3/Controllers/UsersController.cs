@@ -29,7 +29,7 @@ namespace BudgifyApi3.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public Response<string> Login(UserDto user)
+        public Response<string> Login([FromBody] UserDto user)
         {
             return new Response<string>
             {
@@ -56,7 +56,7 @@ namespace BudgifyApi3.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public Response<string> UpdateUser(UserDto user)
+        public Response<string> UpdateUser([FromBody] UserDto user)
         {
             return new Response<string>
             {

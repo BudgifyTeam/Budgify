@@ -1,10 +1,19 @@
-﻿namespace BudgifyModels
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BudgifyModels
 {
     public class User
     {
+        [Key]
         public int Id { get; set; }
-        public string Username { get; set; }
-        public string Email { get; set; }
-        public string Token { get; set; }
+        [Required]
+        [MaxLength(50)]
+        public string? Username { get; set; }
+        [Required]
+        [MaxLength(100)]
+        public string? Email { get; set; }
+        [Required]
+        
+        public string? Token { get; set; }
     }
 }

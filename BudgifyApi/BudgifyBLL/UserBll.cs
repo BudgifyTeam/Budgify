@@ -5,11 +5,11 @@ namespace BudgifyBll
 {
     public class UserBll
     {
-        private readonly UserDal userDal;
+        //private readonly UserDal userDal;
         public Response<string> Register() { 
             Response<string> response = new Response<string>();
             try {
-                string result = userDal.Register();
+                string result = "hola";
                 List<string> resultList = new List<string>();
                 if (result != "error")
                 {
