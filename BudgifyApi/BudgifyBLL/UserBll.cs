@@ -12,14 +12,15 @@ namespace BudgifyBll
         {
             _userDal = new UserDal(db);
         }
-        public async Task<Response<User>> Register(UserDto user) { 
-            Response<User> response = new Response<User>();
+        public async Task<Response<user>> Register(UserRegister user) { 
+            Response<user> response = new Response<user>();
             try {
-                User userToSave = new User { 
-                    Id = 0,
+                user userToSave = new user {
                     Email = user.Email,
                     Username = user.Username,
                     Token = user.Token,
+                    Status = true,
+                    PublicAccount = false,
                 };
                 response = await _userDal.RegisterUser(userToSave);
                 if (response.code)

@@ -2,7 +2,7 @@
 
 namespace BudgifyModels
 {
-    public class User
+    public class user
     {
         [Key]
         public int Id { get; set; }

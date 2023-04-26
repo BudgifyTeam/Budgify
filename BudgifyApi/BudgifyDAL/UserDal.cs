@@ -18,15 +18,15 @@ namespace BudgifyDal
             _appDbContext = db;
         }
 
-        public async Task<Response<User>> RegisterUser(User user) {
-            Response<User> response = new Response<User>();
+        public async Task<Response<user>> RegisterUser(user user) {
+            Response<user> response = new Response<user>();
             try {
                 user.Id = GetLastId() + 1;
                 _appDbContext.users.Add(user);
                 await _appDbContext.SaveChangesAsync();
                 response.message = "se añadió el registro exitosamente";
                 response.code = true;
-                response.data = _appDbContext.users.FirstOrDefault();
+                response.data = _appDbContext.users.FirstOrDefault(u => u.Id == user.Id);
             }
             catch (Exception ex)
             {

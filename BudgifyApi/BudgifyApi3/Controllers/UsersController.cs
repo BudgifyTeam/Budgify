@@ -26,18 +26,18 @@ namespace BudgifyApi3.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<UserDto>> RegisterUser([FromBody] UserDto user)
+        public async Task<ActionResult<UserRegister>> RegisterUser([FromBody] UserRegister user)
         {
-            Response<User> response = await userBll.Register(user);
+            Response<user> response = await userBll.Register(user);
 
             if (!response.code)
             {
                 resError.message = response.message;
                 resError.code = 0;
 
-                return StatusCode(StatusCodes.Status400BadRequest);
+                return StatusCode(StatusCodes.Status400BadRequest, response);
             }
-            return CreatedAtRoute("LoginUSer", user);
+            return CreatedAtRoute("LoginUSer", response);
             //Se creó y guardó
             //entonces se retorna el objeto creato con el endpoint get que corresponda.
         }
