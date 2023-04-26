@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BudgifyDAL\BudgifyDal.csproj" />
+    <ProjectReference Include="..\BudgifyModels\BudgifyModels.csproj" />
+  </ItemGroup>
+
 </Project>
