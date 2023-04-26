@@ -6,18 +6,25 @@ namespace BudgifyBll
 {
     public class UserBll
     {
-        //private readonly UserDal userDal;
-        public Response<string> Register(UserDto user) { 
-            Response<string> response = new Response<string>();
+
+        private readonly UserDal _userDal;
+        public UserBll(AppDbContext db)
+        {
+            _userDal = new UserDal(db);
+        }
+        public async Task<Response<User>> Register(UserDto user) { 
+            Response<User> response = new Response<User>();
             try {
-                string result = "hola";
-                List<string> resultList = new List<string>();
-                if (result != "error")
+                User userToSave = new User { 
+                    Id = 0,
+                    Email = user.Email,
+                    Username = user.Username,
+                    Token = user.Token,
+                };
+                response = await _userDal.RegisterUser(userToSave);
+                if (response.code)
                 {
-                    response.message = result;
-                    resultList.Add("sampple");
-                    response.data = resultList;
-                    response.code = true;
+                    return response;
                 }
                 else {
                     response.message = "Error al registrar al usuario";

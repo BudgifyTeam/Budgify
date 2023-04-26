@@ -1,4 +1,5 @@
 ﻿using BudgifyBll;
+using BudgifyDal;
 using BudgifyModels;
 using BudgifyModels.Dto;
 using Microsoft.AspNetCore.Http;
@@ -11,18 +12,23 @@ namespace BudgifyApi3.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-
-        private readonly UserBll userBll = new UserBll();
+        private readonly AppDbContext _appDbContext;
+        private readonly UserBll userBll;
         private readonly ResponseError resError = new ResponseError();
 
+        public UsersController(AppDbContext db)
+        {
+            _appDbContext = db;
+            userBll = new UserBll(db);
+        }
 
         [HttpPost("Register", Name = "RegisterUser")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<UserDto> RegisterUser([FromBody] UserDto user)
+        public async Task<ActionResult<UserDto>> RegisterUser([FromBody] UserDto user)
         {
-            Response<string> response = userBll.Register(user);
+            Response<User> response = await userBll.Register(user);
 
             if (!response.code)
             {
@@ -55,9 +61,9 @@ namespace BudgifyApi3.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public Response<string> Login([FromBody] UserDto user)
+        public ResponseList<string> Login([FromBody] UserDto user)
         {
-            return new Response<string>
+            return new ResponseList<string>
             {
                 message = "mensajes",
                 code = true,
@@ -72,9 +78,9 @@ namespace BudgifyApi3.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public Response<string> UpdateUser([FromBody] UserDto user)
+        public ResponseList<string> UpdateUser([FromBody] UserDto user)
         {
-            return new Response<string>
+            return new ResponseList<string>
             {
                 message = "mensajes",
                 code = true,
