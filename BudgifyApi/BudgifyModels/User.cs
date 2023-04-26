@@ -15,8 +15,8 @@ namespace BudgifyModels
         [Required]
         public string? Token { get; set; }
         [Required]
-        public bool Status { get; set; }
+        public bool? Status { get; set; }
         [Required]
-        public bool PublicAccount { get; set; }
+        public bool? PublicAccount { get; set; }
     }
 }
