@@ -1,7 +1,9 @@
-﻿using BudgifyModels;
+﻿using BudgifyBll;
+using BudgifyModels;
 using BudgifyModels.Dto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace BudgifyApi3.Controllers
 {
@@ -9,6 +11,30 @@ namespace BudgifyApi3.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
+
+        private readonly UserBll userBll = new UserBll();
+        private readonly ResponseError resError = new ResponseError();
+
+
+        [HttpPost("Register", Name = "RegisterUser")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<UserDto> RegisterUser([FromBody] UserDto user)
+        {
+            Response<string> response = userBll.Register(user);
+
+            if (!response.code)
+            {
+                resError.message = response.message;
+                resError.code = 0;
+
+                return StatusCode(StatusCodes.Status400BadRequest);
+            }
+            return CreatedAtRoute("LoginUSer", user);
+            //Se creó y guardó
+            //entonces se retorna el objeto creato con el endpoint get que corresponda.
+        }
 
         [HttpGet("all", Name = "GetUsers")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -41,16 +67,6 @@ namespace BudgifyApi3.Controllers
             };
         }
 
-        [HttpPost("Register", Name = "RegisterUser")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<UserDto> RegisterUser([FromBody] UserDto user)
-        {
-            //Se creó y guardó
-            //entonces se retorna el objeto creato con el endpoint get que corresponda.
-            return CreatedAtRoute("LoginUSer", user);
-        }
 
         [HttpPut("Modify", Name = "ModifyUser")]
         [ProducesResponseType(StatusCodes.Status200OK)]

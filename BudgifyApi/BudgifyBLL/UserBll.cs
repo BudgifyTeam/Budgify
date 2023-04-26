@@ -1,12 +1,13 @@
 ﻿using BudgifyModels;
 using BudgifyDal;
+using BudgifyModels.Dto;
 
 namespace BudgifyBll
 {
     public class UserBll
     {
         //private readonly UserDal userDal;
-        public Response<string> Register() { 
+        public Response<string> Register(UserDto user) { 
             Response<string> response = new Response<string>();
             try {
                 string result = "hola";
