@@ -9,10 +9,14 @@ namespace BudgifyApi3.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        [HttpGet]
+
+        [HttpGet("all", Name = "GetUsers")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IEnumerable<UserDto> GetUsers()
         {
-            return new List<UserDto> { 
+            return new List<UserDto> {
             new UserDto {Token = "token", Username = "username"},
             new UserDto {Token = "token2", Username = "username2"},
             new UserDto {Token = "token3", Username = "username3"},
@@ -21,13 +25,44 @@ namespace BudgifyApi3.Controllers
 
         }
 
-        [HttpGet("login")]
+        [HttpGet("Login", Name = "LoginUSer")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public Response<string> Login(UserDto user)
         {
-            return new Response<string> {
+            return new Response<string>
+            {
                 message = "mensajes",
                 code = true,
-                data = new List<string> { 
+                data = new List<string> {
+                    "dato1", "dato2"
+                }
+            };
+        }
+
+        [HttpPost("Register", Name = "RegisterUser")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<UserDto> RegisterUser([FromBody] UserDto user)
+        {
+            //Se creó y guardó
+            //entonces se retorna el objeto creato con el endpoint get que corresponda.
+            return CreatedAtRoute("LoginUSer", user);
+        }
+
+        [HttpPut("Modify", Name = "ModifyUser")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public Response<string> UpdateUser(UserDto user)
+        {
+            return new Response<string>
+            {
+                message = "mensajes",
+                code = true,
+                data = new List<string> {
                     "dato1", "dato2"
                 }
             };
