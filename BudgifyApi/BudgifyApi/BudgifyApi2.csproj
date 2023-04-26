@@ -18,4 +18,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BudgifyBLL\BudgifyBll.csproj" />
+    <ProjectReference Include="..\BudgifyModels\BudgifyModels.csproj" />
+  </ItemGroup>
+
 </Project>
