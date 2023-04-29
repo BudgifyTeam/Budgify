@@ -19,11 +19,48 @@ namespace BudgifyDal
             _appDbContext = db;
         }
 
+        public async Task<Response<string>> Login(UserLogin user) {
+            Response<string> response = new Response<string>();
+            var username = user.Username;
+            var token = user.Token;
+            try {
+                if (UserExist(username))
+                {
+                    if (validateToken(token, username))
+                    {
+                        response.code = true;
+                        response.message = "login exitoso";
+                        return response;
+                    }
+                    else
+                    {
+                        response.code = false;
+                        response.message = "contraseña incorrecta";
+                        return response;
+                    }
+                }
+                else
+                {
+                    response.code = false;
+                    response.message = "el usuario no existe";
+                    return response;
+                }
+            } catch (Exception ex)
+            {
+                response.code = false;
+                response.message = ex.Message;
+                return response;
+            }
+        }
+
+        
+
         public async Task<Response<user>> RegisterUser(user user) {
             Response<user> response = new Response<user>();
-            var verifyUser = verifyUsers(user.Username);
-            var verifyEmail = VerifyEmail(user.Email);
+            
             try {
+                var verifyUser = UserExist(user.Username);
+                var verifyEmail = EmailExist(user.Email);
                 user.Id = GetLastId() + 1;
                 _appDbContext.users.Add(user);
                 await _appDbContext.SaveChangesAsync();
@@ -45,42 +82,21 @@ namespace BudgifyDal
             return _appDbContext.users.ToList().OrderByDescending(u => u.Id).FirstOrDefault().Id;
         }
 
-        public Boolean VerifyEmail(string email)
+        public bool EmailExist(string email)
         {
-            try
-            {
-                var verify = _appDbContext.users.FirstOrDefault(users => users.Email == email);
-                if(verify == null)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }catch (Exception ex)
-            {
-                return false;
-            }
+            var user = _appDbContext.users.FirstOrDefault(u => u.Email == email);
+            return !(user == null);
         }
-        
-        public Boolean verifyUsers(string username)
+
+        public bool UserExist(string username)
         {
-            try
-            {
-                var users = _appDbContext.users.FirstOrDefault(users => users.Username == username);
-                if (users == null)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }catch(Exception ex)
-            {
-                return false;
-            }
+            var user = _appDbContext.users.FirstOrDefault(u => u.Username == username);
+            return user != null;
+        }
+
+        public bool validateToken(string token, string username) {
+            var user = _appDbContext.users.FirstOrDefault(u => u.Username == username);
+            return user.Token == token;
         }
     }
 }

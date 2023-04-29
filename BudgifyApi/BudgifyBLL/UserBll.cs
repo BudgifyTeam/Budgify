@@ -12,46 +12,62 @@ namespace BudgifyBll
         {
             _userDal = new UserDal(db);
         }
-        public async Task<Response<user>> Register(UserRegister user) { 
+        public async Task<Response<user>> Register(UserRegister user)
+        {
             Response<user> response = new Response<user>();
-            try {
-                user userToSave = new user {
+            try
+            {
+                var userToSave = new user
+                {
                     Email = user.Email,
                     Username = user.Username,
                     Token = user.Token,
                     Status = true,
                     PublicAccount = false,
                 };
-                var verifyUsername = _userDal.verifyUsers(userToSave.Username);
-                var verifyEmail = _userDal.VerifyEmail(userToSave.Email);
-                if(verifyUsername == true)
+
+                if (_userDal.UserExist(userToSave.Username))
                 {
-                    if(verifyEmail == true)
-                    {
-                        response = await _userDal.RegisterUser(userToSave);
-                        if (response.code)
-                        {
-                            return response;
-                        }
-                        else
-                        {
-                            response.message = "Error al registrar al usuario";
-                            response.code = false;
-                        }
-                    }
-                    else
-                    {
-                        response.message = "Email already exist";
-                        response.code = false;
-                    }
-                
+                    response.message = "username already exists";
+                    return response;
+                }
+
+                if (_userDal.EmailExist(userToSave.Email))
+                {
+                    response.message = "Email already exists";
+                    return response;
+                }
+
+                response = await _userDal.RegisterUser(userToSave);
+
+                if (!response.code)
+                {
+                    response.message = "Error al registrar al usuario";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                response.message = ex.Message;
+            }
+
+            return response;
+        }
+        public async Task<Response<string>> Login(UserLogin user)
+        {
+            Response<string> response = new Response<string>();
+            try
+            {
+                response = await _userDal.Login(user);
+                if (response.code)
+                {
+                    return response;
                 }
                 else
                 {
-                    response.message = "username already exist";
+                    response.message = "Error al validar al usuario";
                     response.code = false;
                 }
-
             }
             catch (Exception ex)
             {
