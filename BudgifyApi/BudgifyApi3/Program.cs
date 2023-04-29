@@ -12,6 +12,7 @@ builder.Services.AddSwaggerGen();
 
 var connectionString = builder.Configuration.GetConnectionString("Postgres");
 
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
 
@@ -19,9 +20,19 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("NewPolicy", app =>
     {
-        app.AllowAnyOrigin()
+        app.WithOrigins(
+            "http://localhost",
+            "http://localhost:4200",
+            "https://localhost:7230",
+            "http://localhost:90",
+            "http://localhost:3000",
+            "http://localhost:3000/login",
+            "http://localhost:3000/register")
         .AllowAnyHeader()
-        .AllowAnyMethod();
+        .AllowAnyMethod()
+        .SetIsOriginAllowedToAllowWildcardSubdomains();
+
+
     });
 });
 
@@ -39,6 +50,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("NewPolicy");
 
 app.UseAuthorization();
 

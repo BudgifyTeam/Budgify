@@ -22,15 +22,36 @@ namespace BudgifyBll
                     Status = true,
                     PublicAccount = false,
                 };
-                response = await _userDal.RegisterUser(userToSave);
-                if (response.code)
+                var verifyUsername = _userDal.verifyUsers(userToSave.Username);
+                var verifyEmail = _userDal.VerifyEmail(userToSave.Email);
+                if(verifyUsername == true)
                 {
-                    return response;
+                    if(verifyEmail == true)
+                    {
+                        response = await _userDal.RegisterUser(userToSave);
+                        if (response.code)
+                        {
+                            return response;
+                        }
+                        else
+                        {
+                            response.message = "Error al registrar al usuario";
+                            response.code = false;
+                        }
+                    }
+                    else
+                    {
+                        response.message = "Email already exist";
+                        response.code = false;
+                    }
+                
                 }
-                else {
-                    response.message = "Error al registrar al usuario";
+                else
+                {
+                    response.message = "username already exist";
                     response.code = false;
                 }
+
             }
             catch (Exception ex)
             {

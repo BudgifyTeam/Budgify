@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,6 +21,8 @@ namespace BudgifyDal
 
         public async Task<Response<user>> RegisterUser(user user) {
             Response<user> response = new Response<user>();
+            var verifyUser = verifyUsers(user.Username);
+            var verifyEmail = VerifyEmail(user.Email);
             try {
                 user.Id = GetLastId() + 1;
                 _appDbContext.users.Add(user);
@@ -40,6 +43,44 @@ namespace BudgifyDal
         private int GetLastId()
         {
             return _appDbContext.users.ToList().OrderByDescending(u => u.Id).FirstOrDefault().Id;
+        }
+
+        public Boolean VerifyEmail(string email)
+        {
+            try
+            {
+                var verify = _appDbContext.users.FirstOrDefault(users => users.Email == email);
+                if(verify == null)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        
+        public Boolean verifyUsers(string username)
+        {
+            try
+            {
+                var users = _appDbContext.users.FirstOrDefault(users => users.Username == username);
+                if (users == null)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }catch(Exception ex)
+            {
+                return false;
+            }
         }
     }
 }
