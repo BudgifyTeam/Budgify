@@ -12,7 +12,13 @@ namespace BudgifyModels.Dto
         public string? Token { get; set; }
         public string? Email { get; set; }
     }
-    public class UserLogin { 
-
+    public class UserRegister {
+        public string? Username { get; set; }
+        public string? Token { get; set; }
+        public string? Email { get; set; }
+    }
+    public class UserLogin {
+        public string? Username { get; set; }
+        public string? Token { get; set; }
     }
 }

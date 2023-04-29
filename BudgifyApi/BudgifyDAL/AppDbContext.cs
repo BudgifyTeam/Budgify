@@ -14,6 +14,6 @@ namespace BudgifyDal
         {
             
         }
-        public DbSet<User> users { get; set; }
+        public DbSet<user> users { get; set; }
     }
 }

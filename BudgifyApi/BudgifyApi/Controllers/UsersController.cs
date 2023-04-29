@@ -26,20 +26,38 @@ namespace BudgifyApi3.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<UserDto>> RegisterUser([FromBody] UserDto user)
+        public async Task<ActionResult<UserRegister>> RegisterUser([FromBody] UserRegister user)
         {
-            Response<User> response = await userBll.Register(user);
+            Response<user> response = await userBll.Register(user);
 
             if (!response.code)
             {
                 resError.message = response.message;
                 resError.code = 0;
 
-                return StatusCode(StatusCodes.Status400BadRequest);
+                return StatusCode(StatusCodes.Status400BadRequest, response);
             }
-            return CreatedAtRoute("LoginUSer", user);
+            return CreatedAtRoute("LoginUSer", response);
             //Se creó y guardó
             //entonces se retorna el objeto creato con el endpoint get que corresponda.
+        }
+
+        [HttpPost("Login", Name = "LoginUser")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<string>> LoginUser([FromBody] UserLogin user)
+        {
+            Response<string> response = await userBll.Login(user);
+
+            if (!response.code)
+            {
+                resError.message = response.message;
+                resError.code = 0;
+
+                return StatusCode(StatusCodes.Status400BadRequest, response);
+            }
+            return StatusCode(StatusCodes.Status200OK, response);
         }
 
         [HttpGet("all", Name = "GetUsers")]
@@ -56,23 +74,6 @@ namespace BudgifyApi3.Controllers
             };
 
         }
-
-        [HttpGet("Login", Name = "LoginUSer")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ResponseList<string> Login([FromBody] UserDto user)
-        {
-            return new ResponseList<string>
-            {
-                message = "mensajes",
-                code = true,
-                data = new List<string> {
-                    "dato1", "dato2"
-                }
-            };
-        }
-
 
         [HttpPut("Modify", Name = "ModifyUser")]
         [ProducesResponseType(StatusCodes.Status200OK)]
