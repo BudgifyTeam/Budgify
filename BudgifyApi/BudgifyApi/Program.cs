@@ -20,25 +20,11 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("NewPolicy", app =>
     {
-        app.WithOrigins(
-            "http://localhost",
-            "http://localhost:4200",
-            "https://localhost:7230",
-            "http://localhost:90",
-            "http://localhost:3000",
-            "http://localhost:3000/login",
-            "http://localhost:3000/register")
+        app.AllowAnyOrigin()
         .AllowAnyHeader()
-        .AllowAnyMethod()
-        .SetIsOriginAllowedToAllowWildcardSubdomains();
-
-
+        .AllowAnyMethod();
     });
 });
-
-//builder.Services.AddDbContext<AppDbContext>(option => {
-//    option.UseNpgsql(builder.Configuration.GetConnectionString("Postgres"));
-//});
 
 var app = builder.Build();
 
