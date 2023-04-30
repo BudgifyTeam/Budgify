@@ -37,9 +37,7 @@ namespace BudgifyApi3.Controllers
 
                 return StatusCode(StatusCodes.Status400BadRequest, response);
             }
-            return CreatedAtRoute("LoginUSer", response);
-            //Se creó y guardó
-            //entonces se retorna el objeto creato con el endpoint get que corresponda.
+            return StatusCode(StatusCodes.Status200OK, response);
         }
 
         [HttpPost("Login", Name = "LoginUser")]
