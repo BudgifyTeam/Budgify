@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BudgifyDal.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230426203014_updateUserStatusAccount")]
-    partial class updateUserStatusAccount
+    [Migration("20230426203014_updateusertatusAccount")]
+    partial class updateusertatusAccount
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -57,7 +57,7 @@ namespace BudgifyDal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("users");
+                    b.ToTable("user");
                 });
 #pragma warning restore 612, 618
         }

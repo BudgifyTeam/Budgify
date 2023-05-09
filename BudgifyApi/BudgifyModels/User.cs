@@ -2,12 +2,12 @@
 
 namespace BudgifyModels
 {
-    public class user
+    public class User
     {
         [Key]
         [Required]
         [MaxLength(10)]
-        public int Id { get; set; }
+        public int user_id { get; set; }
         [Required]
         [MaxLength(30)]
         public string? Username { get; set; }
@@ -21,5 +21,10 @@ namespace BudgifyModels
         public bool? Status { get; set; }
         [Required]
         public bool? PublicAccount { get; set; }
+
+        //Relationships
+        public Budget budget { get; set; }
+        public List<Income> incomes { get; set; }
+        public List<Expense> expenses { get; set; }
     }
 }

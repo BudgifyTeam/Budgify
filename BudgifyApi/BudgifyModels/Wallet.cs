@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BudgifyModels
 {
-    internal class Wallets
+    public class Wallet
     {
         [Key]
         [MaxLength(10)]
@@ -17,10 +17,10 @@ namespace BudgifyModels
         public string? name { get; set; }
         [Required]
         [MaxLength(8)]
-        public double total { get; set; }
+        public double? total { get; set; }
 
         //Relationships
-        public List<Income> Incomes { get; set; }
-        public List<Expense> Expenses { get; set; }
+        public List<Income>? Incomes { get; set; }
+        public List<Expense>? Expenses { get; set; }
     }
 }

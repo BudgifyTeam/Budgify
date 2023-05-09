@@ -5,36 +5,36 @@
 namespace BudgifyDal.Migrations
 {
     /// <inheritdoc />
-    public partial class updateUserStatusAccount : Migration
+    public partial class updateusertatusAccount : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropPrimaryKey(
-                name: "PK_users",
-                table: "users");
+                name: "PK_user",
+                table: "user");
 
             migrationBuilder.RenameTable(
-                name: "users",
-                newName: "users");
+                name: "user",
+                newName: "user");
 
             migrationBuilder.AddColumn<bool>(
                 name: "PublicAccount",
-                table: "users",
+                table: "user",
                 type: "boolean",
                 nullable: false,
                 defaultValue: false);
 
             migrationBuilder.AddColumn<bool>(
                 name: "Status",
-                table: "users",
+                table: "user",
                 type: "boolean",
                 nullable: false,
                 defaultValue: false);
 
             migrationBuilder.AddPrimaryKey(
-                name: "PK_users",
-                table: "users",
+                name: "PK_user",
+                table: "user",
                 column: "Id");
         }
 
@@ -42,24 +42,24 @@ namespace BudgifyDal.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropPrimaryKey(
-                name: "PK_users",
-                table: "users");
+                name: "PK_user",
+                table: "user");
 
             migrationBuilder.DropColumn(
                 name: "PublicAccount",
-                table: "users");
+                table: "user");
 
             migrationBuilder.DropColumn(
                 name: "Status",
-                table: "users");
+                table: "user");
 
             migrationBuilder.RenameTable(
-                name: "users",
-                newName: "users");
+                name: "user",
+                newName: "user");
 
             migrationBuilder.AddPrimaryKey(
-                name: "PK_users",
-                table: "users",
+                name: "PK_user",
+                table: "user",
                 column: "Id");
         }
     }

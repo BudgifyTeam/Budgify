@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace BudgifyModels
 {
-    internal class Budget
+    public class Budget
     {
         [Key]
         [MaxLength(10)]
@@ -17,6 +18,9 @@ namespace BudgifyModels
         public int value { get; set; }
 
         //Relationship
-        public user User { get; set; }
+        [ForeignKey("user_id")]
+        public User user { get; set; }
+               
+        public int user_id { get; set; }
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BudgifyModels
 {
-    internal class Pocket
+    public class Pocket
     {
         [Key]
         [MaxLength(10)]

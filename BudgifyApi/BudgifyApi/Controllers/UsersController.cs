@@ -10,13 +10,13 @@ namespace BudgifyApi3.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class userController : ControllerBase
     {
         private readonly AppDbContext _appDbContext;
         private readonly UserBll userBll;
         private readonly ResponseError resError = new ResponseError();
 
-        public UsersController(AppDbContext db)
+        public userController(AppDbContext db)
         {
             _appDbContext = db;
             userBll = new UserBll(db);
@@ -28,7 +28,7 @@ namespace BudgifyApi3.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<UserRegister>> RegisterUser([FromBody] UserRegister user)
         {
-            Response<user> response = await userBll.Register(user);
+            Response<User> response = await userBll.Register(user);
 
             if (!response.code)
             {
@@ -58,11 +58,11 @@ namespace BudgifyApi3.Controllers
             return StatusCode(StatusCodes.Status200OK, response);
         }
 
-        [HttpGet("all", Name = "GetUsers")]
+        [HttpGet("all", Name = "Getuser")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IEnumerable<UserDto> GetUsers()
+        public IEnumerable<UserDto> Getuser()
         {
             return new List<UserDto> {
             new UserDto {Token = "token", Username = "username"},

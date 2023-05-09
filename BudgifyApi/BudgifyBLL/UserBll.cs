@@ -12,12 +12,12 @@ namespace BudgifyBll
         {
             _userDal = new UserDal(db);
         }
-        public async Task<Response<user>> Register(UserRegister user)
+        public async Task<Response<User>> Register(UserRegister user)
         {
-            Response<user> response = new Response<user>();
+            Response<User> response = new Response<User>();
             try
             {
-                var userToSave = new user
+                var userToSave = new User
                 {
                     Email = user.Email,
                     Username = user.Username,
@@ -56,7 +56,6 @@ namespace BudgifyBll
         public async Task<Response<string>> Login(UserLogin user)
         {
             var userAux = user.Username;
-
             Console.Write(userAux);
             Console.Write(user.Token);
             Response<string> response = new Response<string>();

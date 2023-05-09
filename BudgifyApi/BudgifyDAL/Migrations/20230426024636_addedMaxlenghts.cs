@@ -12,7 +12,7 @@ namespace BudgifyDal.Migrations
         {
             migrationBuilder.AlterColumn<string>(
                 name: "Username",
-                table: "Users",
+                table: "user",
                 type: "character varying(50)",
                 maxLength: 50,
                 nullable: false,
@@ -21,7 +21,7 @@ namespace BudgifyDal.Migrations
 
             migrationBuilder.AlterColumn<string>(
                 name: "Email",
-                table: "Users",
+                table: "user",
                 type: "character varying(100)",
                 maxLength: 100,
                 nullable: false,
@@ -34,7 +34,7 @@ namespace BudgifyDal.Migrations
         {
             migrationBuilder.AlterColumn<string>(
                 name: "Username",
-                table: "Users",
+                table: "user",
                 type: "text",
                 nullable: false,
                 oldClrType: typeof(string),
@@ -43,7 +43,7 @@ namespace BudgifyDal.Migrations
 
             migrationBuilder.AlterColumn<string>(
                 name: "Email",
-                table: "Users",
+                table: "user",
                 type: "text",
                 nullable: false,
                 oldClrType: typeof(string),
