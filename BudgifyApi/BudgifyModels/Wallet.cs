@@ -10,12 +10,13 @@ namespace BudgifyModels
     internal class Wallet
     {
         [Key]
-        [MaxLength(20)]
-        public string? wallet_id { get; set; }
+        [MaxLength(10)]
+        public int wallet_id { get; set; }
         [Required]
         [MaxLength(30)]
-        public string? wallet_name { get; set; }
+        public string? name { get; set; }
         [Required]
-        public double wallet_total { get; set; }
+        [MaxLength(8)]
+        public double total { get; set; }
     }
 }

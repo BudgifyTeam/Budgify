@@ -10,10 +10,10 @@ namespace BudgifyModels
     internal class Category
     {
         [Key]
-        [MaxLength(20)]
-        public string? category_id { get; set; }
+        [MaxLength(10)]
+        public int category_id { get; set; }
         [Required]
         [MaxLength(30)]
-        public string? category_name { get; set; }
+        public string? name { get; set; }
     }
 }

@@ -10,17 +10,19 @@ namespace BudgifyModels
     internal class Pocket
     {
         [Key]
-        [MaxLength(20)]
-        public string? pocket_id { get; set; }
+        [MaxLength(10)]
+        public int pocket_id { get; set; }
         [Required]
         [MaxLength(30)]
-        public string? pocket_name { get; set; }
+        public string? name { get; set; }
         [Required]
-        public double pocket_total { get; set; }
+        [MaxLength(8)]
+        public double total { get; set; }
         [Required]
         [MaxLength(100)]
-        public string? pocket_icon { get; set; }
+        public string? icon { get; set; }
         [Required]
-        public double pocket_goal { get; set; }
+        [MaxLength(8)]
+        public double goal { get; set; }
     }
 }
