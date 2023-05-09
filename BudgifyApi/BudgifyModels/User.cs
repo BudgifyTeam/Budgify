@@ -7,7 +7,7 @@ namespace BudgifyModels
         [Key]
         [Required]
         [MaxLength(10)]
-        public int user_id { get; set; }
+        public int Id { get; set; }
         [Required]
         [MaxLength(30)]
         public string? Username { get; set; }
