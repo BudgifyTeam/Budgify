@@ -24,5 +24,9 @@ namespace BudgifyModels
         [Required]
         [MaxLength(8)]
         public double goal { get; set; }
+
+        //Relationships
+        public List<Income> Incomes { get; set; }
+        public List<Expense> Expenses { get; set; }
     }
 }

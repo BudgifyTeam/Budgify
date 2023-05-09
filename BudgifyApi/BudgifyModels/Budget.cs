@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace BudgifyModels
 {
-    internal class Wallet
+    internal class Budget
     {
         [Key]
         [MaxLength(10)]
-        public int wallet_id { get; set; }
-        [Required]
-        [MaxLength(30)]
-        public string? name { get; set; }
+        public int budget_id { get; set; }
         [Required]
         [MaxLength(8)]
-        public double total { get; set; }
+        public int value { get; set; }
+
+        //Relationship
+        public user User { get; set; }
     }
 }

@@ -55,6 +55,10 @@ namespace BudgifyBll
         }
         public async Task<Response<string>> Login(UserLogin user)
         {
+            var userAux = user.Username;
+
+            Console.Write(userAux);
+            Console.Write(user.Token);
             Response<string> response = new Response<string>();
             try
             {
