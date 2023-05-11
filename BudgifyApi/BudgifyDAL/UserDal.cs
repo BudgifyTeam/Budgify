@@ -61,12 +61,12 @@ namespace BudgifyDal
             try {
                 var verifyUser = UserExist(user.Username);
                 var verifyEmail = EmailExist(user.Email);
-                user.Id = GetLastId() + 1;
+                user.Users_id = GetLastId() + 1;
                 _appDbContext.users.Add(user);
                 await _appDbContext.SaveChangesAsync();
                 response.message = "se añadió el registro exitosamente";
                 response.code = true;
-                response.data = _appDbContext.users.FirstOrDefault(u => u.Id == user.Id);
+                response.data = _appDbContext.users.FirstOrDefault(u => u.Users_id == user.Users_id);
             }
             catch (Exception ex)
             {
@@ -79,12 +79,12 @@ namespace BudgifyDal
 
         private int GetLastId()
         {
-            return _appDbContext.users.ToList().OrderByDescending(u => u.Id).FirstOrDefault().Id;
+            return _appDbContext.users.ToList().OrderByDescending(u => u.Users_id).FirstOrDefault().Users_id;
         }
 
-        public bool EmailExist(string email)
+        public bool EmailExist(string Email)
         {
-            var user = _appDbContext.users.FirstOrDefault(u => u.Email == email);
+            var user = _appDbContext.users.FirstOrDefault(u => u.Email == Email);
             return !(user == null);
         }
 
