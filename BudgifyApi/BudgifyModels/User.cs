@@ -21,5 +21,7 @@ namespace BudgifyModels
         public bool? Status { get; set; }
         [Required]
         public bool? PublicAccount { get; set; }
+        [Required]
+        public string? Icon { get; set; }
     }
 }

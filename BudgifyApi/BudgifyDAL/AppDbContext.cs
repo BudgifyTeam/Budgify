@@ -15,5 +15,11 @@ namespace BudgifyDal
             
         }
         public DbSet<user> users { get; set; }
+        public DbSet<Category> categories { get; set; }
+        public DbSet<Budget> budget { get; set; }
+        public DbSet<Wallet> wallets { get; set; }
+        public DbSet<Pocket> pockets { get; set; }
+        public DbSet<Income> incomes { get; set; }
+        public DbSet<Expense> expenses { get; set; }
     }
 }

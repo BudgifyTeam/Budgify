@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BudgifyModels
 {
-    internal class Session
+    public class Session
     {
         public int UserId { get; set; }
         public Budget? Budget { get; set; }

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BudgifyModels
 {
@@ -7,13 +8,15 @@ namespace BudgifyModels
         [Key]
         [Required]
         [MaxLength(10)]
-        public int income_id { get; set; }
+        public int Income_id { get; set; }
         [Required]
         [MaxLength(8)]
-        public int value { get; set; }
+        public int Value { get; set; }
         [Required]
-        public DateTime date { get; set; }
-
-
+        public DateTime Date { get; set; }
+        //Relationship
+        [ForeignKey("Users_id")]
+        public user User { get; set; }
+        public int Users_id { get; set; }
     }
 }
