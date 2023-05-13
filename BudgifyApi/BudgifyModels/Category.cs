@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BudgifyModels
 {
@@ -11,14 +12,13 @@ namespace BudgifyModels
     {
         [Key]
         [MaxLength(10)]
-        public int category_id { get; set; }
+        public int Category_id { get; set; }
         [Required]
         [MaxLength(30)]
-        public string? name { get; set; }
-
-        //Relationships
-
-        public List<Income> Incomes { get; set; }
-        public List<Expense> Expenses { get; set; }
+        public string? Name { get; set; }
+        //Relationship
+        [ForeignKey("Users_id")]
+        public user User { get; set; }
+        public int Users_id { get; set; }
     }
 }

@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace BudgifyModels
 {
-    public class Pocket
+    public class Wallet
     {
         [Key]
         [MaxLength(10)]
-        public int Pocket_id { get; set; }
+        public int Wallet_id { get; set; }
         [Required]
         [MaxLength(30)]
         public string? Name { get; set; }
@@ -20,11 +20,8 @@ namespace BudgifyModels
         [MaxLength(8)]
         public double Total { get; set; }
         [Required]
-        [MaxLength(100)]
         public string? Icon { get; set; }
-        [Required]
-        [MaxLength(8)]
-        public double Goal { get; set; }
+
         //Relationship
         [ForeignKey("Users_id")]
         public user User { get; set; }
