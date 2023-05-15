@@ -22,8 +22,11 @@ namespace BudgifyModels
         public Pocket pocket { get; set; }
         public int pocket_id { get; set; }
         [ForeignKey("wallet_id")]
-        public Pocket wallet { get; set; }
+        public Wallet wallet { get; set; }
         public int wallet_id { get; set; }
+        [ForeignKey("category_id")]
+        public Category category { get; set; }
+        public int category_id { get; set; }
     }
 }
  
