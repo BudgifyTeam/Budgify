@@ -21,8 +21,5 @@ namespace BudgifyModels
         [ForeignKey("category_id")]
         public Category category { get; set; }
         public int category_id { get; set; }
-        [ForeignKey("wallet_id")]
-        public Wallet wallet { get; set; }
-        public int wallet_id { get; set; }
     }
 }

@@ -20,7 +20,6 @@ namespace BudgifyModels
         [MaxLength(8)]
         public double total { get; set; }
         [Required]
-        [MaxLength(100)]
         public string? icon { get; set; }
         [Required]
         [MaxLength(8)]
