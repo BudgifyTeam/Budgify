@@ -7,21 +7,21 @@ namespace BudgifyModels
         [Key]
         [Required]
         [MaxLength(10)]
-        public int Users_id { get; set; }
+        public int users_id { get; set; }
         [Required]
         [MaxLength(30)]
-        public string? Username { get; set; }
+        public string? username { get; set; }
         [Required]
         [MaxLength(50)]
-        public string? Email { get; set; }
+        public string? email { get; set; }
         [Required]
         [MaxLength(100)]
-        public string? Token { get; set; }
+        public string? token { get; set; }
         [Required]
-        public bool? Status { get; set; }
+        public bool? status { get; set; }
         [Required]
-        public bool? PublicAccount { get; set; }
+        public bool? publicaccount { get; set; }
         [Required]
-        public string? Icon { get; set; }
+        public string? icon { get; set; }
     }
 }

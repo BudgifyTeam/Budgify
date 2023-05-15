@@ -24,303 +24,342 @@ namespace BudgifyDal.Migrations
 
             modelBuilder.Entity("BudgifyModels.Budget", b =>
                 {
-                    b.Property<int>("Budget_id")
+                    b.Property<int>("budget_id")
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(10)
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Budget_id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("budget_id"));
 
-                    b.Property<int>("Users_id")
+                    b.Property<int>("users_id")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Value")
+                    b.Property<int>("value")
                         .HasMaxLength(8)
                         .HasColumnType("integer");
 
-                    b.HasKey("Budget_id");
+                    b.HasKey("budget_id");
 
-                    b.HasIndex("Users_id");
+                    b.HasIndex("users_id");
 
                     b.ToTable("budget");
                 });
 
             modelBuilder.Entity("BudgifyModels.Category", b =>
                 {
-                    b.Property<int>("Category_id")
+                    b.Property<int>("category_id")
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(10)
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Category_id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("category_id"));
 
-                    b.Property<string>("Name")
+                    b.Property<string>("name")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("character varying(30)");
 
-                    b.Property<int>("Users_id")
+                    b.Property<int>("users_id")
                         .HasColumnType("integer");
 
-                    b.HasKey("Category_id");
+                    b.HasKey("category_id");
 
-                    b.HasIndex("Users_id");
+                    b.HasIndex("users_id");
 
                     b.ToTable("categories");
                 });
 
             modelBuilder.Entity("BudgifyModels.Expense", b =>
                 {
-                    b.Property<int>("Expense_id")
+                    b.Property<int>("expense_id")
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(10)
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Expense_id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("expense_id"));
 
-                    b.Property<DateTime>("Date")
+                    b.Property<int>("category_id")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("date")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("Pocket_id")
+                    b.Property<int>("pocket_id")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Users_id")
+                    b.Property<int>("users_id")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Value")
+                    b.Property<int>("value")
                         .HasMaxLength(8)
                         .HasColumnType("integer");
 
-                    b.Property<int>("Wallet_id")
+                    b.Property<int>("wallet_id")
                         .HasColumnType("integer");
 
-                    b.HasKey("Expense_id");
+                    b.HasKey("expense_id");
 
-                    b.HasIndex("Pocket_id");
+                    b.HasIndex("category_id");
 
-                    b.HasIndex("Users_id");
+                    b.HasIndex("pocket_id");
 
-                    b.HasIndex("Wallet_id");
+                    b.HasIndex("users_id");
+
+                    b.HasIndex("wallet_id");
 
                     b.ToTable("expenses");
                 });
 
             modelBuilder.Entity("BudgifyModels.Income", b =>
                 {
-                    b.Property<int>("Income_id")
+                    b.Property<int>("income_id")
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(10)
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Income_id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("income_id"));
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("Users_id")
+                    b.Property<int>("category_id")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Value")
+                    b.Property<DateTime>("date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("users_id")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("value")
                         .HasMaxLength(8)
                         .HasColumnType("integer");
 
-                    b.HasKey("Income_id");
+                    b.Property<int>("wallet_id")
+                        .HasColumnType("integer");
 
-                    b.HasIndex("Users_id");
+                    b.HasKey("income_id");
+
+                    b.HasIndex("category_id");
+
+                    b.HasIndex("users_id");
+
+                    b.HasIndex("wallet_id");
 
                     b.ToTable("incomes");
                 });
 
             modelBuilder.Entity("BudgifyModels.Pocket", b =>
                 {
-                    b.Property<int>("Pocket_id")
+                    b.Property<int>("pocket_id")
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(10)
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Pocket_id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("pocket_id"));
 
-                    b.Property<double>("Goal")
+                    b.Property<double>("goal")
                         .HasMaxLength(8)
                         .HasColumnType("double precision");
 
-                    b.Property<string>("Icon")
+                    b.Property<string>("icon")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("name")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("character varying(30)");
 
-                    b.Property<double>("Total")
+                    b.Property<double>("total")
                         .HasMaxLength(8)
                         .HasColumnType("double precision");
 
-                    b.Property<int>("Users_id")
+                    b.Property<int>("users_id")
                         .HasColumnType("integer");
 
-                    b.HasKey("Pocket_id");
+                    b.HasKey("pocket_id");
 
-                    b.HasIndex("Users_id");
+                    b.HasIndex("users_id");
 
                     b.ToTable("pockets");
                 });
 
             modelBuilder.Entity("BudgifyModels.Wallet", b =>
                 {
-                    b.Property<int>("Wallet_id")
+                    b.Property<int>("wallet_id")
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(10)
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Wallet_id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("wallet_id"));
 
-                    b.Property<string>("Icon")
+                    b.Property<string>("icon")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("name")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("character varying(30)");
 
-                    b.Property<double>("Total")
+                    b.Property<double>("total")
                         .HasMaxLength(8)
                         .HasColumnType("double precision");
 
-                    b.Property<int>("Users_id")
+                    b.Property<int>("users_id")
                         .HasColumnType("integer");
 
-                    b.HasKey("Wallet_id");
+                    b.HasKey("wallet_id");
 
-                    b.HasIndex("Users_id");
+                    b.HasIndex("users_id");
 
                     b.ToTable("wallets");
                 });
 
             modelBuilder.Entity("BudgifyModels.user", b =>
                 {
-                    b.Property<int>("Users_id")
+                    b.Property<int>("users_id")
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(10)
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Users_id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("users_id"));
 
-                    b.Property<string>("Email")
+                    b.Property<string>("email")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
-                    b.Property<string>("Icon")
+                    b.Property<string>("icon")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<bool?>("PublicAccount")
+                    b.Property<bool?>("publicaccount")
                         .IsRequired()
                         .HasColumnType("boolean");
 
-                    b.Property<bool?>("Status")
+                    b.Property<bool?>("status")
                         .IsRequired()
                         .HasColumnType("boolean");
 
-                    b.Property<string>("Token")
+                    b.Property<string>("token")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<string>("Username")
+                    b.Property<string>("username")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("character varying(30)");
 
-                    b.HasKey("Users_id");
+                    b.HasKey("users_id");
 
                     b.ToTable("users");
                 });
 
             modelBuilder.Entity("BudgifyModels.Budget", b =>
                 {
-                    b.HasOne("BudgifyModels.user", "User")
+                    b.HasOne("BudgifyModels.user", "user")
                         .WithMany()
-                        .HasForeignKey("Users_id")
+                        .HasForeignKey("users_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("user");
                 });
 
             modelBuilder.Entity("BudgifyModels.Category", b =>
                 {
-                    b.HasOne("BudgifyModels.user", "User")
+                    b.HasOne("BudgifyModels.user", "user")
                         .WithMany()
-                        .HasForeignKey("Users_id")
+                        .HasForeignKey("users_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("user");
                 });
 
             modelBuilder.Entity("BudgifyModels.Expense", b =>
                 {
-                    b.HasOne("BudgifyModels.Pocket", "Pocket")
+                    b.HasOne("BudgifyModels.Category", "category")
                         .WithMany()
-                        .HasForeignKey("Pocket_id")
+                        .HasForeignKey("category_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BudgifyModels.user", "User")
+                    b.HasOne("BudgifyModels.Pocket", "pocket")
                         .WithMany()
-                        .HasForeignKey("Users_id")
+                        .HasForeignKey("pocket_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BudgifyModels.Pocket", "Wallet")
+                    b.HasOne("BudgifyModels.user", "user")
                         .WithMany()
-                        .HasForeignKey("Wallet_id")
+                        .HasForeignKey("users_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Pocket");
+                    b.HasOne("BudgifyModels.Wallet", "wallet")
+                        .WithMany()
+                        .HasForeignKey("wallet_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("category");
 
-                    b.Navigation("Wallet");
+                    b.Navigation("pocket");
+
+                    b.Navigation("user");
+
+                    b.Navigation("wallet");
                 });
 
             modelBuilder.Entity("BudgifyModels.Income", b =>
                 {
-                    b.HasOne("BudgifyModels.user", "User")
+                    b.HasOne("BudgifyModels.Category", "category")
                         .WithMany()
-                        .HasForeignKey("Users_id")
+                        .HasForeignKey("category_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.HasOne("BudgifyModels.user", "user")
+                        .WithMany()
+                        .HasForeignKey("users_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BudgifyModels.Wallet", "wallet")
+                        .WithMany()
+                        .HasForeignKey("wallet_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("category");
+
+                    b.Navigation("user");
+
+                    b.Navigation("wallet");
                 });
 
             modelBuilder.Entity("BudgifyModels.Pocket", b =>
                 {
-                    b.HasOne("BudgifyModels.user", "User")
+                    b.HasOne("BudgifyModels.user", "user")
                         .WithMany()
-                        .HasForeignKey("Users_id")
+                        .HasForeignKey("users_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("user");
                 });
 
             modelBuilder.Entity("BudgifyModels.Wallet", b =>
                 {
-                    b.HasOne("BudgifyModels.user", "User")
+                    b.HasOne("BudgifyModels.user", "user")
                         .WithMany()
-                        .HasForeignKey("Users_id")
+                        .HasForeignKey("users_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("user");
                 });
 #pragma warning restore 612, 618
         }

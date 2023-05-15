@@ -3,6 +3,7 @@ using BudgifyModels.Dto;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
@@ -13,23 +14,26 @@ namespace BudgifyDal
     public class UserDal
     {
         private readonly AppDbContext _appDbContext;
+        private readonly FinancialDal _financialDal;
 
-        public UserDal(AppDbContext db)
+        public UserDal(AppDbContext db, FinancialDal fn)
         {
             _appDbContext = db;
+            _financialDal = fn;
         }
 
-        public async Task<Response<string>> Login(UserLogin user) {
-            Response<string> response = new Response<string>();
+        public async Task<Response<Session>> Login(UserLogin user) {
+            Response<Session> response = new Response<Session>();
             var username = user.Username;
             var token = user.Token;
             try {
                 if (UserExist(username))
                 {
-                    if (validateToken(token, username))
+                    if (ValidateToken(token, username))
                     {
                         response.code = true;
                         response.message = "login exitoso";
+                        response.data = GetSession(user);
                         return response;
                     }
                     else
@@ -53,20 +57,43 @@ namespace BudgifyDal
             }
         }
 
-        
+        private Session GetSession(UserLogin user)
+        {
+            var id = GetUserIdByUsername(user.Username);
+            var session = new Session
+            {
+                UserId = id,
+                Budget = _financialDal.GetBudgetByUserId(id),
+                Categories = _financialDal.GetCategoriesByUserId(id),
+                Expenses = _financialDal.GetExpensesByUserId(id),
+                Incomes = _financialDal.GetIncomesByUserId(id),
+                Pockets = _financialDal.GetPocketsByUserId(id),
+                Wallets = _financialDal.GetWalletsByUserId(id),
+                icon = GetIconByUserId(id)
+            };
+            return session;
+        }
+
+        private string GetIconByUserId(int id)
+        {
+            return _appDbContext.users.FirstOrDefault(u => u.users_id == id).icon;
+        }
 
         public async Task<Response<user>> RegisterUser(user user) {
             Response<user> response = new Response<user>();
             
             try {
-                var verifyUser = UserExist(user.Username);
-                var verifyEmail = EmailExist(user.Email);
-                user.Users_id = GetLastId() + 1;
+                var latsid = GetLastUserId() + 1;
+                user.users_id = latsid;
                 _appDbContext.users.Add(user);
                 await _appDbContext.SaveChangesAsync();
-                response.message = "se añadió el registro exitosamente";
+                response.message += await _financialDal.CreateBudget(latsid);
+                response.message += await CreateDefaultCategories(latsid);
+                response.message += await _financialDal.CreateWallet(latsid, "efectivo");
+                response.message += await _financialDal.CreatePocket(latsid, "default", 0);
+                response.message += " se añadió el registro exitosamente";
                 response.code = true;
-                response.data = _appDbContext.users.FirstOrDefault(u => u.Users_id == user.Users_id);
+                response.data = _appDbContext.users.FirstOrDefault(u => u.users_id == user.users_id);
             }
             catch (Exception ex)
             {
@@ -76,27 +103,49 @@ namespace BudgifyDal
             }
             return response;
         }
-
-        private int GetLastId()
+        public async Task<string> CreateDefaultCategories(int userid)
         {
-            return _appDbContext.users.ToList().OrderByDescending(u => u.Users_id).FirstOrDefault().Users_id;
+            var categories = new string[] { "comida", "ocio", "gastos fijos", "suscripciones" };
+            var responses = await Task.WhenAll(categories.Select(cat => _financialDal.CreateCategory(userid, cat)));
+
+            if (responses.All(res => res.code == 1))
+            {
+                return "Se crearon correctamente las categorias default.";
+            }
+
+            return $"Error al crear la categoría '{responses.First(res => res.code == 0).message}'.";
         }
 
+        private int GetLastUserId()
+        {
+            return _appDbContext.users.ToList().OrderByDescending(u => u.users_id).FirstOrDefault().users_id;
+        }
+
+        public user GetUser(int id)
+        {
+            return _appDbContext.users.FirstOrDefault(u => u.users_id == id);
+        }
         public bool EmailExist(string Email)
         {
-            var user = _appDbContext.users.FirstOrDefault(u => u.Email == Email);
+            var user = _appDbContext.users.FirstOrDefault(u => u.email == Email);
             return !(user == null);
         }
 
         public bool UserExist(string username)
         {
-            var user = _appDbContext.users.FirstOrDefault(u => u.Username == username);
+            var user = _appDbContext.users.FirstOrDefault(u => u.username == username);
             return user != null;
         }
 
-        public bool validateToken(string token, string username) {
-            var user = _appDbContext.users.FirstOrDefault(u => u.Username == username);
-            return user.Token == token;
+        public bool ValidateToken(string token, string username) {
+            var user = _appDbContext.users.FirstOrDefault(u => u.username == username);
+            return user.token == token;
         }
+
+        public int GetUserIdByUsername(string username) { 
+            return _appDbContext.users.FirstOrDefault(u =>u.username == username).users_id;
+        }
+
+        
     }
 }

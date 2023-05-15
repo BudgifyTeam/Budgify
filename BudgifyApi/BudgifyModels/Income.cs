@@ -8,15 +8,18 @@ namespace BudgifyModels
         [Key]
         [Required]
         [MaxLength(10)]
-        public int Income_id { get; set; }
+        public int income_id { get; set; }
         [Required]
         [MaxLength(8)]
-        public int Value { get; set; }
+        public int value { get; set; }
         [Required]
-        public DateTime Date { get; set; }
+        public DateTime date { get; set; }
         //Relationship
-        [ForeignKey("Users_id")]
-        public user User { get; set; }
-        public int Users_id { get; set; }
+        [ForeignKey("users_id")]
+        public user user { get; set; }
+        public int users_id { get; set; }
+        [ForeignKey("wallet_id")]
+        public Wallet wallet { get; set; }
+        public int wallet_id { get; set; }
     }
 }

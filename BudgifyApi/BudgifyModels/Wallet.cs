@@ -12,19 +12,19 @@ namespace BudgifyModels
     {
         [Key]
         [MaxLength(10)]
-        public int Wallet_id { get; set; }
+        public int wallet_id { get; set; }
         [Required]
         [MaxLength(30)]
-        public string? Name { get; set; }
+        public string? name { get; set; }
         [Required]
         [MaxLength(8)]
-        public double Total { get; set; }
+        public double total { get; set; }
         [Required]
-        public string? Icon { get; set; }
+        public string? icon { get; set; }
 
         //Relationship
-        [ForeignKey("Users_id")]
-        public user User { get; set; }
-        public int Users_id { get; set; }
+        [ForeignKey("users_id")]
+        public user user { get; set; }
+        public int users_id { get; set; }
     }
 }
