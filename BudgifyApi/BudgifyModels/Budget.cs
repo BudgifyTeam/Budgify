@@ -12,14 +12,14 @@ namespace BudgifyModels
     {
         [Key]
         [MaxLength(10)]
-        public int Budget_id { get; set; }
+        public int budget_id { get; set; }
         [Required]
         [MaxLength(8)]
-        public int Value { get; set; }
+        public int value { get; set; }
 
         //Relationship
-        [ForeignKey("Users_id")]
-        public user User { get; set; }
-        public int Users_id { get; set; }
+        [ForeignKey("users_id")]
+        public user user { get; set; }
+        public int users_id { get; set; }
     }
 }

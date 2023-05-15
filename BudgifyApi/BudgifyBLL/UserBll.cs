@@ -19,20 +19,20 @@ namespace BudgifyBll
             {
                 var userToSave = new user
                 {
-                    Email = user.Email,
-                    Username = user.Username,
-                    Token = user.Token,
-                    Status = true,
-                    PublicAccount = false,
+                    email = user.Email,
+                    username = user.Username,
+                    token = user.Token,
+                    status = true,
+                    publicaccount = false,
                 };
 
-                if (_userDal.UserExist(userToSave.Username))
+                if (_userDal.UserExist(userToSave.username))
                 {
                     response.message = "username already exists";
                     return response;
                 }
 
-                if (_userDal.EmailExist(userToSave.Email))
+                if (_userDal.EmailExist(userToSave.email))
                 {
                     response.message = "Email already exists";
                     return response;

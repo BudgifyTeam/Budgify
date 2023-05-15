@@ -59,14 +59,14 @@ namespace BudgifyDal
             Response<user> response = new Response<user>();
             
             try {
-                var verifyUser = UserExist(user.Username);
-                var verifyEmail = EmailExist(user.Email);
-                user.Users_id = GetLastId() + 1;
+                var verifyUser = UserExist(user.username);
+                var verifyEmail = EmailExist(user.email);
+                user.users_id = GetLastId() + 1;
                 _appDbContext.users.Add(user);
                 await _appDbContext.SaveChangesAsync();
                 response.message = "se añadió el registro exitosamente";
                 response.code = true;
-                response.data = _appDbContext.users.FirstOrDefault(u => u.Users_id == user.Users_id);
+                response.data = _appDbContext.users.FirstOrDefault(u => u.users_id == user.users_id);
             }
             catch (Exception ex)
             {
@@ -79,24 +79,24 @@ namespace BudgifyDal
 
         private int GetLastId()
         {
-            return _appDbContext.users.ToList().OrderByDescending(u => u.Users_id).FirstOrDefault().Users_id;
+            return _appDbContext.users.ToList().OrderByDescending(u => u.users_id).FirstOrDefault().users_id;
         }
 
         public bool EmailExist(string Email)
         {
-            var user = _appDbContext.users.FirstOrDefault(u => u.Email == Email);
+            var user = _appDbContext.users.FirstOrDefault(u => u.email == Email);
             return !(user == null);
         }
 
         public bool UserExist(string username)
         {
-            var user = _appDbContext.users.FirstOrDefault(u => u.Username == username);
+            var user = _appDbContext.users.FirstOrDefault(u => u.username == username);
             return user != null;
         }
 
         public bool validateToken(string token, string username) {
-            var user = _appDbContext.users.FirstOrDefault(u => u.Username == username);
-            return user.Token == token;
+            var user = _appDbContext.users.FirstOrDefault(u => u.username == username);
+            return user.token == token;
         }
     }
 }

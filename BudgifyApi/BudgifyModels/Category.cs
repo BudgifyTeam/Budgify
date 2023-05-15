@@ -12,13 +12,13 @@ namespace BudgifyModels
     {
         [Key]
         [MaxLength(10)]
-        public int Category_id { get; set; }
+        public int category_id { get; set; }
         [Required]
         [MaxLength(30)]
-        public string? Name { get; set; }
+        public string? name { get; set; }
         //Relationship
-        [ForeignKey("Users_id")]
-        public user User { get; set; }
-        public int Users_id { get; set; }
+        [ForeignKey("users_id")]
+        public user user { get; set; }
+        public int users_id { get; set; }
     }
 }

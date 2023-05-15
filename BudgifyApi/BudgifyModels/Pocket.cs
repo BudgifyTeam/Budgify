@@ -12,22 +12,22 @@ namespace BudgifyModels
     {
         [Key]
         [MaxLength(10)]
-        public int Pocket_id { get; set; }
+        public int pocket_id { get; set; }
         [Required]
         [MaxLength(30)]
-        public string? Name { get; set; }
+        public string? name { get; set; }
         [Required]
         [MaxLength(8)]
-        public double Total { get; set; }
+        public double total { get; set; }
         [Required]
         [MaxLength(100)]
-        public string? Icon { get; set; }
+        public string? icon { get; set; }
         [Required]
         [MaxLength(8)]
-        public double Goal { get; set; }
+        public double goal { get; set; }
         //Relationship
-        [ForeignKey("Users_id")]
-        public user User { get; set; }
-        public int Users_id { get; set; }
+        [ForeignKey("users_id")]
+        public user user { get; set; }
+        public int users_id { get; set; }
     }
 }

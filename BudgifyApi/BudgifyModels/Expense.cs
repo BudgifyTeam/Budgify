@@ -8,22 +8,22 @@ namespace BudgifyModels
         [Key]
         [Required]
         [MaxLength(10)]
-        public int Expense_id { get; set; }
+        public int expense_id { get; set; }
         [Required]
         [MaxLength(8)]
-        public int Value { get; set; }
+        public int value { get; set; }
         [Required]
-        public DateTime Date { get; set; }
+        public DateTime date { get; set; }
         //Relationship
-        [ForeignKey("Users_id")]
-        public user User { get; set; }
-        public int Users_id { get; set; }
-        [ForeignKey("Pocket_id")]
-        public Pocket Pocket { get; set; }
-        public int Pocket_id { get; set; }
-        [ForeignKey("Wallet_id")]
-        public Pocket Wallet { get; set; }
-        public int Wallet_id { get; set; }
+        [ForeignKey("users_id")]
+        public user user { get; set; }
+        public int users_id { get; set; }
+        [ForeignKey("pocket_id")]
+        public Pocket pocket { get; set; }
+        public int pocket_id { get; set; }
+        [ForeignKey("wallet_id")]
+        public Pocket wallet { get; set; }
+        public int wallet_id { get; set; }
     }
 }
  
