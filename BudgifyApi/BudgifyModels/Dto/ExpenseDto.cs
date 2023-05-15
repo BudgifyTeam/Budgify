@@ -11,5 +11,7 @@ namespace BudgifyModels.Dto
         public int expense_id { get; set; }
         public int value { get; set; }
         public DateTime date { get; set; }
+        public string category { get; set; }
+        public string wallet { get; set; }
     }
 }

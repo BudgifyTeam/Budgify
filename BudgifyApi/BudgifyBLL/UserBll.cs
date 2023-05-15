@@ -130,6 +130,8 @@ namespace BudgifyBll
                 date = expense.date,
                 expense_id = expense.expense_id,
                 value = expense.value,
+                category = expense.category.name,
+                wallet = expense.wallet.name
             };
         }
 
@@ -140,6 +142,7 @@ namespace BudgifyBll
                 value = income.value,
                 date = income.date,
                 income_id = income.income_id,
+                wallet = income.wallet.name
             };
         }
         public PocketDto GetPocketDto(Pocket pocket)
