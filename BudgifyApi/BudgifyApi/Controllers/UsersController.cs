@@ -12,13 +12,11 @@ namespace BudgifyApi3.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly AppDbContext _appDbContext;
         private readonly UserBll userBll;
         private readonly ResponseError resError = new ResponseError();
 
         public UsersController(AppDbContext db)
         {
-            _appDbContext = db;
             userBll = new UserBll(db);
         }
 

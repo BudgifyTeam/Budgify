@@ -14,6 +14,9 @@ namespace BudgifyModels
         public int value { get; set; }
         [Required]
         public DateTime date { get; set; }
+        [Required]
+        [MaxLength(10)]
+        public string status { get; set; }
         //Relationship
         [ForeignKey("users_id")]
         public user user { get; set; }
