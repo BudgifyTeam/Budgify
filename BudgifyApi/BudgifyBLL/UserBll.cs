@@ -59,35 +59,37 @@ namespace BudgifyBll
         }
         public async Task<Response<SessionDto>> Login(UserLogin user)
         {
-            var userAux = user.Username;
-
-            Console.Write(userAux);
-            Console.Write(user.Token);
-            Response<Session> response = new Response<Session>();
-            Response<SessionDto> newResponse = new Response<SessionDto>();
             try
             {
-                response = await _userDal.Login(user);
-                Session s = response.data;
-                newResponse.data = await GetSessionDto(s);
-                newResponse.message = response.message;
-                newResponse.code = response.code;
+                var response = await _userDal.Login(user);
                 if (response.code)
                 {
-                    return newResponse;
+                    var sessionDto = await GetSessionDto(response.data);
+                    return new Response<SessionDto>
+                    {
+                        data = sessionDto,
+                        message = response.message,
+                        code = response.code
+                    };
                 }
                 else
                 {
                     response.message += " Error al validar al usuario";
-                    response.code = false;
+                    return new Response<SessionDto>
+                    {
+                        message = response.message,
+                        code = false
+                    };
                 }
             }
             catch (Exception ex)
             {
-                newResponse.message = ex.Message;
-                newResponse.code = false;
+                return new Response<SessionDto>
+                {
+                    message = ex.Message,
+                    code = false
+                };
             }
-            return newResponse;
         }
         public async Task<SessionDto> GetSessionDto(Session session)
         {
