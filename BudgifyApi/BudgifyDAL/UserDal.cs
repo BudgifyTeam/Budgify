@@ -22,17 +22,18 @@ namespace BudgifyDal
             _financialDal = fn;
         }
 
-        public async Task<Response<string>> Login(UserLogin user) {
-            Response<string> response = new Response<string>();
+        public async Task<Response<Session>> Login(UserLogin user) {
+            Response<Session> response = new Response<Session>();
             var username = user.Username;
             var token = user.Token;
             try {
                 if (UserExist(username))
                 {
-                    if (validateToken(token, username))
+                    if (ValidateToken(token, username))
                     {
                         response.code = true;
                         response.message = "login exitoso";
+                        response.data = GetSession(user);
                         return response;
                     }
                     else
@@ -54,6 +55,28 @@ namespace BudgifyDal
                 response.message = ex.Message;
                 return response;
             }
+        }
+
+        private Session GetSession(UserLogin user)
+        {
+            var id = GetUserIdByUsername(user.Username);
+            var session = new Session
+            {
+                UserId = id,
+                Budget = _financialDal.GetBudgetByUserId(id),
+                Categories = _financialDal.GetCategoriesByUserId(id),
+                Expenses = _financialDal.GetExpensesByUserId(id),
+                Incomes = _financialDal.GetIncomesByUserId(id),
+                Pockets = _financialDal.GetPocketsByUserId(id),
+                Wallets = _financialDal.GetWalletsByUserId(id),
+                icon = GetIconByUserId(id)
+            };
+            return session;
+        }
+
+        private string GetIconByUserId(int id)
+        {
+            return _appDbContext.users.FirstOrDefault(u => u.users_id == id).icon;
         }
 
         public async Task<Response<user>> RegisterUser(user user) {
@@ -114,9 +137,15 @@ namespace BudgifyDal
             return user != null;
         }
 
-        public bool validateToken(string token, string username) {
+        public bool ValidateToken(string token, string username) {
             var user = _appDbContext.users.FirstOrDefault(u => u.username == username);
             return user.token == token;
         }
+
+        public int GetUserIdByUsername(string username) { 
+            return _appDbContext.users.FirstOrDefault(u =>u.username == username).users_id;
+        }
+
+        
     }
 }

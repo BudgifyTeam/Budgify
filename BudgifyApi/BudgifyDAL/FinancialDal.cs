@@ -62,7 +62,8 @@ namespace BudgifyDal
         }
         public async Task<string> CreateWallet(int userid, string name)
         {
-            try {
+            try
+            {
                 var newWallet = new Wallet
                 {
                     wallet_id = GetLastWalletId() + 1,
@@ -75,7 +76,8 @@ namespace BudgifyDal
                 _appDbContext.wallets.Add(newWallet);
                 await _appDbContext.SaveChangesAsync();
                 return " se creó correctamente la billetera";
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return ex.Message;
             }
@@ -122,6 +124,35 @@ namespace BudgifyDal
         public user GetUser(int id)
         {
             return _appDbContext.users.FirstOrDefault(u => u.users_id == id);
+        }
+        public Budget GetBudgetByUserId(int id)
+        {
+            return _appDbContext.budget.FirstOrDefault(u => u.users_id == id);
+        }
+
+        public Category[] GetCategoriesByUserId(int id)
+        {
+            return _appDbContext.categories.Where(c => c.users_id == id).ToArray();
+        }
+
+        internal Expense[] GetExpensesByUserId(int id)
+        {
+            return _appDbContext.expenses.Where(c => c.users_id == id).ToArray();
+        }
+
+        internal Income[] GetIncomesByUserId(int id)
+        {
+            return _appDbContext.incomes.Where(c => c.users_id == id).ToArray();
+        }
+
+        internal Pocket[] GetPocketsByUserId(int id)
+        {
+            return _appDbContext.pockets.Where(c => c.users_id == id).ToArray();
+        }
+
+        internal Wallet[] GetWalletsByUserId(int id)
+        {
+            return _appDbContext.wallets.Where(c => c.users_id == id).ToArray();
         }
     }
 }

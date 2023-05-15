@@ -57,32 +57,109 @@ namespace BudgifyBll
 
             return response;
         }
-        public async Task<Response<string>> Login(UserLogin user)
+        public async Task<Response<SessionDto>> Login(UserLogin user)
         {
             var userAux = user.Username;
 
             Console.Write(userAux);
             Console.Write(user.Token);
-            Response<string> response = new Response<string>();
+            Response<Session> response = new Response<Session>();
+            Response<SessionDto> newResponse = new Response<SessionDto>();
             try
             {
                 response = await _userDal.Login(user);
+                Session s = response.data;
+                newResponse.data = await GetSessionDto(s);
+                newResponse.message = response.message;
+                newResponse.code = response.code;
                 if (response.code)
                 {
-                    return response;
+                    return newResponse;
                 }
                 else
                 {
-                    response.message = "Error al validar al usuario";
+                    response.message += " Error al validar al usuario";
                     response.code = false;
                 }
             }
             catch (Exception ex)
             {
-                response.message = ex.Message;
-                response.code = false;
+                newResponse.message = ex.Message;
+                newResponse.code = false;
             }
-            return response;
+            return newResponse;
+        }
+        public async Task<SessionDto> GetSessionDto(Session session)
+        {
+            return new SessionDto
+            {
+                UserId = session.UserId,
+                Budget = session.Budget != null ? GetBudgetDto(session.Budget) : null,
+                Categories = session.Categories?.Select(c => GetCategoryDto(c)).ToArray(),
+                Expenses = session.Expenses?.Select(e => GetExpenseDto(e)).ToArray(),
+                Incomes = session.Incomes?.Select(i => GetIncomeDto(i)).ToArray(),
+                Pockets = session.Pockets?.Select(p => GetPocketDto(p)).ToArray(),
+                Wallets = session.Wallets?.Select(w => GetWalletDto(w)).ToArray()
+            };
+        }
+
+        public BudgetDto GetBudgetDto(Budget budget)
+        {
+            return new BudgetDto
+            {
+                budget_id = budget.budget_id,
+                value = budget.value,
+            };
+        }
+
+        public CategoryDto GetCategoryDto(Category category)
+        {
+            return new CategoryDto
+            {
+                category_id = category.category_id,
+                name = category.name,
+            };
+        }
+
+        public ExpenseDto GetExpenseDto(Expense expense)
+        {
+            return new ExpenseDto
+            {
+                date = expense.date,
+                expense_id = expense.expense_id,
+                value = expense.value,
+            };
+        }
+
+        public IncomeDto GetIncomeDto(Income income)
+        {
+            return new IncomeDto
+            {
+                value = income.value,
+                date = income.date,
+                income_id = income.income_id,
+            };
+        }
+        public PocketDto GetPocketDto(Pocket pocket)
+        {
+            return new PocketDto
+            {
+                goal = pocket.goal,
+                icon = pocket.icon,
+                name = pocket.name,
+                pocket_id = pocket.pocket_id,
+                total = pocket.total,
+            };
+        }
+        public WalletDto GetWalletDto(Wallet wallet)
+        {
+            return new WalletDto
+            {
+                total = wallet.total,
+                name = wallet.name,
+                icon = wallet.icon,
+                wallet_id = wallet.wallet_id,
+            };
         }
     }
 }
