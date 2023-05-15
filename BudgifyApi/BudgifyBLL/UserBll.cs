@@ -1,6 +1,7 @@
 ﻿using BudgifyModels;
 using BudgifyDal;
 using BudgifyModels.Dto;
+using Microsoft.VisualBasic;
 
 namespace BudgifyBll
 {
@@ -8,9 +9,11 @@ namespace BudgifyBll
     {
 
         private readonly UserDal _userDal;
+        private readonly FinancialDal _financialDal;
         public UserBll(AppDbContext db)
         {
-            _userDal = new UserDal(db);
+            _financialDal = new FinancialDal(db);
+            _userDal = new UserDal(db, _financialDal);
         }
         public async Task<Response<user>> Register(UserRegister user)
         {
@@ -24,6 +27,7 @@ namespace BudgifyBll
                     token = user.Token,
                     status = true,
                     publicaccount = false,
+                    icon = "https://firebasestorage.googleapis.com/v0/b/budgify-ed7a9.appspot.com/o/userimage.jpg?alt=media&token=df5dc86a-c48e-4786-9501-565b2ad15134"
                 };
 
                 if (_userDal.UserExist(userToSave.username))

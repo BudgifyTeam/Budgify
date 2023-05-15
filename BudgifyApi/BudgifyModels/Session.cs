@@ -13,5 +13,6 @@ namespace BudgifyModels
         public Category[]? Categories { get; set; }
         public Expense[]? Expenses { get; set; }
         public Income[]? Incomes { get; set;}
+        public string? icon { get; set; }
     }
 }

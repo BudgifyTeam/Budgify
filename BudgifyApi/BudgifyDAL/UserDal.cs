@@ -3,6 +3,7 @@ using BudgifyModels.Dto;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
@@ -13,10 +14,12 @@ namespace BudgifyDal
     public class UserDal
     {
         private readonly AppDbContext _appDbContext;
+        private readonly FinancialDal _financialDal;
 
-        public UserDal(AppDbContext db)
+        public UserDal(AppDbContext db, FinancialDal fn)
         {
             _appDbContext = db;
+            _financialDal = fn;
         }
 
         public async Task<Response<string>> Login(UserLogin user) {
@@ -53,18 +56,19 @@ namespace BudgifyDal
             }
         }
 
-        
-
         public async Task<Response<user>> RegisterUser(user user) {
             Response<user> response = new Response<user>();
             
             try {
-                var verifyUser = UserExist(user.username);
-                var verifyEmail = EmailExist(user.email);
-                user.users_id = GetLastId() + 1;
+                var latsid = GetLastUserId() + 1;
+                user.users_id = latsid;
                 _appDbContext.users.Add(user);
                 await _appDbContext.SaveChangesAsync();
-                response.message = "se añadió el registro exitosamente";
+                response.message += await _financialDal.CreateBudget(latsid);
+                response.message += await CreateDefaultCategories(latsid);
+                response.message += await _financialDal.CreateWallet(latsid, "efectivo");
+                response.message += await _financialDal.CreatePocket(latsid, "default", 0);
+                response.message += " se añadió el registro exitosamente";
                 response.code = true;
                 response.data = _appDbContext.users.FirstOrDefault(u => u.users_id == user.users_id);
             }
@@ -76,12 +80,28 @@ namespace BudgifyDal
             }
             return response;
         }
+        public async Task<string> CreateDefaultCategories(int userid)
+        {
+            var categories = new string[] { "comida", "ocio", "gastos fijos", "suscripciones" };
+            var responses = await Task.WhenAll(categories.Select(cat => _financialDal.CreateCategory(userid, cat)));
 
-        private int GetLastId()
+            if (responses.All(res => res.code == 1))
+            {
+                return "Se crearon correctamente las categorias default.";
+            }
+
+            return $"Error al crear la categoría '{responses.First(res => res.code == 0).message}'.";
+        }
+
+        private int GetLastUserId()
         {
             return _appDbContext.users.ToList().OrderByDescending(u => u.users_id).FirstOrDefault().users_id;
         }
 
+        public user GetUser(int id)
+        {
+            return _appDbContext.users.FirstOrDefault(u => u.users_id == id);
+        }
         public bool EmailExist(string Email)
         {
             var user = _appDbContext.users.FirstOrDefault(u => u.email == Email);
