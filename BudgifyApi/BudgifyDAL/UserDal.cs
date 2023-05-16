@@ -57,7 +57,7 @@ namespace BudgifyDal
             }
         }
 
-        private Session GetSession(UserLogin user)
+        public Session GetSession(UserLogin user)
         {
             var id = GetUserIdByUsername(user.Username);
             var session = new Session
@@ -69,7 +69,7 @@ namespace BudgifyDal
                 Incomes = _financialDal.GetIncomesByUserId(id),
                 Pockets = _financialDal.GetPocketsByUserId(id),
                 Wallets = _financialDal.GetWalletsByUserId(id),
-                icon = GetIconByUserId(id),
+                icon = GetIconByUserId(id)
             };
             return session;
         }
