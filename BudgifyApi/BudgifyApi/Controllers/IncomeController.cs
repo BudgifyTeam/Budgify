@@ -61,7 +61,7 @@ namespace BudgifyApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IncomeDto>> GetIncomes(int userid, string range)//range{day, week, month, year}
         {
-            ResponseList<IncomeDto> response = await _incomeBll.GetIncomes(userid, range);
+            ResponseList<IncomeDto> response = _incomeBll.GetIncomes(userid, range);
 
             if (!response.code)
             {
@@ -79,7 +79,7 @@ namespace BudgifyApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IncomeDto>> GetIncomesByDay(int userid, DateTime date)
         {
-            ResponseList<IncomeDto> response = await _incomeBll.GetIncomesByDay(userid, date);
+            ResponseList<IncomeDto> response = _incomeBll.GetIncomesDay(userid, "day", date);
 
             if (!response.code)
             {

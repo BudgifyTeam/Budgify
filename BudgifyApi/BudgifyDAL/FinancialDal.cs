@@ -141,9 +141,9 @@ namespace BudgifyDal
             return _appDbContext.expenses.Where(c => c.users_id == id).ToArray();
         }
 
-        internal Income[] GetIncomesByUserId(int id)
+        public Income[] GetIncomesByUserId(int id)
         {
-            return _appDbContext.incomes.Where(c => c.users_id == id).ToArray();
+            return _appDbContext.incomes.Where(c => c.users_id == id && c.status == "active").ToArray();
         }
 
         internal Pocket[] GetPocketsByUserId(int id)
@@ -164,6 +164,11 @@ namespace BudgifyDal
         }
 
         public Task<Response<IncomeDto>> DeleteIncome(int userid, int incomeid)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Response<IncomeDto>> ModifyIncome(IncomeDto income)
         {
             throw new NotImplementedException();
         }
