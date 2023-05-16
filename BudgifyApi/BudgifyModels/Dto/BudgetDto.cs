@@ -11,6 +11,6 @@ namespace BudgifyModels.Dto
     public class BudgetDto
     {
         public int budget_id { get; set; }
-        public int value { get; set; }
+        public double value { get; set; }
     }
 }

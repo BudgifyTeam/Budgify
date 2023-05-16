@@ -17,17 +17,50 @@ namespace BudgifyBll
             _financialDal = new FinancialDal(db);
         }
 
-        public Task<Response<IncomeDto>> CreateIncome(int userid, double value, DateTime date)
+        public async Task<Response<IncomeDto>> CreateIncome(int userid, double value, DateTime date)
         {
-            throw new NotImplementedException();
+           Response<IncomeDto> response = new Response<IncomeDto>();
+            try {
+                var newIncome = new Income()
+                {
+                    date = date,
+                    income_id = 0,
+                    status = "active",
+                    users_id = userid,
+                    value = value
+                };
+                response = await _financialDal.CreateIncome(newIncome);
+                if (!response.code)
+                {
+                    response.message = "Error al registrar al ingreso";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.message = ex.Message;
+            }
+            return response;
         }
 
-        public Task<Response<IncomeDto>> DeleteIncome(int userid, int incomeid)
+        public async Task<Response<IncomeDto>> DeleteIncome(int userid, int incomeid)
         {
-            throw new NotImplementedException();
+            Response<IncomeDto> response = new Response<IncomeDto>();
+            try
+            {
+                response = await _financialDal.DeleteIncome(userid, incomeid);
+                if (!response.code)
+                {
+                    response.message = "Error al eliminar al ingreso";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.message = ex.Message;
+            }
+            return response;
         }
 
-        public Task<ResponseList<IncomeDto>> GetIncomes(int userid, string range)
+        public Task<ResponseList<IncomeDto>> GetIncomes(int userid, string range)//range{day, week, month, year}
         {
             throw new NotImplementedException();
         }

@@ -1,4 +1,5 @@
 ﻿using BudgifyModels;
+using BudgifyModels.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -153,6 +154,18 @@ namespace BudgifyDal
         internal Wallet[] GetWalletsByUserId(int id)
         {
             return _appDbContext.wallets.Where(c => c.users_id == id).ToArray();
+        }
+
+        public Task<Response<IncomeDto>> CreateIncome(Income newIncome)
+        {
+            throw new NotImplementedException();
+            //getwalletbyuserID
+            //getLastIncomeId
+        }
+
+        public Task<Response<IncomeDto>> DeleteIncome(int userid, int incomeid)
+        {
+            throw new NotImplementedException();
         }
     }
 }
