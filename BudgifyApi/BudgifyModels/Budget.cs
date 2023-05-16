@@ -15,7 +15,7 @@ namespace BudgifyModels
         public int budget_id { get; set; }
         [Required]
         [MaxLength(8)]
-        public int value { get; set; }
+        public double value { get; set; }
 
         //Relationship
         [ForeignKey("users_id")]

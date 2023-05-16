@@ -11,7 +11,7 @@ namespace BudgifyModels
         public int income_id { get; set; }
         [Required]
         [MaxLength(8)]
-        public int value { get; set; }
+        public double value { get; set; }
         [Required]
         public DateTime date { get; set; }
         [Required]
