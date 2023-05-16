@@ -69,7 +69,7 @@ namespace BudgifyDal
                 Incomes = _financialDal.GetIncomesByUserId(id),
                 Pockets = _financialDal.GetPocketsByUserId(id),
                 Wallets = _financialDal.GetWalletsByUserId(id),
-                icon = GetIconByUserId(id)
+                icon = GetIconByUserId(id),
             };
             return session;
         }

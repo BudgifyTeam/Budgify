@@ -96,6 +96,7 @@ namespace BudgifyBll
             return new SessionDto
             {
                 UserId = session.UserId,
+                User_icon = session.icon,
                 Budget = session.Budget != null ? GetBudgetDto(session.Budget) : null,
                 Categories = session.Categories?.Select(c => GetCategoryDto(c)).ToArray(),
                 Expenses = session.Expenses?.Select(e => GetExpenseDto(e)).ToArray(),
