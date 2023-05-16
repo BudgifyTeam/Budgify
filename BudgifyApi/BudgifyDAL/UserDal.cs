@@ -14,12 +14,12 @@ namespace BudgifyDal
     public class UserDal
     {
         private readonly AppDbContext _appDbContext;
-        private readonly FinancialDal _financialDal;
+        private readonly UtilsDal _utilsDal;
 
-        public UserDal(AppDbContext db, FinancialDal fn)
+        public UserDal(AppDbContext db, UtilsDal fn)
         {
             _appDbContext = db;
-            _financialDal = fn;
+            _utilsDal = fn;
         }
 
         public async Task<Response<Session>> Login(UserLogin user) {
@@ -63,12 +63,12 @@ namespace BudgifyDal
             var session = new Session
             {
                 UserId = id,
-                Budget = _financialDal.GetBudgetByUserId(id),
-                Categories = _financialDal.GetCategoriesByUserId(id),
-                Expenses = _financialDal.GetExpensesByUserId(id),
-                Incomes = _financialDal.GetIncomesByUserId(id),
-                Pockets = _financialDal.GetPocketsByUserId(id),
-                Wallets = _financialDal.GetWalletsByUserId(id),
+                Budget = _utilsDal.GetBudgetByUserId(id),
+                Categories = _utilsDal.GetCategoriesByUserId(id),
+                Expenses = _utilsDal.GetExpensesByUserId(id),
+                Incomes = _utilsDal.GetIncomesByUserId(id),
+                Pockets = _utilsDal.GetPocketsByUserId(id),
+                Wallets = _utilsDal.GetWalletsByUserId(id),
                 icon = GetIconByUserId(id)
             };
             return session;
@@ -87,10 +87,10 @@ namespace BudgifyDal
                 user.users_id = latsid;
                 _appDbContext.users.Add(user);
                 await _appDbContext.SaveChangesAsync();
-                response.message += await _financialDal.CreateBudget(latsid);
+                response.message += await _utilsDal.CreateBudget(latsid);
                 response.message += await CreateDefaultCategories(latsid);
-                response.message += await _financialDal.CreateWallet(latsid, "efectivo");
-                response.message += await _financialDal.CreatePocket(latsid, "default", 0);
+                response.message += await _utilsDal.CreateWallet(latsid, "efectivo");
+                response.message += await _utilsDal.CreatePocket(latsid, "default", 0);
                 response.message += " se añadió el registro exitosamente";
                 response.code = true;
                 response.data = _appDbContext.users.FirstOrDefault(u => u.users_id == user.users_id);
@@ -106,7 +106,11 @@ namespace BudgifyDal
         public async Task<string> CreateDefaultCategories(int userid)
         {
             var categories = new string[] { "comida", "ocio", "gastos fijos", "suscripciones" };
-            var responses = await Task.WhenAll(categories.Select(cat => _financialDal.CreateCategory(userid, cat)));
+            ResponseError[] responses = new ResponseError[4];
+            for (int i = 0; i < categories.Length; i++) {
+                var res1 = await _utilsDal.CreateCategory(userid, categories[i]);
+                responses[i] = res1;
+            }
 
             if (responses.All(res => res.code == 1))
             {

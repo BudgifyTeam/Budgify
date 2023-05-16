@@ -9,11 +9,11 @@ namespace BudgifyBll
     {
 
         private readonly UserDal _userDal;
-        private readonly FinancialDal _financialDal;
+        private readonly UtilsDal _utilsDal;
         public UserBll(AppDbContext db)
         {
-            _financialDal = new FinancialDal(db);
-            _userDal = new UserDal(db, _financialDal);
+            _utilsDal = new UtilsDal(db);
+            _userDal = new UserDal(db, _utilsDal);
         }
         public async Task<Response<user>> Register(UserRegister user)
         {

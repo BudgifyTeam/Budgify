@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace BudgifyDal
 {
-    public class FinancialDal
+    public class UtilsDal
     {
         private readonly AppDbContext _appDbContext;
 
-        public FinancialDal(AppDbContext db)
+        public UtilsDal(AppDbContext db)
         {
             _appDbContext = db;
         }
@@ -106,6 +106,13 @@ namespace BudgifyDal
                 return ex.Message;
             }
         }
+        public Wallet GetWalletByUserId(int id)
+        {
+            return _appDbContext.wallets.FirstOrDefault(u => u.users_id == id);
+        }
+        public int GetLastIncomeId() {
+            return _appDbContext.incomes.ToList().OrderByDescending(u => u.income_id).FirstOrDefault().income_id;
+        }
         private int GetLastBudgetId()
         {
             return _appDbContext.budget.ToList().OrderByDescending(u => u.budget_id).FirstOrDefault().budget_id;
@@ -154,23 +161,6 @@ namespace BudgifyDal
         internal Wallet[] GetWalletsByUserId(int id)
         {
             return _appDbContext.wallets.Where(c => c.users_id == id).ToArray();
-        }
-
-        public Task<Response<IncomeDto>> CreateIncome(Income newIncome)
-        {
-            throw new NotImplementedException();
-            //getwalletbyuserID
-            //getLastIncomeId
-        }
-
-        public Task<Response<IncomeDto>> DeleteIncome(int userid, int incomeid)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Response<IncomeDto>> ModifyIncome(IncomeDto income)
-        {
-            throw new NotImplementedException();
         }
     }
 }

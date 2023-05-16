@@ -12,10 +12,12 @@ namespace BudgifyBll
 {
     public class IncomeBll
     {
-        private readonly FinancialDal _financialDal;
+        private readonly UtilsDal _utilsDal;
+        private readonly IncomeDal _incomeDal;
         public IncomeBll(AppDbContext db)
         {
-            _financialDal = new FinancialDal(db);
+            _utilsDal = new UtilsDal(db);
+            _incomeDal = new IncomeDal(db, _utilsDal);
         }
 
         public async Task<Response<IncomeDto>> CreateIncome(int userid, double value, DateTime date)
@@ -30,7 +32,7 @@ namespace BudgifyBll
                     users_id = userid,
                     value = value
                 };
-                response = await _financialDal.CreateIncome(newIncome);
+                response = await _incomeDal.CreateIncome(newIncome);
                 if (!response.code)
                 {
                     response.message = "Error al registrar al ingreso";
@@ -48,7 +50,7 @@ namespace BudgifyBll
             Response<IncomeDto> response = new Response<IncomeDto>();
             try
             {
-                response = await _financialDal.DeleteIncome(userid, incomeid);
+                response = await _incomeDal.DeleteIncome(userid, incomeid);
                 if (!response.code)
                 {
                     response.message = "Error al eliminar al ingreso";
@@ -66,7 +68,7 @@ namespace BudgifyBll
             var response = new ResponseList<IncomeDto>();
             try
             {
-                var list = _financialDal.GetIncomesByUserId(userid);
+                var list = _utilsDal.GetIncomesByUserId(userid);
                 if (!list.Any())
                 {
                     response.message = "El usuario no cuenta con ingresos";
@@ -92,7 +94,7 @@ namespace BudgifyBll
             var response = new ResponseList<IncomeDto>();
             try
             {
-                var list = _financialDal.GetIncomesByUserId(userId);
+                var list = _utilsDal.GetIncomesByUserId(userId);
                 if (!list.Any())
                 {
                     response.message = "El usuario no cuenta con ingresos";
@@ -138,7 +140,7 @@ namespace BudgifyBll
             Response<IncomeDto> response = new Response<IncomeDto>();
             try
             {
-                response = await _financialDal.ModifyIncome(income);
+                response = await _incomeDal.ModifyIncome(income);
                 if (!response.code)
                 {
                     response.message = "Error al eliminar al ingreso";
