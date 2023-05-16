@@ -19,18 +19,18 @@ jobs:
       with:
         dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
     - name: Restore
-      run: dotnet restore "${{ env.WORKING_DIRECTORY }}"
+      run: dotnet restore "BudgifyApi"
     - name: Build
-      run: dotnet build "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-restore
+      run: dotnet build "BudgifyAPI" --configuration Release --no-restore
     - name: Test
-      run: dotnet test "${{ env.WORKING_DIRECTORY }}" --no-build
+      run: dotnet test "BudgifyAPI" --no-build
     - name: Publish
-      run: dotnet publish "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-build --output "${{ env.AZURE_WEBAPP_PACKAGE_PATH }}"
+      run: dotnet publish "BudgifyAPI" --configuration Release --no-build --output "budgify-backend\published"
     - name: Publish Artifacts
       uses: actions/upload-artifact@v3
       with:
         name: webapp
-        path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+        path: budgify-backend\published
         
   deploy:
     runs-on: windows-latest
@@ -40,11 +40,11 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: webapp
-        path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+        path: budgify-backend\published
     - name: Deploy to Azure WebApp
       uses: azure/webapps-deploy@v2
       with:
-        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        app-name: budgify-backend
         publish-profile: ${{ secrets.budgify_back_1A94 }}
         package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
