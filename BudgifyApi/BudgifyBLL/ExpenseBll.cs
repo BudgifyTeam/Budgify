@@ -21,7 +21,7 @@ namespace BudgifyBll
             _expenseDal = new ExpenseDal(db, _utilsDal, _budgifyDal);
         }
 
-        public async Task<ResponseExpense> CreateExpense(int userid, double value, DateTime date, int wallet_id, int pocket_id)
+        public async Task<ResponseExpense> CreateExpense(int userid, double value, DateTime date, int wallet_id, int pocket_id, int category_id)
         {
             ResponseExpense response = new ResponseExpense();
             try
@@ -34,7 +34,7 @@ namespace BudgifyBll
                     users_id = userid,
                     value = value
                 };
-                response = await _expenseDal.CreateExpense(newExpense, wallet_id, pocket_id);
+                response = await _expenseDal.CreateExpense(newExpense, wallet_id, pocket_id, category_id);
                 if (!response.code)
                 {
                     response.message = "Error al registrar al gasto";
@@ -79,6 +79,7 @@ namespace BudgifyBll
                 }
                 list = _expenseDal.AsignWalletToExpenses(list);
                 list = _expenseDal.AsignPocketToExpenses(list);
+                list = _expenseDal.AsignCategoryToExpenses(list);
                 var expenseList = list.Select(Utils.GetExpenseDto).ToList();
                 response.data = GetExpensesByRange(expenseList, range, DateTime.Today).ToList();
                 response.message = "Ingresos obtenidos exitosamente";
@@ -110,6 +111,7 @@ namespace BudgifyBll
                 }
                 list = _expenseDal.AsignWalletToExpenses(list);
                 list = _expenseDal.AsignPocketToExpenses(list);
+                list = _expenseDal.AsignCategoryToExpenses(list);
                 var incomeList = list.Select(Utils.GetExpenseDto).ToList();
                 response.data = GetExpensesByRange(incomeList, range, date).ToList();
                 response.message = "Gastos obtenidos exitosamente";
@@ -150,15 +152,15 @@ namespace BudgifyBll
             }
         }
 
-        public async Task<ResponseExpense> ModifyExpense(IncomeDto income, int wallet_id, int pocket_id)
+        public async Task<ResponseExpense> ModifyExpense(ExpenseDto income, int wallet_id, int pocket_id, int categoryid)
         {
             ResponseExpense response = new ResponseExpense();
             try
             {
-                response = await _expenseDal.ModifyExpense(income, wallet_id, pocket_id);
+                response = await _expenseDal.ModifyExpense(income, wallet_id, pocket_id, categoryid);
                 if (!response.code)
                 {
-                    response.message = "Error al eliminar al gasto";
+                    response.message = "Error al modificar al gasto";
                 }
             }
             catch (Exception ex)

@@ -22,9 +22,9 @@ namespace BudgifyApi.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<ResponseExpense>> CreateExpense(int userid, double value, string date, int wallet_id, int pocket_id)
+        public async Task<ActionResult<ResponseExpense>> CreateExpense(int userid, double value, string date, int wallet_id, int pocket_id, int category_id)
         {
-            ResponseExpense response = await _expenseBll.CreateExpense(userid, value, Utils.convertDate(date), wallet_id, pocket_id);
+            ResponseExpense response = await _expenseBll.CreateExpense(userid, value, Utils.convertDate(date), wallet_id, pocket_id, category_id);
 
             if (!response.code)
             {
@@ -93,9 +93,9 @@ namespace BudgifyApi.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<ResponseExpense>> ModifyExpense([FromBody] IncomeDto income, int wallet_id, int pocket_id)
+        public async Task<ActionResult<ResponseExpense>> ModifyExpense([FromBody] ExpenseDto expense, int wallet_id, int pocket_id, int categoryid)
         {
-            ResponseExpense response = await _expenseBll.ModifyExpense(income, wallet_id, pocket_id);
+            ResponseExpense response = await _expenseBll.ModifyExpense(expense, wallet_id, pocket_id, categoryid);
 
             if (!response.code)
             {

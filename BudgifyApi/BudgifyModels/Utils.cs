@@ -46,7 +46,8 @@ namespace BudgifyModels
                 expense_id = expense.expense_id,
                 value = expense.value,
                 category = expense.category.name,
-                wallet = expense.wallet.name
+                wallet = expense.wallet.name,
+                pocket = expense.pocket.name
             };
         }
         public static PocketDto GetPocketDto(Pocket pocket)
