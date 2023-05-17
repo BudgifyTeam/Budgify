@@ -58,9 +58,9 @@ namespace BudgifyApi.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<IncomeDto>> GetExpenses(int userid, string range)//range{day, week, month, year}
+        public async Task<ActionResult<ExpenseDto>> GetExpenses(int userid, string range)//range{day, week, month, year}
         {
-            ResponseList<IncomeDto> response = _expenseBll.GetExpenses(userid, range);
+            ResponseList<ExpenseDto> response = _expenseBll.GetExpenses(userid, range);
 
             if (!response.code)
             {
@@ -75,9 +75,9 @@ namespace BudgifyApi.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<IncomeDto>> GetExpensesByDay(int userid, string date)
+        public async Task<ActionResult<ExpenseDto>> GetExpensesByDay(int userid, string date)
         {
-            ResponseList<IncomeDto> response = _expenseBll.GetExpensesDay(userid, "day", Utils.convertDate(date));
+            ResponseList<ExpenseDto> response = _expenseBll.GetExpensesDay(userid, "day", Utils.convertDate(date));
 
             if (!response.code)
             {

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BudgifyModels;
+using BudgifyModels.Dto;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,6 +19,30 @@ namespace BudgifyDal
             _appDbContext = db;
             _utilsDal = fn;
             _budgetDal = bd;
+        }
+
+        public Expense[] AsignWalletToExpenses(Expense[] list)
+        {
+            throw new NotImplementedException();
+        }
+        public Expense[] AsignPocketToExpenses(Expense[] list)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseExpense> CreateExpense(Expense newIncome, int wallet_id, int pocket_id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseExpense> DeleteIncome(int expenseid)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseExpense> ModifyExpense(IncomeDto income, int wallet_id, int pocket_id)
+        {
+            throw new NotImplementedException();
         }
     }
 }
