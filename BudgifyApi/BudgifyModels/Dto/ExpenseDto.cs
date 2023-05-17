@@ -13,5 +13,6 @@ namespace BudgifyModels.Dto
         public DateTime date { get; set; }
         public string category { get; set; }
         public string wallet { get; set; }
+        public string pocket { get; set; }
     }
 }

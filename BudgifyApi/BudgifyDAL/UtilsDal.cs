@@ -114,8 +114,19 @@ namespace BudgifyDal
         {
             return _appDbContext.wallets.FirstOrDefault(u => u.wallet_id == id);
         }
+        public Category GetCategory(int id)
+        {
+            return _appDbContext.categories.FirstOrDefault(u => u.category_id == id);
+        }
+        public Pocket GetPocket(int id)
+        {
+            return _appDbContext.pockets.FirstOrDefault(u => u.pocket_id == id);
+        }
         public int GetLastIncomeId() {
             return _appDbContext.incomes.ToList().OrderByDescending(u => u.income_id).FirstOrDefault().income_id;
+        }
+        public int GetLastExpenseId() {
+            return _appDbContext.expenses.ToList().OrderByDescending(u => u.expense_id).FirstOrDefault().expense_id;
         }
         private int GetLastBudgetId()
         {
@@ -149,7 +160,7 @@ namespace BudgifyDal
 
         public Expense[] GetExpensesByUserId(int id)
         {
-            return _appDbContext.expenses.Where(c => c.users_id == id).ToArray();
+            return _appDbContext.expenses.Where(c => c.users_id == id && c.status == "active").ToArray();
         }
 
         public Income[] GetIncomesByUserId(int id)
