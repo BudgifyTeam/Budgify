@@ -35,6 +35,24 @@ namespace BudgifyApi.Controllers
             }
             return StatusCode(StatusCodes.Status200OK, response);
         }
+        
+        [HttpPost("CreateCategory", Name = "CreateCategory")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<ResponseCategory>> CreateCategory(int userid, string name)
+        {
+            ResponseCategory response = await _expenseBll.CreateCategory(userid, name);
+
+            if (!response.code)
+            {
+                resError.message = response.message;
+                resError.code = 0;
+
+                return StatusCode(StatusCodes.Status400BadRequest, response);
+            }
+            return StatusCode(StatusCodes.Status200OK, response);
+        }
 
         [HttpGet("DeleteExpense", Name = "DeleteExpense")]
         [ProducesResponseType(StatusCodes.Status201Created)]

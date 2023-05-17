@@ -36,9 +36,9 @@ namespace BudgifyDal
                 return ex.Message;
             }
         }
-        public async Task<ResponseError> CreateCategory(int userid, string name)
+        public async Task<ResponseCategory> CreateCategory(int userid, string name)
         {
-            ResponseError response = new ResponseError();
+            ResponseCategory response = new ResponseCategory();
             try
             {
                 var newCategory = new Category
@@ -50,14 +50,15 @@ namespace BudgifyDal
                 };
                 _appDbContext.categories.Add(newCategory);
                 await _appDbContext.SaveChangesAsync();
-                response.code = 1;
+                response.code = true;
                 response.message = "se creó correctamente la categoria";
+                response.category = Utils.GetCategoryDto(newCategory);
                 return response;
             }
             catch (Exception ex)
             {
                 response.message = ex.Message;
-                response.code = 0;
+                response.code = false;
                 return response;
             }
         }

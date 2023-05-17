@@ -106,18 +106,18 @@ namespace BudgifyDal
         public async Task<string> CreateDefaultCategories(int userid)
         {
             var categories = new string[] { "comida", "ocio", "gastos fijos", "suscripciones" };
-            ResponseError[] responses = new ResponseError[4];
+            ResponseCategory[] responses = new ResponseCategory[4];
             for (int i = 0; i < categories.Length; i++) {
                 var res1 = await _utilsDal.CreateCategory(userid, categories[i]);
                 responses[i] = res1;
             }
 
-            if (responses.All(res => res.code == 1))
+            if (responses.All(res => res.code))
             {
                 return "Se crearon correctamente las categorias default.";
             }
 
-            return $"Error al crear la categoría '{responses.First(res => res.code == 0).message}'.";
+            return $"Error al crear la categoría '{responses.First(res => res.code).message}'.";
         }
 
         private int GetLastUserId()

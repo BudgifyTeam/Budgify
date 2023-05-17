@@ -60,7 +60,23 @@ namespace BudgifyDal
             return response;
         }
 
-        public async Task<ResponseExpense> DeleteIncome(int expenseid)
+       public async Task<ResponseCategory> CreateCategory(int userid, string name)
+       {
+           ResponseCategory response = new ResponseCategory();
+           try
+           {
+               response = await _utilsDal.CreateCategory(userid, name);
+           }
+           catch (Exception ex)
+           {
+               response.code = false;
+               response.message = ex.Message;
+               return response;
+           }
+           return response;
+       }
+
+       public async Task<ResponseExpense> DeleteIncome(int expenseid)
         {
             ResponseExpense response = new ResponseExpense();
             try

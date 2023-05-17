@@ -47,6 +47,24 @@ namespace BudgifyBll
             return response;
         }
 
+        public async Task<ResponseCategory> CreateCategory(int userid, string name)
+        {
+            ResponseCategory response = new ResponseCategory();
+            try
+            {
+                response = await _expenseDal.CreateCategory(userid, name);
+                if (!response.code)
+                {
+                    response.message = "Error al crear la categoria";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.message = ex.Message;
+            }
+            return response;
+        }
+
         public async Task<ResponseExpense> DeleteExpense(int expenseid)
         {
             ResponseExpense response = new ResponseExpense();
