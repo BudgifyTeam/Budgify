@@ -21,29 +21,151 @@ namespace BudgifyBll
             _expenseDal = new ExpenseDal(db, _utilsDal, _budgifyDal);
         }
 
-        public Task<ResponseExpense> CreateExpense(int userid, double value, DateTime dateTime, int wallet_id, int pocket_id)
+        public async Task<ResponseExpense> CreateExpense(int userid, double value, DateTime date, int wallet_id, int pocket_id)
         {
-            throw new NotImplementedException();
+            ResponseExpense response = new ResponseExpense();
+            try
+            {
+                var newExpense = new Expense()
+                {
+                    date = date,
+                    expense_id = 0,
+                    status = "active",
+                    users_id = userid,
+                    value = value
+                };
+                response = await _expenseDal.CreateExpense(newExpense, wallet_id, pocket_id);
+                if (!response.code)
+                {
+                    response.message = "Error al registrar al gasto";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.message = ex.Message;
+            }
+            return response;
         }
 
-        public Task<ResponseExpense> DeleteExpense(int incomeid)
+        public async Task<ResponseExpense> DeleteExpense(int expenseid)
         {
-            throw new NotImplementedException();
+            ResponseExpense response = new ResponseExpense();
+            try
+            {
+                response = await _expenseDal.DeleteIncome(expenseid);
+                if (!response.code)
+                {
+                    response.message = "Error al eliminar al gasto";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.message = ex.Message;
+            }
+            return response;
         }
 
-        public ResponseList<IncomeDto> GetExpenses(int userid, string range)
+        public ResponseList<ExpenseDto> GetExpenses(int userid, string range)
         {
-            throw new NotImplementedException();
+            var response = new ResponseList<ExpenseDto>();
+            try
+            {
+                var list = _utilsDal.GetExpensesByUserId(userid);
+                if (!list.Any())
+                {
+                    response.message = "El usuario no cuenta con gastos";
+                    response.code = false;
+                    return response;
+                }
+                list = _expenseDal.AsignWalletToExpenses(list);
+                list = _expenseDal.AsignPocketToExpenses(list);
+                var expenseList = list.Select(Utils.GetExpenseDto).ToList();
+                response.data = GetExpensesByRange(expenseList, range, DateTime.Today).ToList();
+                response.message = "Ingresos obtenidos exitosamente";
+                response.code = true;
+                if (!response.code)
+                {
+                    response.message = "Error al obtener los ingresos";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.message = ex.Message;
+                response.code = false;
+            }
+            return response;
+        }
+       
+        public ResponseList<ExpenseDto> GetExpensesDay(int userId, string range, DateTime date)
+        {
+            var response = new ResponseList<ExpenseDto>();
+            try
+            {
+                var list = _utilsDal.GetExpensesByUserId(userId);
+                if (!list.Any())
+                {
+                    response.message = "El usuario no cuenta con gastos";
+                    response.code = false;
+                    return response;
+                }
+                list = _expenseDal.AsignWalletToExpenses(list);
+                list = _expenseDal.AsignPocketToExpenses(list);
+                var incomeList = list.Select(Utils.GetExpenseDto).ToList();
+                response.data = GetExpensesByRange(incomeList, range, date).ToList();
+                response.message = "Gastos obtenidos exitosamente";
+                response.code = true;
+                if (!response.code)
+                {
+                    response.message = "Error al obtener los gastos";
+                }
+                if (response.data.Count == 0)
+                {
+                    response.message = "No se encontraron gastos para la fecha dada";
+                    response.code = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.message = ex.Message;
+                response.code = false;
+            }
+            return response;
+        }
+        private List<ExpenseDto> GetExpensesByRange(List<ExpenseDto> expenses, string range, DateTime date)
+        {
+            switch (range)
+            {
+                case "day":
+                    return expenses.Where(i => i.date.Date == date.Date).ToList();
+                case "week":
+                    var startOfWeek = date.Date.AddDays(-(int)date.DayOfWeek);
+                    var endOfWeek = startOfWeek.AddDays(6);
+                    return expenses.Where(i => i.date.Date >= startOfWeek && i.date.Date <= endOfWeek).ToList();
+                case "month":
+                    return expenses.Where(i => i.date.Year == date.Year && i.date.Month == date.Month).ToList();
+                case "year":
+                    return expenses.Where(i => i.date.Year == date.Year).ToList();
+                default:
+                    return expenses;
+            }
         }
 
-        public ResponseList<IncomeDto> GetExpensesDay(int userid, string v, DateTime dateTime)
+        public async Task<ResponseExpense> ModifyExpense(IncomeDto income, int wallet_id, int pocket_id)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<ResponseExpense> ModifyExpense(IncomeDto income, int wallet_id, int pocket_id)
-        {
-            throw new NotImplementedException();
+            ResponseExpense response = new ResponseExpense();
+            try
+            {
+                response = await _expenseDal.ModifyExpense(income, wallet_id, pocket_id);
+                if (!response.code)
+                {
+                    response.message = "Error al eliminar al gasto";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.message = ex.Message;
+            }
+            return response;
         }
     }
 }

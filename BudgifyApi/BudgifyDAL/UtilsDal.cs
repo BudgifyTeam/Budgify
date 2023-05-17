@@ -147,7 +147,7 @@ namespace BudgifyDal
             return _appDbContext.categories.Where(c => c.users_id == id).ToArray();
         }
 
-        internal Expense[] GetExpensesByUserId(int id)
+        public Expense[] GetExpensesByUserId(int id)
         {
             return _appDbContext.expenses.Where(c => c.users_id == id).ToArray();
         }
