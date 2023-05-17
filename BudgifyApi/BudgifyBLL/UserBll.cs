@@ -97,74 +97,12 @@ namespace BudgifyBll
             {
                 UserId = session.UserId,
                 User_icon = session.icon,
-                Budget = session.Budget != null ? GetBudgetDto(session.Budget) : null,
-                Categories = session.Categories?.Select(c => GetCategoryDto(c)).ToArray(),
-                Expenses = session.Expenses?.Select(e => GetExpenseDto(e)).ToArray(),
-                Incomes = session.Incomes?.Select(i => GetIncomeDto(i)).ToArray(),
-                Pockets = session.Pockets?.Select(p => GetPocketDto(p)).ToArray(),
-                Wallets = session.Wallets?.Select(w => GetWalletDto(w)).ToArray()
-            };
-        }
-
-        public BudgetDto GetBudgetDto(Budget budget)
-        {
-            return new BudgetDto
-            {
-                budget_id = budget.budget_id,
-                value = budget.value,
-            };
-        }
-
-        public CategoryDto GetCategoryDto(Category category)
-        {
-            return new CategoryDto
-            {
-                category_id = category.category_id,
-                name = category.name,
-            };
-        }
-
-        public ExpenseDto GetExpenseDto(Expense expense)
-        {
-            return new ExpenseDto
-            {
-                date = expense.date,
-                expense_id = expense.expense_id,
-                value = expense.value,
-                category = expense.category.name,
-                wallet = expense.wallet.name
-            };
-        }
-
-        public IncomeDto GetIncomeDto(Income income)
-        {
-            return new IncomeDto
-            {
-                value = income.value,
-                date = income.date,
-                income_id = income.income_id,
-                wallet = income.wallet.name
-            };
-        }
-        public PocketDto GetPocketDto(Pocket pocket)
-        {
-            return new PocketDto
-            {
-                goal = pocket.goal,
-                icon = pocket.icon,
-                name = pocket.name,
-                pocket_id = pocket.pocket_id,
-                total = pocket.total,
-            };
-        }
-        public WalletDto GetWalletDto(Wallet wallet)
-        {
-            return new WalletDto
-            {
-                total = wallet.total,
-                name = wallet.name,
-                icon = wallet.icon,
-                wallet_id = wallet.wallet_id,
+                Budget = session.Budget != null ? Utils.GetBudgetDto(session.Budget) : null,
+                Categories = session.Categories?.Select(c => Utils.GetCategoryDto(c)).ToArray(),
+                Expenses = session.Expenses?.Select(e => Utils.GetExpenseDto(e)).ToArray(),
+                Incomes = session.Incomes?.Select(i => Utils.GetIncomeDto(i)).ToArray(),
+                Pockets = session.Pockets?.Select(p => Utils.GetPocketDto(p)).ToArray(),
+                Wallets = session.Wallets?.Select(w => Utils.GetWalletDto(w)).ToArray()
             };
         }
     }

@@ -110,6 +110,10 @@ namespace BudgifyDal
         {
             return _appDbContext.wallets.FirstOrDefault(u => u.users_id == id);
         }
+        public Wallet GetWallet(int id)
+        {
+            return _appDbContext.wallets.FirstOrDefault(u => u.wallet_id == id);
+        }
         public int GetLastIncomeId() {
             return _appDbContext.incomes.ToList().OrderByDescending(u => u.income_id).FirstOrDefault().income_id;
         }

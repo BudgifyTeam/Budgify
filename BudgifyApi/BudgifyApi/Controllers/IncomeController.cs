@@ -23,9 +23,9 @@ namespace BudgifyApi.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<IncomeDto>> CreateIncome(int userid, double value, DateTime date)
+        public async Task<ActionResult<ResponseIncome>> CreateIncome(int userid, double value, string date, int wallet_id)
         {
-            Response<IncomeDto> response = await _incomeBll.CreateIncome(userid, value, date);
+            ResponseIncome response = await _incomeBll.CreateIncome(userid, value, Utils.convertDate(date), wallet_id);
 
             if (!response.code)
             {
@@ -41,9 +41,9 @@ namespace BudgifyApi.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<IncomeDto>> DeleteIncome(int userid, int incomeid)
+        public async Task<ActionResult<ResponseIncome>> DeleteIncome(int incomeid)
         {
-            Response<IncomeDto> response = await _incomeBll.DeleteIncome(userid, incomeid);
+            ResponseIncome response = await _incomeBll.DeleteIncome(incomeid);
 
             if (!response.code)
             {
@@ -77,9 +77,9 @@ namespace BudgifyApi.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<IncomeDto>> GetIncomesByDay(int userid, DateTime date)
+        public async Task<ActionResult<IncomeDto>> GetIncomesByDay(int userid, string date)
         {
-            ResponseList<IncomeDto> response = _incomeBll.GetIncomesDay(userid, "day", date);
+            ResponseList<IncomeDto> response = _incomeBll.GetIncomesDay(userid, "day", Utils.convertDate(date));
 
             if (!response.code)
             {
@@ -95,9 +95,9 @@ namespace BudgifyApi.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<IncomeDto>> ModifyIncome([FromBody] IncomeDto income)
+        public async Task<ActionResult<ResponseIncome>> ModifyIncome([FromBody] IncomeDto income, int wallet_id)
         {
-            Response<IncomeDto> response = await _incomeBll.ModifyIncome(income);
+            ResponseIncome response = await _incomeBll.ModifyIncome(income, wallet_id);
 
             if (!response.code)
             {

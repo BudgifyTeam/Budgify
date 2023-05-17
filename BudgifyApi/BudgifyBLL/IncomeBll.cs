@@ -1,9 +1,11 @@
 ﻿using BudgifyDal;
 using BudgifyModels;
 using BudgifyModels.Dto;
+using Npgsql.Replication;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Collections.Specialized.BitVector32;
@@ -14,15 +16,17 @@ namespace BudgifyBll
     {
         private readonly UtilsDal _utilsDal;
         private readonly IncomeDal _incomeDal;
+        private readonly BudgetDal _budgifyDal;
         public IncomeBll(AppDbContext db)
         {
             _utilsDal = new UtilsDal(db);
-            _incomeDal = new IncomeDal(db, _utilsDal);
+            _budgifyDal = new BudgetDal(db, _utilsDal);
+            _incomeDal = new IncomeDal(db, _utilsDal, _budgifyDal);
         }
 
-        public async Task<Response<IncomeDto>> CreateIncome(int userid, double value, DateTime date)
+        public async Task<ResponseIncome> CreateIncome(int userid, double value, DateTime date, int wallet_id)
         {
-           Response<IncomeDto> response = new Response<IncomeDto>();
+            ResponseIncome response = new ResponseIncome();
             try {
                 var newIncome = new Income()
                 {
@@ -32,7 +36,7 @@ namespace BudgifyBll
                     users_id = userid,
                     value = value
                 };
-                response = await _incomeDal.CreateIncome(newIncome);
+                response = await _incomeDal.CreateIncome(newIncome, wallet_id);
                 if (!response.code)
                 {
                     response.message = "Error al registrar al ingreso";
@@ -45,12 +49,12 @@ namespace BudgifyBll
             return response;
         }
 
-        public async Task<Response<IncomeDto>> DeleteIncome(int userid, int incomeid)
+        public async Task<ResponseIncome> DeleteIncome(int incomeid)
         {
-            Response<IncomeDto> response = new Response<IncomeDto>();
+            ResponseIncome response = new ResponseIncome();
             try
             {
-                response = await _incomeDal.DeleteIncome(userid, incomeid);
+                response = await _incomeDal.DeleteIncome(incomeid);
                 if (!response.code)
                 {
                     response.message = "Error al eliminar al ingreso";
@@ -75,17 +79,20 @@ namespace BudgifyBll
                     response.code = false;
                     return response;
                 }
-
-                var incomeList = list.Select(GetIncomeDto).ToList();
+                list = _incomeDal.AsignWalletToIncomes(list);
+                var incomeList = list.Select(Utils.GetIncomeDto).ToList();
                 response.data = GetIncomesByRange(incomeList, range, DateTime.Today).ToList();
+                response.message = "Ingresos obtenidos exitosamente";
+                response.code = true;
                 if (!response.code)
                 {
                     response.message = "Error al obtener los ingresos";
                 }
             }
             catch (Exception ex)
-            {
+            { 
                 response.message = ex.Message;
+                response.code = false;
             }
             return response;
         }
@@ -101,17 +108,25 @@ namespace BudgifyBll
                     response.code = false;
                     return response;
                 }
-
-                var incomeList = list.Select(GetIncomeDto).ToList();
+                list = _incomeDal.AsignWalletToIncomes(list);
+                var incomeList = list.Select(Utils.GetIncomeDto).ToList();
                 response.data = GetIncomesByRange(incomeList, range, date).ToList();
+                response.message = "Ingresos obtenidos exitosamente";
+                response.code = true;
                 if (!response.code)
                 {
                     response.message = "Error al obtener los ingresos";
+                }
+                if (response.data.Count == 0)
+                {
+                    response.message = "No se encontraron Ingresos para la fecha dada";
+                    response.code = false;
                 }
             }
             catch (Exception ex)
             {
                 response.message = ex.Message;
+                response.code = false;
             }
             return response;
         }
@@ -135,12 +150,12 @@ namespace BudgifyBll
             }
         }
 
-        public async Task<Response<IncomeDto>> ModifyIncome(IncomeDto income)
+        public async Task<ResponseIncome> ModifyIncome(IncomeDto income, int wallet_id)
         {
-            Response<IncomeDto> response = new Response<IncomeDto>();
+            ResponseIncome response = new ResponseIncome();
             try
             {
-                response = await _incomeDal.ModifyIncome(income);
+                response = await _incomeDal.ModifyIncome(income, wallet_id);
                 if (!response.code)
                 {
                     response.message = "Error al eliminar al ingreso";
@@ -151,16 +166,6 @@ namespace BudgifyBll
                 response.message = ex.Message;
             }
             return response;
-        }
-        public IncomeDto GetIncomeDto(Income income)
-        {
-            return new IncomeDto
-            {
-                value = income.value,
-                date = income.date,
-                income_id = income.income_id,
-                wallet = income.wallet.name
-            };
         }
     }
 }
