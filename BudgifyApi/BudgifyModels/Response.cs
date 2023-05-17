@@ -27,3 +27,11 @@ public class ResponseIncome {
     public IncomeDto? income { get; set; }
     public double? newBudget { get; set; }
 }
+
+public class ResponseExpense
+{
+    public string? message { get; set; }
+    public Boolean code { get; set; }
+    public ExpenseDto? expense { get; set; }
+    public double? newBudget { get; set; }
+}
