@@ -1,3 +1,5 @@
+using BudgifyModels.Dto;
+
 namespace BudgifyModels;
 
 public class ResponseList <T>
@@ -17,4 +19,11 @@ public class ResponseError
 {
     public string? message { get; set; }
     public int? code { get; set; }
+}
+
+public class ResponseIncome {
+    public string? message { get; set; }
+    public Boolean code { get; set; }
+    public IncomeDto? income { get; set; }
+    public double? newBudget { get; set; }
 }

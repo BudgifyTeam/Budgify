@@ -12,5 +12,6 @@ namespace BudgifyModels.Dto
         public double value { get; set; }
         public DateTime date { get; set; }
         public string wallet { get; set; }
+
     }
 }
