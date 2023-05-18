@@ -46,7 +46,8 @@ namespace BudgifyDal
                     category_id = GetLastCategoryId() + 1,
                     name = name,
                     users_id = userid,
-                    user = GetUser(userid)
+                    user = GetUser(userid),
+                    status = "active",
                 };
                 _appDbContext.categories.Add(newCategory);
                 await _appDbContext.SaveChangesAsync();
@@ -107,6 +108,7 @@ namespace BudgifyDal
                 return ex.Message;
             }
         }
+       
         public Wallet GetWalletByUserId(int id)
         {
             return _appDbContext.wallets.FirstOrDefault(u => u.users_id == id);
@@ -156,7 +158,7 @@ namespace BudgifyDal
 
         public Category[] GetCategoriesByUserId(int id)
         {
-            return _appDbContext.categories.Where(c => c.users_id == id).ToArray();
+            return _appDbContext.categories.Where(c => c.users_id == id && c.status == "active").ToArray();
         }
 
         public Expense[] GetExpensesByUserId(int id)
@@ -177,6 +179,10 @@ namespace BudgifyDal
         internal Wallet[] GetWalletsByUserId(int id)
         {
             return _appDbContext.wallets.Where(c => c.users_id == id).ToArray();
+        }
+
+        public Expense[] GetExpensesByCategory(int id) {
+            return _appDbContext.expenses.Where(c => c.category_id == id).ToArray();
         }
     }
 }

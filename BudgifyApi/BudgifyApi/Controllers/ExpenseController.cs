@@ -76,9 +76,9 @@ namespace BudgifyApi.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<ResponseCategory>> DeleteCategory(int userid, int categoryid) 
+        public async Task<ActionResult<ResponseCategory>> DeleteCategory(int categoryid, int newCategoryId) 
         {
-            ResponseCategory response = await _expenseBll.DeleteCategory(categoryid, userid);
+            ResponseCategory response = await _expenseBll.DeleteCategory(categoryid, newCategoryId);
 
             if (!response.code)
             {

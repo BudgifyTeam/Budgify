@@ -52,7 +52,7 @@ namespace BudgifyBll
             ResponseExpense response = new ResponseExpense();
             try
             {
-                response = await _expenseDal.DeleteIncome(expenseid);
+                response = await _expenseDal.DeleteExpense(expenseid);
                 if (!response.code)
                 {
                     response.message = "Error al eliminar al gasto";
@@ -186,9 +186,22 @@ namespace BudgifyBll
             }
             return response;
         }
-        public Task<ResponseCategory> DeleteCategory(int categoryid, int userid)
+        public async Task<ResponseCategory> DeleteCategory(int categoryid, int newCategoryId)
         {
-            throw new NotImplementedException();
+            ResponseCategory response = new ResponseCategory();
+            try
+            {
+                response = await _expenseDal.DeleteCategory(categoryid, newCategoryId);
+                if (!response.code)
+                {
+                    response.message = "Error al eliminar la categoria";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.message = ex.Message;
+            }
+            return response;
         }
 
         public ResponseList<CategoryDto> GetCategories(int userid)
