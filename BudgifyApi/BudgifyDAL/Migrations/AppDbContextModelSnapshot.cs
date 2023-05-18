@@ -34,9 +34,9 @@ namespace BudgifyDal.Migrations
                     b.Property<int>("users_id")
                         .HasColumnType("integer");
 
-                    b.Property<int>("value")
+                    b.Property<double>("value")
                         .HasMaxLength(8)
-                        .HasColumnType("integer");
+                        .HasColumnType("double precision");
 
                     b.HasKey("budget_id");
 
@@ -87,12 +87,17 @@ namespace BudgifyDal.Migrations
                     b.Property<int>("pocket_id")
                         .HasColumnType("integer");
 
+                    b.Property<string>("status")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)");
+
                     b.Property<int>("users_id")
                         .HasColumnType("integer");
 
-                    b.Property<int>("value")
+                    b.Property<double>("value")
                         .HasMaxLength(8)
-                        .HasColumnType("integer");
+                        .HasColumnType("double precision");
 
                     b.Property<int>("wallet_id")
                         .HasColumnType("integer");
@@ -119,25 +124,25 @@ namespace BudgifyDal.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("income_id"));
 
-                    b.Property<int>("category_id")
-                        .HasColumnType("integer");
-
                     b.Property<DateTime>("date")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("status")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)");
 
                     b.Property<int>("users_id")
                         .HasColumnType("integer");
 
-                    b.Property<int>("value")
+                    b.Property<double>("value")
                         .HasMaxLength(8)
-                        .HasColumnType("integer");
+                        .HasColumnType("double precision");
 
                     b.Property<int>("wallet_id")
                         .HasColumnType("integer");
 
                     b.HasKey("income_id");
-
-                    b.HasIndex("category_id");
 
                     b.HasIndex("users_id");
 
@@ -161,8 +166,7 @@ namespace BudgifyDal.Migrations
 
                     b.Property<string>("icon")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("text");
 
                     b.Property<string>("name")
                         .IsRequired()
@@ -315,12 +319,6 @@ namespace BudgifyDal.Migrations
 
             modelBuilder.Entity("BudgifyModels.Income", b =>
                 {
-                    b.HasOne("BudgifyModels.Category", "category")
-                        .WithMany()
-                        .HasForeignKey("category_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("BudgifyModels.user", "user")
                         .WithMany()
                         .HasForeignKey("users_id")
@@ -332,8 +330,6 @@ namespace BudgifyDal.Migrations
                         .HasForeignKey("wallet_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("category");
 
                     b.Navigation("user");
 

@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BudgifyDal.Migrations
 {
     /// <inheritdoc />
-    public partial class fixincome : Migration
+    public partial class fix_migration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -36,7 +36,7 @@ namespace BudgifyDal.Migrations
                 {
                     budget_id = table.Column<int>(type: "integer", maxLength: 10, nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    value = table.Column<int>(type: "integer", maxLength: 8, nullable: false),
+                    value = table.Column<double>(type: "double precision", maxLength: 8, nullable: false),
                     users_id = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -78,7 +78,7 @@ namespace BudgifyDal.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     name = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
                     total = table.Column<double>(type: "double precision", maxLength: 8, nullable: false),
-                    icon = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    icon = table.Column<string>(type: "text", nullable: false),
                     goal = table.Column<double>(type: "double precision", maxLength: 8, nullable: false),
                     users_id = table.Column<int>(type: "integer", nullable: false)
                 },
@@ -121,8 +121,9 @@ namespace BudgifyDal.Migrations
                 {
                     expense_id = table.Column<int>(type: "integer", maxLength: 10, nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    value = table.Column<int>(type: "integer", maxLength: 8, nullable: false),
+                    value = table.Column<double>(type: "double precision", maxLength: 8, nullable: false),
                     date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    status = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
                     users_id = table.Column<int>(type: "integer", nullable: false),
                     pocket_id = table.Column<int>(type: "integer", nullable: false),
                     wallet_id = table.Column<int>(type: "integer", nullable: false),
@@ -163,21 +164,15 @@ namespace BudgifyDal.Migrations
                 {
                     income_id = table.Column<int>(type: "integer", maxLength: 10, nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    value = table.Column<int>(type: "integer", maxLength: 8, nullable: false),
+                    value = table.Column<double>(type: "double precision", maxLength: 8, nullable: false),
                     date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    status = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
                     users_id = table.Column<int>(type: "integer", nullable: false),
-                    category_id = table.Column<int>(type: "integer", nullable: false),
                     wallet_id = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_incomes", x => x.income_id);
-                    table.ForeignKey(
-                        name: "FK_incomes_categories_category_id",
-                        column: x => x.category_id,
-                        principalTable: "categories",
-                        principalColumn: "category_id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_incomes_users_users_id",
                         column: x => x.users_id,
@@ -223,11 +218,6 @@ namespace BudgifyDal.Migrations
                 column: "wallet_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_incomes_category_id",
-                table: "incomes",
-                column: "category_id");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_incomes_users_id",
                 table: "incomes",
                 column: "users_id");
@@ -261,10 +251,10 @@ namespace BudgifyDal.Migrations
                 name: "incomes");
 
             migrationBuilder.DropTable(
-                name: "pockets");
+                name: "categories");
 
             migrationBuilder.DropTable(
-                name: "categories");
+                name: "pockets");
 
             migrationBuilder.DropTable(
                 name: "wallets");
