@@ -103,7 +103,7 @@ namespace BudgifyDal
             return response;
         }
 
-        public async Task<ResponseExpense> ModifyExpense(ExpenseDto ModifiedExpense, int wallet_id, int pocket_id, int categoryid)
+        public async Task<ResponseExpense> ModifyExpense(WalletDto ModifiedExpense, int wallet_id, int pocket_id, int categoryid)
         {
             ResponseExpense response = new ResponseExpense();
             try
