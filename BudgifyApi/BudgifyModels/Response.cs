@@ -35,3 +35,11 @@ public class ResponseExpense
     public ExpenseDto? expense { get; set; }
     public double? newBudget { get; set; }
 }
+
+public class ResponseCategory
+{
+    public string? message { get; set; }
+    public Boolean code { get; set; }
+    public CategoryDto category { get; set; }
+
+}

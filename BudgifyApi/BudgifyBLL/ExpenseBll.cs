@@ -46,13 +46,13 @@ namespace BudgifyBll
             }
             return response;
         }
-
+                
         public async Task<ResponseExpense> DeleteExpense(int expenseid)
         {
             ResponseExpense response = new ResponseExpense();
             try
             {
-                response = await _expenseDal.DeleteIncome(expenseid);
+                response = await _expenseDal.DeleteExpense(expenseid);
                 if (!response.code)
                 {
                     response.message = "Error al eliminar al gasto";
@@ -161,6 +161,87 @@ namespace BudgifyBll
                 if (!response.code)
                 {
                     response.message = "Error al modificar al gasto";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.message = ex.Message;
+            }
+            return response;
+        }
+        public async Task<ResponseCategory> CreateCategory(int userid, string name)
+        {
+            ResponseCategory response = new ResponseCategory();
+            try
+            {
+                response = await _expenseDal.CreateCategory(userid, name);
+                if (!response.code)
+                {
+                    response.message = "Error al crear la categoria";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.message = ex.Message;
+            }
+            return response;
+        }
+        public async Task<ResponseCategory> DeleteCategory(int categoryid, int newCategoryId)
+        {
+            ResponseCategory response = new ResponseCategory();
+            try
+            {
+                response = await _expenseDal.DeleteCategory(categoryid, newCategoryId);
+                if (!response.code)
+                {
+                    response.message = "Error al eliminar la categoria";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.message = ex.Message;
+            }
+            return response;
+        }
+
+        public ResponseList<CategoryDto> GetCategories(int userid)
+        {
+            var response = new ResponseList<CategoryDto>();
+            try
+            {
+                var list = _utilsDal.GetCategoriesByUserId(userid);
+                if (!list.Any())
+                {
+                    response.message = "El usuario no cuenta con categorias";
+                    response.code = false;
+                    return response;
+                }
+                list = _expenseDal.AsignUserToCategories(list);
+                response.data = list.Select(Utils.GetCategoryDto).ToList();
+                response.message = "categorias obtenidas exitosamente";
+                response.code = true;
+                if (!response.code)
+                {
+                    response.message = "Error al obtener las categorias";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.message = ex.Message;
+                response.code = false;
+            }
+            return response;
+        }
+
+        public async Task<ResponseCategory> ModifyCategory(CategoryDto category)
+        {
+            ResponseCategory response = new ResponseCategory();
+            try
+            {
+                response = await _expenseDal.ModifyCategory(category);
+                if (!response.code)
+                {
+                    response.message = "Error al modificar la categoria";
                 }
             }
             catch (Exception ex)
