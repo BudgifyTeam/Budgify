@@ -169,5 +169,21 @@ namespace BudgifyDal
             }
             return list;
         }
+
+        public Task<ResponseCategory> ModifyCategory(CategoryDto category)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Category[] AsignUserToCategories(Category[] list)
+        {
+            for (int i = 0; i < list.Length; i++)
+            {
+                var category = list[i];
+                category.user = _utilsDal.GetUser(category.users_id);
+                list[i] = category;
+            }
+            return list;
+        }
     }
 }

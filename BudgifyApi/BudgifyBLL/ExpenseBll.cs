@@ -193,12 +193,49 @@ namespace BudgifyBll
 
         public ResponseList<CategoryDto> GetCategories(int userid)
         {
-            throw new NotImplementedException();
+            var response = new ResponseList<CategoryDto>();
+            try
+            {
+                var list = _utilsDal.GetCategoriesByUserId(userid);
+                if (!list.Any())
+                {
+                    response.message = "El usuario no cuenta con categorias";
+                    response.code = false;
+                    return response;
+                }
+                list = _expenseDal.AsignUserToCategories(list);
+                response.data = list.Select(Utils.GetCategoryDto).ToList();
+                response.message = "categorias obtenidas exitosamente";
+                response.code = true;
+                if (!response.code)
+                {
+                    response.message = "Error al obtener las categorias";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.message = ex.Message;
+                response.code = false;
+            }
+            return response;
         }
 
-        public Task<ResponseCategory> ModifyCategory(CategoryDto category)
+        public async Task<ResponseCategory> ModifyCategory(CategoryDto category)
         {
-            throw new NotImplementedException();
+            ResponseCategory response = new ResponseCategory();
+            try
+            {
+                response = await _expenseDal.ModifyCategory(category);
+                if (!response.code)
+                {
+                    response.message = "Error al modificar la categoria";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.message = ex.Message;
+            }
+            return response;
         }
     }
 }
