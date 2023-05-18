@@ -38,9 +38,9 @@ namespace BudgifyModels
             };
         }
 
-        public static ExpenseDto GetExpenseDto(Expense expense)
+        public static WalletDto GetExpenseDto(Expense expense)
         {
-            return new ExpenseDto
+            return new WalletDto
             {
                 date = expense.date,
                 expense_id = expense.expense_id,
