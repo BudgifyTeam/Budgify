@@ -72,6 +72,60 @@ namespace BudgifyApi.Controllers
             return StatusCode(StatusCodes.Status200OK, response);
         }
 
+        [HttpGet("DeleteCategory", Name = "DeleteCategory")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<ResponseCategory>> DeleteCategory(int userid, int categoryid) 
+        {
+            ResponseCategory response = await _expenseBll.DeleteCategory(categoryid, userid);
+
+            if (!response.code)
+            {
+                resError.message = response.message;
+                resError.code = 0;
+
+                return StatusCode(StatusCodes.Status400BadRequest, response);
+            }
+            return StatusCode(StatusCodes.Status200OK, response);
+        }
+
+        [HttpGet("GetCategories", Name = "GetCategories")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<CategoryDto>> GetCategories(int userid)//range{day, week, month, year}
+        {
+            ResponseList<CategoryDto> response = _expenseBll.GetCategories(userid);
+
+            if (!response.code)
+            {
+                resError.message = response.message;
+                resError.code = 0;
+
+                return StatusCode(StatusCodes.Status400BadRequest, response);
+            }
+            return StatusCode(StatusCodes.Status200OK, response);
+        }
+
+        [HttpPut("ModifyCategory", Name = "ModifyCategory")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<ResponseCategory>> ModifyCategory([FromBody] CategoryDto category)
+        {
+            ResponseCategory response = await _expenseBll.ModifyCategory(category);
+
+            if (!response.code)
+            {
+                resError.message = response.message;
+                resError.code = 0;
+
+                return StatusCode(StatusCodes.Status400BadRequest, response);
+            }
+            return StatusCode(StatusCodes.Status200OK, response);
+        }
+
         [HttpGet("GetExpenses", Name = "GetExpenses")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -89,6 +143,7 @@ namespace BudgifyApi.Controllers
             }
             return StatusCode(StatusCodes.Status200OK, response);
         }
+
         [HttpGet("GetExpensesByDay", Name = "GetExpensesByDay")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
