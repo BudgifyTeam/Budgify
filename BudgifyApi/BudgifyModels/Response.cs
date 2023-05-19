@@ -50,3 +50,11 @@ public class ResponseWallet
     public WalletDto wallet { get; set; }
 
 }
+
+public class ResponsePocket
+{
+    public string? message { get; set; }
+    public Boolean code { get; set; }
+    public PocketDto pocket { get; set; }
+
+}

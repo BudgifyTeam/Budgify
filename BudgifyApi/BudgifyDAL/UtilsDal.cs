@@ -200,5 +200,10 @@ namespace BudgifyDal
         {
             return _appDbContext.expenses.Where(c => c.wallet_id == id && c.status == "active").ToArray();
         }
+
+        internal Expense[] GetExpensesByPocket(int id)
+        {
+            return _appDbContext.expenses.Where(c => c.pocket_id == id && c.status == "active").ToArray();
+        }
     }
 }
