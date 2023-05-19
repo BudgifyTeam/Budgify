@@ -26,5 +26,6 @@ namespace BudgifyModels
         [ForeignKey("users_id")]
         public user user { get; set; }
         public int users_id { get; set; }
+        public string status { get; set; }
     }
 }

@@ -130,9 +130,9 @@ namespace BudgifyApi.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<WalletDto>> GetExpenses(int userid, string range)//range{day, week, month, year}
+        public async Task<ActionResult<ExpenseDto>> GetExpenses(int userid, string range)//range{day, week, month, year}
         {
-            ResponseList<WalletDto> response = _expenseBll.GetExpenses(userid, range);
+            ResponseList<ExpenseDto> response = _expenseBll.GetExpenses(userid, range);
 
             if (!response.code)
             {
@@ -148,9 +148,9 @@ namespace BudgifyApi.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<WalletDto>> GetExpensesByDay(int userid, string date)
+        public async Task<ActionResult<ExpenseDto>> GetExpensesByDay(int userid, string date)
         {
-            ResponseList<WalletDto> response = _expenseBll.GetExpensesDay(userid, "day", Utils.convertDate(date));
+            ResponseList<ExpenseDto> response = _expenseBll.GetExpensesDay(userid, "day", Utils.convertDate(date));
 
             if (!response.code)
             {
@@ -166,7 +166,7 @@ namespace BudgifyApi.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<ResponseExpense>> ModifyExpense([FromBody] WalletDto expense, int wallet_id, int pocket_id, int categoryid)
+        public async Task<ActionResult<ResponseExpense>> ModifyExpense([FromBody] ExpenseDto expense, int wallet_id, int pocket_id, int categoryid)
         {
             ResponseExpense response = await _expenseBll.ModifyExpense(expense, wallet_id, pocket_id, categoryid);
 

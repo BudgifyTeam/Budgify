@@ -19,24 +19,94 @@ namespace BudgifyBll
             _walletDal = new WalletDal(db, _utilsDal);
         }
 
-        public Task<ResponseWallet> CreateWallet(int userid, string name, string icon)
+        public async Task<ResponseWallet> CreateWallet(int userid, string name, string icon)
         {
-            throw new NotImplementedException();
+            ResponseWallet response = new ResponseWallet();
+            try
+            {
+                var wallet = new Wallet()
+                {
+                    name = name,
+                    status = "active",
+                    icon = icon,
+                    users_id = userid
+                };
+                response = await _walletDal.CreateWallet(wallet);
+                if (!response.code)
+                {
+                    response.message = "Error al registrar la cartera";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.message = ex.Message;
+            }
+            return response;
         }
 
-        public Task<ResponseWallet> DeleteWallet(int walletid)
+        public async Task<ResponseWallet> DeleteWallet(int walletid)
         {
-            throw new NotImplementedException();
+            ResponseWallet response = new ResponseWallet();
+            try
+            {
+                response = await _walletDal.DeleteWallet(walletid);
+                if (!response.code)
+                {
+                    response.message = "Error al eliminar la cartera";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.message = ex.Message;
+            }
+            return response;
         }
 
         public ResponseList<WalletDto> GetWallets(int userid)
         {
-            throw new NotImplementedException();
+            var response = new ResponseList<WalletDto>();
+            try
+            {
+                var list = _utilsDal.GetWalletsByUserId(userid);
+                if (!list.Any())
+                {
+                    response.message = "El usuario no cuenta con carteras";
+                    response.code = false;
+                    return response;
+                }
+                list = _walletDal.AsignUserToWallet(list);
+                response.data = list.Select(Utils.GetWalletDto).ToList();
+                response.message = "carteras obtenidas exitosamente";
+                response.code = true;
+                if (!response.code)
+                {
+                    response.message = "Error al obtener las carteras";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.message = ex.Message;
+                response.code = false;
+            }
+            return response;
         }
 
-        public Task<ResponseWallet> ModifyWallet(WalletDto wallet, double total, string icon , string name)
+        public async Task<ResponseWallet> ModifyWallet(WalletDto wallet, double total, string icon , string name)
         {
-            throw new NotImplementedException();
+            ResponseWallet response = new ResponseWallet();
+            try
+            {
+                response = await _walletDal.ModifyWallet(wallet, total, icon, name);
+                if (!response.code)
+                {
+                    response.message = "Error al modificar la cartera";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.message = ex.Message;
+            }
+            return response;
         }
     }
 }

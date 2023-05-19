@@ -176,7 +176,7 @@ namespace BudgifyDal
             return _appDbContext.pockets.Where(c => c.users_id == id).ToArray();
         }
 
-        internal Wallet[] GetWalletsByUserId(int id)
+        public Wallet[] GetWalletsByUserId(int id)
         {
             return _appDbContext.wallets.Where(c => c.users_id == id).ToArray();
         }

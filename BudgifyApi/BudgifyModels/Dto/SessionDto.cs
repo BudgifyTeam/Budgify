@@ -12,7 +12,7 @@ namespace BudgifyModels.Dto
         public string User_icon { get; set; }
         public BudgetDto? Budget { get; set; }
         public CategoryDto[]? Categories { get; set; }
-        public WalletDto[]? Expenses { get; set; }
+        public ExpenseDto[]? Expenses { get; set; }
         public IncomeDto[]? Incomes { get; set; }
         public PocketDto[]? Pockets { get; set; }
         public WalletDto[]? Wallets { get; set; }
