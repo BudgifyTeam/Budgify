@@ -17,11 +17,14 @@ namespace BudgifyBll
         private readonly UtilsDal _utilsDal;
         private readonly IncomeDal _incomeDal;
         private readonly BudgetDal _budgifyDal;
+        private readonly WalletDal _walletDal;
         public IncomeBll(AppDbContext db)
         {
+           
             _utilsDal = new UtilsDal(db);
             _budgifyDal = new BudgetDal(db, _utilsDal);
-            _incomeDal = new IncomeDal(db, _utilsDal, _budgifyDal);
+            _walletDal = new WalletDal(db, _utilsDal);
+            _incomeDal = new IncomeDal(db, _utilsDal, _budgifyDal, _walletDal);
         }
 
         public async Task<ResponseIncome> CreateIncome(int userid, double value, DateTime date, int wallet_id)

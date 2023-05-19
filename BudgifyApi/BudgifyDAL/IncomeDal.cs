@@ -13,12 +13,14 @@ namespace BudgifyDal
         private readonly AppDbContext _appDbContext;
         private readonly UtilsDal _utilsDal;
         private readonly BudgetDal _budgetDal;
+        private readonly WalletDal _walletDal;
 
-        public IncomeDal(AppDbContext db, UtilsDal fn, BudgetDal bd)
+        public IncomeDal(AppDbContext db, UtilsDal fn, BudgetDal bd, WalletDal wd)
         {
             _appDbContext = db;
             _utilsDal = fn;
             _budgetDal = bd;
+            _walletDal = wd;
         }
         public async Task<ResponseIncome> CreateIncome(Income newIncome, int wallet_id)
         {
@@ -40,6 +42,7 @@ namespace BudgifyDal
                 _appDbContext.incomes.Add(income);
                 await _appDbContext.SaveChangesAsync();
                 var budget = await _budgetDal.updateBudget(userid);
+                var wallet = await _walletDal.updateWalletValue(income.wallet_id);
                 response.code = true;
                 response.message =  "Se creó correctamente el ingreso";
                 response.income = Utils.GetIncomeDto(income);
@@ -65,6 +68,7 @@ namespace BudgifyDal
                 income.status = "inactive";
                 await _appDbContext.SaveChangesAsync();
                 var budget = await _budgetDal.updateBudget(income.users_id);
+                var wallet = await _walletDal.updateWalletValue(income.wallet_id);
                 response.code = true;
                 response.message = "Se eliminó correctamente el ingreso";
                 response.income = Utils.GetIncomeDto(income);
@@ -93,6 +97,7 @@ namespace BudgifyDal
                     income.wallet.name = modifiedIncome.wallet;
                 await _appDbContext.SaveChangesAsync();
                 var budget = await _budgetDal.updateBudget(income.users_id);
+                var wallet = await _walletDal.updateWalletValue(income.wallet_id);
                 response.code = true;
                 response.message = "Se modificó correctamente el ingreso";
                 response.income = Utils.GetIncomeDto(income);

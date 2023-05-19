@@ -13,12 +13,14 @@ namespace BudgifyDal
         private readonly AppDbContext _appDbContext;
         private readonly UtilsDal _utilsDal;
         private readonly BudgetDal _budgetDal;
+        private readonly WalletDal _walletDal;
 
-        public ExpenseDal(AppDbContext db, UtilsDal fn, BudgetDal bd)
+        public ExpenseDal(AppDbContext db, UtilsDal fn, BudgetDal bd, WalletDal wd)
         {
             _appDbContext = db;
             _utilsDal = fn;
             _budgetDal = bd;
+            _walletDal = wd;
         }
 
        public async Task<ResponseExpense> CreateExpense(Expense newExpense, int wallet_id, int pocket_id, int categoryid)
@@ -45,6 +47,7 @@ namespace BudgifyDal
                 _appDbContext.expenses.Add(expense);
                 await _appDbContext.SaveChangesAsync();
                 var budget = await _budgetDal.updateBudget(userid);
+                var wallet = await _walletDal.updateWalletValue(expense.wallet_id);
                 response.code = true;
                 response.message = "Se creó correctamente el ingreso";
                 response.expense = Utils.GetExpenseDto(expense);
@@ -88,6 +91,7 @@ namespace BudgifyDal
                 expense.status = "inactive";
                 await _appDbContext.SaveChangesAsync();
                 var budget = await _budgetDal.updateBudget(expense.users_id);
+                var wallet = await _walletDal.updateWalletValue(expense.wallet_id);
                 response.code = true;
                 response.message = "Se eliminó correctamente el gasto";
                 response.expense = Utils.GetExpenseDto(expense);
@@ -126,6 +130,7 @@ namespace BudgifyDal
 
                 await _appDbContext.SaveChangesAsync();
                 var budget = await _budgetDal.updateBudget(expense.users_id);
+                var wallet = await _walletDal.updateWalletValue(expense.wallet_id);
                 response.code = true;
                 response.message = "Se modificó correctamente el gasto";
                 response.expense = Utils.GetExpenseDto(expense);

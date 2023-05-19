@@ -24,14 +24,7 @@ namespace BudgifyBll
             ResponseWallet response = new ResponseWallet();
             try
             {
-                var wallet = new Wallet()
-                {
-                    name = name,
-                    status = "active",
-                    icon = icon,
-                    users_id = userid
-                };
-                response = await _walletDal.CreateWallet(wallet);
+                response = await _walletDal.CreateWallet(userid, name, icon);
                 if (!response.code)
                 {
                     response.message = "Error al registrar la cartera";
@@ -44,12 +37,12 @@ namespace BudgifyBll
             return response;
         }
 
-        public async Task<ResponseWallet> DeleteWallet(int walletid)
+        public async Task<ResponseWallet> DeleteWallet(int walletid, int newWallet)
         {
             ResponseWallet response = new ResponseWallet();
             try
             {
-                response = await _walletDal.DeleteWallet(walletid);
+                response = await _walletDal.DeleteWallet(walletid, newWallet);
                 if (!response.code)
                 {
                     response.message = "Error al eliminar la cartera";

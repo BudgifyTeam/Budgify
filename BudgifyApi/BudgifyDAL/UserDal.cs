@@ -89,7 +89,7 @@ namespace BudgifyDal
                 await _appDbContext.SaveChangesAsync();
                 response.message += await _utilsDal.CreateBudget(latsid);
                 response.message += await CreateDefaultCategories(latsid);
-                response.message += await _utilsDal.CreateWallet(latsid, "efectivo");
+                response.message += _utilsDal.CreateWallet(latsid, "efectivo", "https://firebasestorage.googleapis.com/v0/b/budgify-ed7a9.appspot.com/o/Wallets.png?alt=media&token=cca353ff-39e1-4d5e-a0ce-3f2cb93f977c").Result.message;
                 response.message += await _utilsDal.CreatePocket(latsid, "default", 0);
                 response.message += " se añadió el registro exitosamente";
                 response.code = true;

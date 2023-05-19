@@ -24,6 +24,7 @@ namespace BudgifyModels
         [Required]
         [MaxLength(8)]
         public double goal { get; set; }
+        public string status { get; set; }
         //Relationship
         [ForeignKey("users_id")]
         public user user { get; set; }

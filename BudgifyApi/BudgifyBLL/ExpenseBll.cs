@@ -14,11 +14,13 @@ namespace BudgifyBll
         private readonly UtilsDal _utilsDal;
         private readonly ExpenseDal _expenseDal;
         private readonly BudgetDal _budgifyDal;
+        private readonly WalletDal _walletDal;
         public ExpenseBll(AppDbContext db)
         {
             _utilsDal = new UtilsDal(db);
             _budgifyDal = new BudgetDal(db, _utilsDal);
-            _expenseDal = new ExpenseDal(db, _utilsDal, _budgifyDal);
+            _walletDal = new WalletDal(db, _utilsDal);
+            _expenseDal = new ExpenseDal(db, _utilsDal, _budgifyDal, _walletDal);
         }
 
         public async Task<ResponseExpense> CreateExpense(int userid, double value, DateTime date, int wallet_id, int pocket_id, int category_id)
