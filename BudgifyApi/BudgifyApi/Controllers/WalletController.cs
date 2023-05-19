@@ -39,9 +39,9 @@ namespace BudgifyApi.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<ResponseWallet>> DeleteWallet(int walletid)
+        public async Task<ActionResult<ResponseWallet>> DeleteWallet(int walletid, int newWallet)
         {
-            ResponseWallet response = await _walletBll.DeleteWallet(walletid);
+            ResponseWallet response = await _walletBll.DeleteWallet(walletid, newWallet);
 
             if (!response.code)
             {
