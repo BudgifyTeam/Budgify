@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BudgifyModels.Dto
 {
-    public class WalletDto
+    public class ExpenseDto
     {
         public int expense_id { get; set; }
         public double value { get; set; }

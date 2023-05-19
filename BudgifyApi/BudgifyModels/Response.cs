@@ -32,7 +32,7 @@ public class ResponseExpense
 {
     public string? message { get; set; }
     public Boolean code { get; set; }
-    public WalletDto? expense { get; set; }
+    public ExpenseDto? expense { get; set; }
     public double? newBudget { get; set; }
 }
 

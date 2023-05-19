@@ -65,9 +65,9 @@ namespace BudgifyBll
             return response;
         }
 
-        public ResponseList<WalletDto> GetExpenses(int userid, string range)
+        public ResponseList<ExpenseDto> GetExpenses(int userid, string range)
         {
-            var response = new ResponseList<WalletDto>();
+            var response = new ResponseList<ExpenseDto>();
             try
             {
                 var list = _utilsDal.GetExpensesByUserId(userid);
@@ -97,9 +97,9 @@ namespace BudgifyBll
             return response;
         }
        
-        public ResponseList<WalletDto> GetExpensesDay(int userId, string range, DateTime date)
+        public ResponseList<ExpenseDto> GetExpensesDay(int userId, string range, DateTime date)
         {
-            var response = new ResponseList<WalletDto>();
+            var response = new ResponseList<ExpenseDto>();
             try
             {
                 var list = _utilsDal.GetExpensesByUserId(userId);
@@ -133,7 +133,7 @@ namespace BudgifyBll
             }
             return response;
         }
-        private List<WalletDto> GetExpensesByRange(List<WalletDto> expenses, string range, DateTime date)
+        private List<ExpenseDto> GetExpensesByRange(List<ExpenseDto> expenses, string range, DateTime date)
         {
             switch (range)
             {
@@ -152,7 +152,7 @@ namespace BudgifyBll
             }
         }
 
-        public async Task<ResponseExpense> ModifyExpense(WalletDto income, int wallet_id, int pocket_id, int categoryid)
+        public async Task<ResponseExpense> ModifyExpense(ExpenseDto income, int wallet_id, int pocket_id, int categoryid)
         {
             ResponseExpense response = new ResponseExpense();
             try
