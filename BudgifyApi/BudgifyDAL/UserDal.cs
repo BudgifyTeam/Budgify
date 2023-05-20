@@ -132,7 +132,10 @@ namespace BudgifyDal
 
         private int GetLastUserId()
         {
-            return _appDbContext.users.ToList().OrderByDescending(u => u.users_id).FirstOrDefault().users_id;
+            try {
+                return _appDbContext.users.ToList().OrderByDescending(u => u.users_id).FirstOrDefault().users_id;
+            }
+            catch { return 1; }
         }
 
         public user GetUser(int id)
