@@ -100,7 +100,7 @@ namespace BudgifyDal
                 response.message += await _utilsDal.CreateBudget(latsid);
                 response.message += await CreateDefaultCategories(latsid);
                 response.message += _utilsDal.CreateWallet(latsid, "efectivo", "https://firebasestorage.googleapis.com/v0/b/budgify-ed7a9.appspot.com/o/Wallets.png?alt=media&token=cca353ff-39e1-4d5e-a0ce-3f2cb93f977c").Result.message;
-                response.message += await _utilsDal.CreatePocket(latsid, "default", 0);
+                response.message += await _utilsDal.CreatePocket(latsid, "default", 0, "https://firebasestorage.googleapis.com/v0/b/budgify-ed7a9.appspot.com/o/Wallets.png?alt=media&token=cca353ff-39e1-4d5e-a0ce-3f2cb93f977c");
                 response.message += " se añadió el registro exitosamente";
                 response.code = true;
                 response.data = _appDbContext.users.FirstOrDefault(u => u.users_id == user.users_id);
@@ -135,7 +135,10 @@ namespace BudgifyDal
             try {
                 return _appDbContext.users.ToList().OrderByDescending(u => u.users_id).FirstOrDefault().users_id;
             }
-            catch { return 1; }
+            catch 
+            {
+                return 0; 
+            }
         }
 
         public user GetUser(int id)

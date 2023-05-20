@@ -14,13 +14,15 @@ namespace BudgifyDal
         private readonly UtilsDal _utilsDal;
         private readonly BudgetDal _budgetDal;
         private readonly WalletDal _walletDal;
+        private readonly PocketDal _pocketDal;
 
-        public ExpenseDal(AppDbContext db, UtilsDal fn, BudgetDal bd, WalletDal wd)
+        public ExpenseDal(AppDbContext db, UtilsDal fn, BudgetDal bd, WalletDal wd, PocketDal pd)
         {
             _appDbContext = db;
             _utilsDal = fn;
             _budgetDal = bd;
             _walletDal = wd;
+            _pocketDal = pd;
         }
 
        public async Task<ResponseExpense> CreateExpense(Expense newExpense, int wallet_id, int pocket_id, int categoryid)
@@ -48,6 +50,7 @@ namespace BudgifyDal
                 await _appDbContext.SaveChangesAsync();
                 var budget = await _budgetDal.updateBudget(userid);
                 var wallet = await _walletDal.updateWalletValue(expense.wallet_id);
+                var pocket = await _pocketDal.updatePocketValue(expense.pocket_id);
                 response.code = true;
                 response.message = "Se creó correctamente el ingreso";
                 response.expense = Utils.GetExpenseDto(expense);
@@ -92,6 +95,7 @@ namespace BudgifyDal
                 await _appDbContext.SaveChangesAsync();
                 var budget = await _budgetDal.updateBudget(expense.users_id);
                 var wallet = await _walletDal.updateWalletValue(expense.wallet_id);
+                var pocket = await _pocketDal.updatePocketValue(expense.pocket_id);
                 response.code = true;
                 response.message = "Se eliminó correctamente el gasto";
                 response.expense = Utils.GetExpenseDto(expense);
@@ -131,6 +135,7 @@ namespace BudgifyDal
                 await _appDbContext.SaveChangesAsync();
                 var budget = await _budgetDal.updateBudget(expense.users_id);
                 var wallet = await _walletDal.updateWalletValue(expense.wallet_id);
+                var pocket = await _pocketDal.updatePocketValue(expense.pocket_id);
                 response.code = true;
                 response.message = "Se modificó correctamente el gasto";
                 response.expense = Utils.GetExpenseDto(expense);

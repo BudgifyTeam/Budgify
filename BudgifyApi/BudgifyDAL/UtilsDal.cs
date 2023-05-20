@@ -91,8 +91,9 @@ namespace BudgifyDal
             }
             return response;
         }
-        public async Task<string> CreatePocket(int userid, string name, double goal)
+        public async Task<ResponsePocket> CreatePocket(int userid, string name, double goal, string icon)
         {
+            ResponsePocket response = new ResponsePocket();
             try
             {
                 var newPocket = new Pocket
@@ -101,19 +102,23 @@ namespace BudgifyDal
                     name = name,
                     total = 0,
                     goal = goal,
-                    icon = "https://firebasestorage.googleapis.com/v0/b/budgify-ed7a9.appspot.com/o/Wallets.png?alt=media&token=cca353ff-39e1-4d5e-a0ce-3f2cb93f977c",
+                    icon = icon,
                     user = GetUser(userid),
                     users_id = userid,
                     status = "active",
                 };
                 _appDbContext.pockets.Add(newPocket);
-                await _appDbContext.SaveChangesAsync();
-                return " se creó correctamente el bolsillo";
+                await _appDbContext.SaveChangesAsync(); 
+                response.message = " se creó correctamente el bolsillo";
+                response.code = true;
+                response.pocket = Utils.GetPocketDto(newPocket);
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                response.message = "ocurrió un error al crear el nuevo bolsillo, " + ex.Message;
+                response.code = true;
             }
+            return response;
         }
        
         public Wallet GetWalletByUserId(int id)
@@ -220,7 +225,7 @@ namespace BudgifyDal
             return _appDbContext.incomes.Where(c => c.users_id == id && c.status == "active").ToArray();
         }
 
-        internal Pocket[] GetPocketsByUserId(int id)
+        public Pocket[] GetPocketsByUserId(int id)
         {
             return _appDbContext.pockets.Where(c => c.users_id == id && c.status == "active").ToArray();
         }
@@ -242,6 +247,11 @@ namespace BudgifyDal
         internal Expense[] GetExpensesByWallet(int id)
         {
             return _appDbContext.expenses.Where(c => c.wallet_id == id && c.status == "active").ToArray();
+        }
+
+        internal Expense[] GetExpensesByPocket(int id)
+        {
+            return _appDbContext.expenses.Where(c => c.pocket_id == id && c.status == "active").ToArray();
         }
     }
 }
