@@ -14,13 +14,15 @@ namespace BudgifyBll
         private readonly ExpenseDal _expenseDal;
         private readonly IncomeDal _incomeDal;
         private readonly WalletDal _walletDal;
+        private readonly PocketDal _pocketDal;
         private readonly BudgetDal _budgetDal;
         public UserBll(AppDbContext db)
         {
             _budgetDal = new BudgetDal(db, _utilsDal);
             _walletDal = new WalletDal(db, _utilsDal);
             _utilsDal = new UtilsDal(db);
-            _expenseDal = new ExpenseDal(db, _utilsDal, _budgetDal, _walletDal);
+            _pocketDal = new PocketDal(db, _utilsDal);
+            _expenseDal = new ExpenseDal(db, _utilsDal, _budgetDal, _walletDal, _pocketDal);
             _incomeDal = new IncomeDal(db, _utilsDal, _budgetDal, _walletDal);
             _userDal = new UserDal(db, _utilsDal, _expenseDal, _incomeDal);
         }
