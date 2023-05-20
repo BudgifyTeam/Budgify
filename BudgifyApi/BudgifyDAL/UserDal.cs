@@ -15,11 +15,15 @@ namespace BudgifyDal
     {
         private readonly AppDbContext _appDbContext;
         private readonly UtilsDal _utilsDal;
+        private readonly ExpenseDal _expenseDal;
+        private readonly IncomeDal _incomeDal;
 
-        public UserDal(AppDbContext db, UtilsDal fn)
+        public UserDal(AppDbContext db, UtilsDal fn, ExpenseDal ed, IncomeDal id)
         {
             _appDbContext = db;
             _utilsDal = fn;
+            _expenseDal = ed;
+            _incomeDal = id;
         }
 
         public async Task<Response<Session>> Login(UserLogin user) {
@@ -60,13 +64,19 @@ namespace BudgifyDal
         public Session GetSession(UserLogin user)
         {
             var id = GetUserIdByUsername(user.Username);
+            var expenseslist = _utilsDal.GetExpensesByUserId(id);
+            expenseslist = _expenseDal.AsignPocketToExpenses(expenseslist);
+            expenseslist = _expenseDal.AsignWalletToExpenses(expenseslist);
+            expenseslist = _expenseDal.AsignCategoryToExpenses(expenseslist);
+            var incomesList = _utilsDal.GetIncomesByUserId(id);
+            incomesList = _incomeDal.AsignWalletToIncomes(incomesList);
             var session = new Session
             {
                 UserId = id,
                 Budget = _utilsDal.GetBudgetByUserId(id),
                 Categories = _utilsDal.GetCategoriesByUserId(id),
-                Expenses = _utilsDal.GetExpensesByUserId(id),
-                Incomes = _utilsDal.GetIncomesByUserId(id),
+                Expenses = expenseslist,
+                Incomes = incomesList,
                 Pockets = _utilsDal.GetPocketsByUserId(id),
                 Wallets = _utilsDal.GetWalletsByUserId(id),
                 icon = GetIconByUserId(id)
@@ -122,7 +132,10 @@ namespace BudgifyDal
 
         private int GetLastUserId()
         {
-            return _appDbContext.users.ToList().OrderByDescending(u => u.users_id).FirstOrDefault().users_id;
+            try {
+                return _appDbContext.users.ToList().OrderByDescending(u => u.users_id).FirstOrDefault().users_id;
+            }
+            catch { return 1; }
         }
 
         public user GetUser(int id)

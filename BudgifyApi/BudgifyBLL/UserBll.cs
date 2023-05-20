@@ -2,6 +2,7 @@
 using BudgifyDal;
 using BudgifyModels.Dto;
 using Microsoft.VisualBasic;
+using System.Collections.Generic;
 
 namespace BudgifyBll
 {
@@ -10,10 +11,18 @@ namespace BudgifyBll
 
         private readonly UserDal _userDal;
         private readonly UtilsDal _utilsDal;
+        private readonly ExpenseDal _expenseDal;
+        private readonly IncomeDal _incomeDal;
+        private readonly WalletDal _walletDal;
+        private readonly BudgetDal _budgetDal;
         public UserBll(AppDbContext db)
         {
+            _budgetDal = new BudgetDal(db, _utilsDal);
+            _walletDal = new WalletDal(db, _utilsDal);
             _utilsDal = new UtilsDal(db);
-            _userDal = new UserDal(db, _utilsDal);
+            _expenseDal = new ExpenseDal(db, _utilsDal, _budgetDal, _walletDal);
+            _incomeDal = new IncomeDal(db, _utilsDal, _budgetDal, _walletDal);
+            _userDal = new UserDal(db, _utilsDal, _expenseDal, _incomeDal);
         }
         public async Task<Response<user>> Register(UserRegister user)
         {

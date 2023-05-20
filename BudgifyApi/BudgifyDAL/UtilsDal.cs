@@ -104,6 +104,7 @@ namespace BudgifyDal
                     icon = "https://firebasestorage.googleapis.com/v0/b/budgify-ed7a9.appspot.com/o/Wallets.png?alt=media&token=cca353ff-39e1-4d5e-a0ce-3f2cb93f977c",
                     user = GetUser(userid),
                     users_id = userid,
+                    status = "active",
                 };
                 _appDbContext.pockets.Add(newPocket);
                 await _appDbContext.SaveChangesAsync();
@@ -132,26 +133,68 @@ namespace BudgifyDal
             return _appDbContext.pockets.FirstOrDefault(u => u.pocket_id == id);
         }
         public int GetLastIncomeId() {
-            return _appDbContext.incomes.ToList().OrderByDescending(u => u.income_id).FirstOrDefault().income_id;
+            try
+            {
+                return _appDbContext.incomes.ToList().OrderByDescending(u => u.income_id).FirstOrDefault().income_id;
+            }
+            catch
+            {
+                return 2000002;
+            }
         }
         public int GetLastExpenseId() {
-            return _appDbContext.expenses.ToList().OrderByDescending(u => u.expense_id).FirstOrDefault().expense_id;
+            try
+            {
+                return _appDbContext.expenses.ToList().OrderByDescending(u => u.expense_id).FirstOrDefault().expense_id;
+            }
+            catch
+            {
+                return 13000002;
+            }
         }
         private int GetLastBudgetId()
         {
-            return _appDbContext.budget.ToList().OrderByDescending(u => u.budget_id).FirstOrDefault().budget_id;
+            try
+            {
+                return _appDbContext.budget.ToList().OrderByDescending(u => u.budget_id).FirstOrDefault().budget_id;
+            }
+            catch
+            {
+                return 1000001;
+            }
         }
-        private int GetLastCategoryId()
+         private int GetLastCategoryId()
         {
-            return _appDbContext.categories.ToList().OrderByDescending(u => u.category_id).FirstOrDefault().category_id;
+            try
+            {
+                return _appDbContext.categories.ToList().OrderByDescending(u => u.category_id).FirstOrDefault().category_id;
+            }
+            catch
+            {
+                return 460000002;
+            }
         }
         private int GetLastWalletId()
         {
-            return _appDbContext.wallets.ToList().OrderByDescending(u => u.wallet_id).FirstOrDefault().wallet_id;
+            try
+            {
+                return _appDbContext.wallets.ToList().OrderByDescending(u => u.wallet_id).FirstOrDefault().wallet_id;
+            }
+            catch
+            {
+                return 35000002;
+            }
         }
         private int GetLastPocketId()
         {
-            return _appDbContext.pockets.ToList().OrderByDescending(u => u.pocket_id).FirstOrDefault().pocket_id;
+            try
+            {
+                return _appDbContext.pockets.ToList().OrderByDescending(u => u.pocket_id).FirstOrDefault().pocket_id;
+            }
+            catch
+            {
+                return 24000002;
+            }
         }
         public user GetUser(int id)
         {
