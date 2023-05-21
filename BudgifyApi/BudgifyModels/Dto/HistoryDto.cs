@@ -11,7 +11,7 @@ namespace BudgifyModels.Dto
     public class HistoryDto
     {
         public IncomeDto[]? Incomes { get; set; }
-        public Expense[]? Expenses { get; set; }
+        public ExpenseDto[]? Expenses { get; set; }
 
     }
 }

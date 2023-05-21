@@ -120,7 +120,46 @@ namespace BudgifyDal
             }
             return response;
         }
-       
+        public Income[] AsignWalletToIncomes(Income[] list)
+        {
+            for (int i = 0; i < list.Length; i++)
+            {
+                var income = list[i];
+                income.wallet = GetWallet(income.wallet_id);
+                list[i] = income;
+            }
+            return list;
+        }
+        public Expense[] AsignWalletToExpenses(Expense[] list)
+        {
+            for (int i = 0; i < list.Length; i++)
+            {
+                var expense = list[i];
+                expense.wallet = GetWallet(expense.wallet_id);
+                list[i] = expense;
+            }
+            return list;
+        }
+        public Expense[] AsignPocketToExpenses(Expense[] list)
+        {
+            for (int i = 0; i < list.Length; i++)
+            {
+                var expense = list[i];
+                expense.pocket = GetPocket(expense.pocket_id);
+                list[i] = expense;
+            }
+            return list;
+        }
+        public Expense[] AsignCategoryToExpenses(Expense[] list)
+        {
+            for (int i = 0; i < list.Length; i++)
+            {
+                var expense = list[i];
+                expense.category = GetCategory(expense.category_id);
+                list[i] = expense;
+            }
+            return list;
+        }
         public Wallet GetWalletByUserId(int id)
         {
             return _appDbContext.wallets.FirstOrDefault(u => u.users_id == id);

@@ -19,12 +19,16 @@ namespace BudgifyBll
             _HistoryDal = new HistoryDal(db, _utilsDal);
         }
 
-        public async Task<ResponseHistory> GetHistory(int userid, DateTime date, string range)
+        public ResponseHistory GetHistory(int userid, DateTime date, string range)
         {
             var response = new ResponseHistory();
             try
             {
-                response.history = await _HistoryDal.GetHistory(userid, date, range);
+                response = _HistoryDal.GetHistory(userid, date, range);
+                if (!response.code)
+                {
+                    response.message += " Error al obtener el historial";
+                }
                 if (!response.history.Incomes.Any() && !response.history.Expenses.Any())
                 {
                     response.message = $"El usuario no cuenta con gastos o ingresos para el rango: {range}";
@@ -33,14 +37,10 @@ namespace BudgifyBll
                 }
                 response.message = "Se obtuvo el historial correctamente";
                 response.code = true;
-                if (!response.code)
-                {
-                    response.message = "Error al obtener el historial";
-                }
             }
             catch (Exception ex)
             {
-                response.message = ex.Message;
+                response.message += ex.Message;
                 response.code = false;
             }
             return response;
