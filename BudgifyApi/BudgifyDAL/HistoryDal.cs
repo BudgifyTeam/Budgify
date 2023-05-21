@@ -19,7 +19,7 @@ namespace BudgifyDal
             _utilsDal = fn;
         }
 
-        public Category[] GetHistory(int userid, DateTime date, string range)
+        public async Task<HistoryDto> GetHistory(int userid, DateTime date, string range)
         {
             //ToDo
             return null;

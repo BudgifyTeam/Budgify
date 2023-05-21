@@ -22,9 +22,9 @@ namespace BudgifyApi.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<HistoryDto> GetDayHistory(int userid, string date)
+        public async Task<ActionResult<HistoryDto>> GetDayHistory(int userid, string date)
         {
-            ResponseList<HistoryDto> response = _HistoryBll.GetHistory(userid, Utils.convertDate(date), "day");
+            ResponseHistory response = await _HistoryBll.GetHistory(userid, Utils.convertDate(date), "day");
 
             if (!response.code)
             {
@@ -40,9 +40,9 @@ namespace BudgifyApi.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<HistoryDto> GetWeekHistory(int userid, string date)
+        public async Task<ActionResult<HistoryDto>> GetWeekHistory(int userid, string date)
         {
-            ResponseList<HistoryDto> response = _HistoryBll.GetHistory(userid, Utils.convertDate(date), "week");
+            ResponseHistory response = await _HistoryBll.GetHistory(userid, Utils.convertDate(date), "week");
 
             if (!response.code)
             {
@@ -58,9 +58,9 @@ namespace BudgifyApi.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<HistoryDto> GetMonthHistory(int userid, string date)
+        public async Task<ActionResult<HistoryDto>> GetMonthHistory(int userid, string date)
         {
-            ResponseList<HistoryDto> response = _HistoryBll.GetHistory(userid, Utils.convertDate(date), "month");
+            ResponseHistory response = await _HistoryBll.GetHistory(userid, Utils.convertDate(date), "month");
 
             if (!response.code)
             {
@@ -76,9 +76,9 @@ namespace BudgifyApi.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<HistoryDto> GetYearHistory(int userid, string date)
+        public async Task<ActionResult<HistoryDto>> GetYearHistory(int userid, string date)
         {
-            ResponseList<HistoryDto> response = _HistoryBll.GetHistory(userid, Utils.convertDate(date), "year");
+            ResponseHistory response = await _HistoryBll.GetHistory(userid, Utils.convertDate(date), "year");
 
             if (!response.code)
             {
