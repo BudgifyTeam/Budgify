@@ -43,13 +43,13 @@ namespace BudgifyBll
 
                 if (_userDal.UserExist(userToSave.username))
                 {
-                    response.message = "username already exists";
+                    response.message = " Username already exists";
                     return response;
                 }
 
                 if (_userDal.EmailExist(userToSave.email))
                 {
-                    response.message = "Email already exists";
+                    response.message = " Email already exists";
                     return response;
                 }
 
@@ -57,7 +57,7 @@ namespace BudgifyBll
 
                 if (!response.code)
                 {
-                    response.message = "Error al registrar al usuario";
+                    response.message = " Error al registrar al usuario";
                 }
 
             }
