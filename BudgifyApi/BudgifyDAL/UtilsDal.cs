@@ -29,7 +29,7 @@ namespace BudgifyDal
                 };
                 _appDbContext.budget.Add(newBudget);
                 await _appDbContext.SaveChangesAsync();
-                return " se creó correctamente el presupuesto";
+                return " Se creó correctamente el presupuesto";
             }
             catch (Exception ex)
             {
@@ -80,7 +80,7 @@ namespace BudgifyDal
                 };
                 _appDbContext.wallets.Add(newWallet);
                 await _appDbContext.SaveChangesAsync();
-                response.message = " se creó correctamente la billetera";
+                response.message = " Se creó correctamente la billetera";
                 response.code = true;
                 response.wallet = Utils.GetWalletDto(newWallet);
             }
@@ -109,7 +109,7 @@ namespace BudgifyDal
                 };
                 _appDbContext.pockets.Add(newPocket);
                 await _appDbContext.SaveChangesAsync(); 
-                response.message = " se creó correctamente el bolsillo";
+                response.message = " Se creó correctamente el bolsillo";
                 response.code = true;
                 response.pocket = Utils.GetPocketDto(newPocket);
             }

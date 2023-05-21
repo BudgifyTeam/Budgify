@@ -55,12 +55,12 @@ namespace BudgifyApi3.Controllers
             }
             return StatusCode(StatusCodes.Status200OK, response);
         }
-
-        [HttpGet("all", Name = "GetUsers")]
+        /**
+        [HttpGet("all[ToDo]", Name = "GetUsers[ToDo]")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IEnumerable<UserDto> GetUsers()
+        public IEnumerable<UserDto> GetUsersToDo()
         {
             return new List<UserDto> {
             new UserDto {Token = "token", Username = "username"},
@@ -70,12 +70,13 @@ namespace BudgifyApi3.Controllers
             };
 
         }
-
-        [HttpPut("Modify", Name = "ModifyUser")]
+        **/
+        /**
+        [HttpPut("no", Name = "ModifyUser[ToDo]")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ResponseList<string> UpdateUser([FromBody] UserDto user)
+        public ResponseList<string> UpdateUserToDo([FromBody] UserDto user)
         {
             return new ResponseList<string>
             {
@@ -86,5 +87,6 @@ namespace BudgifyApi3.Controllers
                 }
             };
         }
+        **/
     }
 }
