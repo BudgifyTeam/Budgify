@@ -68,14 +68,14 @@ namespace BudgifyBll
 
             return response;
         }
-        public async Task<Response<SessionDto>> Login(UserLogin user)
+        public Response<SessionDto> Login(UserLogin user)
         {
             try
             {
-                var response = await _userDal.Login(user);
+                var response = _userDal.Login(user);
                 if (response.code)
                 {
-                    var sessionDto = await GetSessionDto(response.data);
+                    var sessionDto = GetSessionDto(response.data);
                     return new Response<SessionDto>
                     {
                         data = sessionDto,
@@ -102,7 +102,7 @@ namespace BudgifyBll
                 };
             }
         }
-        public async Task<SessionDto> GetSessionDto(Session session)
+        public SessionDto GetSessionDto(Session session)
         {
             return new SessionDto
             {
