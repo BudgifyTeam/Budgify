@@ -3,29 +3,28 @@ using BudgifyDal;
 using BudgifyModels;
 using BudgifyModels.Dto;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualBasic;
 
 namespace BudgifyApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class IncomeController : ControllerBase
+    public class CategoryController: ControllerBase
     {
-        private readonly IncomeBll _incomeBll;
+        private readonly CategoryBll _categoryBll;
         private readonly ResponseError resError = new ResponseError();
 
-        public IncomeController(AppDbContext db)
+        public CategoryController(AppDbContext db)
         {
-            _incomeBll = new IncomeBll(db);
+            _categoryBll = new CategoryBll(db);
         }
-
-        [HttpPost("CreateIncome", Name = "CreateIncome")]
+       
+        [HttpPost("CreateCategory", Name = "CreateCategory")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<ResponseIncome>> CreateIncome(int userid, double value, string date, int wallet_id)
+        public async Task<ActionResult<ResponseCategory>> CreateCategory(int userid, string name)
         {
-            ResponseIncome response = await _incomeBll.CreateIncome(userid, value, Utils.convertDate(date), wallet_id);
+            ResponseCategory response = await _categoryBll.CreateCategory(userid, name);
 
             if (!response.code)
             {
@@ -37,13 +36,13 @@ namespace BudgifyApi.Controllers
             return StatusCode(StatusCodes.Status200OK, response);
         }
 
-        [HttpGet("DeleteIncome", Name = "DeleteIncome")]
+        [HttpGet("DeleteCategory", Name = "DeleteCategory")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<ResponseIncome>> DeleteIncome(int incomeid)
+        public async Task<ActionResult<ResponseCategory>> DeleteCategory(int categoryid, int newCategoryId) 
         {
-            ResponseIncome response = await _incomeBll.DeleteIncome(incomeid);
+            ResponseCategory response = await _categoryBll.DeleteCategory(categoryid, newCategoryId);
 
             if (!response.code)
             {
@@ -55,13 +54,13 @@ namespace BudgifyApi.Controllers
             return StatusCode(StatusCodes.Status200OK, response);
         }
 
-        [HttpGet("GetIncomes", Name = "GetIncomes")]
+        [HttpGet("GetCategories", Name = "GetCategories")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<IncomeDto> GetIncomes(int userid, string range)//range{day, week, month, year}
+        public ActionResult<CategoryDto> GetCategories(int userid)//range{day, week, month, year}
         {
-            ResponseList<IncomeDto> response = _incomeBll.GetIncomes(userid, range);
+            ResponseList<CategoryDto> response = _categoryBll.GetCategories(userid);
 
             if (!response.code)
             {
@@ -73,13 +72,13 @@ namespace BudgifyApi.Controllers
             return StatusCode(StatusCodes.Status200OK, response);
         }
 
-        [HttpGet("GetIncomesByDay", Name = "GetIncomesByDay")]
+        [HttpPut("ModifyCategory", Name = "ModifyCategory")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<IncomeDto> GetIncomesByDay(int userid, string date)
+        public async Task<ActionResult<ResponseCategory>> ModifyCategory([FromBody] CategoryDto category)
         {
-            ResponseList<IncomeDto> response = _incomeBll.GetIncomesDay(userid, "day", Utils.convertDate(date));
+            ResponseCategory response = await _categoryBll.ModifyCategory(category);
 
             if (!response.code)
             {
@@ -91,22 +90,5 @@ namespace BudgifyApi.Controllers
             return StatusCode(StatusCodes.Status200OK, response);
         }
 
-        [HttpPut("ModifyIncome", Name = "ModifyIncome")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<ResponseIncome>> ModifyIncome([FromBody] IncomeDto income, int wallet_id)
-        {
-            ResponseIncome response = await _incomeBll.ModifyIncome(income, wallet_id);
-
-            if (!response.code)
-            {
-                resError.message = response.message;
-                resError.code = 0;
-
-                return StatusCode(StatusCodes.Status400BadRequest, response);
-            }
-            return StatusCode(StatusCodes.Status200OK, response);
-        }
     }
 }

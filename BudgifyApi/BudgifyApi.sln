@@ -9,7 +9,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BudgifyDal", "BudgifyDAL\Bu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BudgifyModels", "BudgifyModels\BudgifyModels.csproj", "{F2A989D3-8218-4A0E-AE02-F1E16183C909}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgifyApi", "BudgifyApi\BudgifyApi.csproj", "{E4651D02-D40E-4AF0-9914-66F9A162D2F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BudgifyApi", "BudgifyApi\BudgifyApi.csproj", "{E4651D02-D40E-4AF0-9914-66F9A162D2F7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A8BDB78F-4F3C-4E29-A777-74E5C73204F4}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

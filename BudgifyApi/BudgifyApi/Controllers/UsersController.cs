@@ -42,9 +42,9 @@ namespace BudgifyApi3.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<SessionDto>> LoginUser([FromBody] UserLogin user)
+        public ActionResult<SessionDto> LoginUser([FromBody] UserLogin user)
         {
-            Response<SessionDto> response = await userBll.Login(user);
+            Response<SessionDto> response = userBll.Login(user);
 
             if (!response.code)
             {

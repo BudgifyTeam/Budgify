@@ -26,7 +26,7 @@ namespace BudgifyDal
             _incomeDal = id;
         }
 
-        public async Task<Response<Session>> Login(UserLogin user) {
+        public Response<Session> Login(UserLogin user) {
             Response<Session> response = new Response<Session>();
             var username = user.Username;
             var token = user.Token;
