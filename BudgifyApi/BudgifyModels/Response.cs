@@ -58,3 +58,11 @@ public class ResponsePocket
     public PocketDto pocket { get; set; }
 
 }
+
+public class ResponseHistory
+{
+    public string? message { get; set; }
+    public Boolean code { get; set; }
+    public HistoryDto history { get; set; }
+
+}
