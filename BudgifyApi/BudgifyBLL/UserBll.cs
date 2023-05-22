@@ -41,7 +41,7 @@ namespace BudgifyBll
                     icon = "https://firebasestorage.googleapis.com/v0/b/budgify-ed7a9.appspot.com/o/userimage.jpg?alt=media&token=df5dc86a-c48e-4786-9501-565b2ad15134"
                 };
 
-                if (_userDal.UserExist(userToSave.username))
+                if (_userDal.UsernameExist(userToSave.username))
                 {
                     response.message = " Username already exists";
                     return response;
@@ -117,15 +117,25 @@ namespace BudgifyBll
             };
         }
 
-        public async Task<Response<SessionDto>> ModifyUser(user user, string icon, string name, string email, bool publicAccount, string token)
+        public async Task<Response<SessionDto>> ModifyUser(int userid, string icon, string name, string email, bool publicAccount, string token)
         {
             Response<SessionDto> response = new Response<SessionDto>();
             try
             {
-                response = await _userDal.ModifyUser(user, icon, name, email, publicAccount, token);
-                if (!response.code)
+                var modifResponse = await _userDal.ModifyUser(userid, icon, name, email, publicAccount, token);
+                if (modifResponse.code)
                 {
-                    response.message += " Error al modificar el usuario";
+                    var sessionDto = GetSessionDto(modifResponse.data);
+                    return new Response<SessionDto>
+                    {
+                        data = sessionDto,
+                        message = modifResponse.message,
+                        code = modifResponse.code
+                    };
+                }
+                if (!modifResponse.code)
+                {
+                    response.message += " Error al modificar el usuario" + modifResponse.message;
                 }
             }
             catch (Exception ex)

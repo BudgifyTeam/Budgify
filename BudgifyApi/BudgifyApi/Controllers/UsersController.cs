@@ -60,9 +60,9 @@ namespace BudgifyApi3.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<SessionDto>> ModifyUser([FromBody] user user, string icon, string name, string email, Boolean publicAccount, string token)
+        public async Task<ActionResult<SessionDto>> ModifyUser(int userid, string icon, string name, string email, Boolean publicAccount, string token)
         {
-            Response<SessionDto> response = await userBll.ModifyUser(user, icon, name, email, publicAccount, token);
+            Response<SessionDto> response = await userBll.ModifyUser(userid, icon, name, email, publicAccount, token);
 
             if (!response.code)
             {
