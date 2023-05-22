@@ -97,7 +97,7 @@ namespace BudgifyBll
             }
             catch (Exception ex)
             {
-                response.message = ex.Message;
+                response.message += ex.Message;
             }
             return response;
         }
