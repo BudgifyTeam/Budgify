@@ -10,8 +10,6 @@ namespace BudgifyModels.Dto
 {
     public class HistoryDto
     {
-        public IncomeDto[]? Incomes { get; set; }
-        public Expense[]? Expenses { get; set; }
-
+        public FinancialItem[]? Items { get; set; }
     }
 }
