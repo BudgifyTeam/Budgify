@@ -116,5 +116,10 @@ namespace BudgifyBll
                 Wallets = session.Wallets?.Select(w => Utils.GetWalletDto(w)).ToArray()
             };
         }
+
+        public Task<ResponsePocket> ModifyUser(user user, string icon, string name, string email, bool publicAccount)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
