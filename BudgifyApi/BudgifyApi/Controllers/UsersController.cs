@@ -55,38 +55,41 @@ namespace BudgifyApi3.Controllers
             }
             return StatusCode(StatusCodes.Status200OK, response);
         }
-        /**
-        [HttpGet("all[ToDo]", Name = "GetUsers[ToDo]")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IEnumerable<UserDto> GetUsersToDo()
-        {
-            return new List<UserDto> {
-            new UserDto {Token = "token", Username = "username"},
-            new UserDto {Token = "token2", Username = "username2"},
-            new UserDto {Token = "token3", Username = "username3"},
-            new UserDto {Token = "token4", Username = "username4"}
-            };
 
-        }
-        **/
-        /**
-        [HttpPut("no", Name = "ModifyUser[ToDo]")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [HttpPut("ModifyUser", Name = "ModifyUser")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ResponseList<string> UpdateUserToDo([FromBody] UserDto user)
+        public ActionResult<SessionDto> ModifyUser([FromBody] user user, string icon, string name, string email, Boolean publicAccount, string token)
         {
-            return new ResponseList<string>
+            Response<SessionDto> response = userBll.ModifyUser(user, icon, name, email, publicAccount, token);
+
+            if (!response.code)
             {
-                message = "mensajes",
-                code = true,
-                data = new List<string> {
-                    "dato1", "dato2"
-                }
-            };
+                resError.message = response.message;
+                resError.code = 0;
+
+                return StatusCode(StatusCodes.Status400BadRequest, response);
+            }
+            return StatusCode(StatusCodes.Status200OK, response);
         }
-        **/
+
+        [HttpGet("DeleteUser", Name = "DeleteUser")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<Response<string>> DeleteUser(int userid)
+        {
+            Response<string> response = userBll.DeleteUser(userid);
+
+            if (!response.code)
+            {
+                resError.message = response.message;
+                resError.code = 0;
+
+                return StatusCode(StatusCodes.Status400BadRequest, response);
+            }
+            return StatusCode(StatusCodes.Status200OK, response);
+        }
     }
 }

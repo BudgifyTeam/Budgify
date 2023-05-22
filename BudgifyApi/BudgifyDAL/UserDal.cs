@@ -153,7 +153,7 @@ namespace BudgifyDal
 
         public bool UserExist(string username)
         {
-            var user = _appDbContext.users.FirstOrDefault(u => u.username == username);
+            var user = _appDbContext.users.FirstOrDefault(u => u.username == username && u.status == true);
             return user != null;
         }
 

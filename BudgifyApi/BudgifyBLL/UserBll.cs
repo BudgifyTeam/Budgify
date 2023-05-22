@@ -116,5 +116,15 @@ namespace BudgifyBll
                 Wallets = session.Wallets?.Select(w => Utils.GetWalletDto(w)).ToArray()
             };
         }
+
+        public Response<SessionDto> ModifyUser(user user, string icon, string name, string email, bool publicAccount, string token)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Response<string> DeleteUser(int userid)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
