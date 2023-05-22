@@ -74,11 +74,11 @@ namespace BudgifyApi3.Controllers
             return StatusCode(StatusCodes.Status200OK, response);
         }
 
-        [HttpGet("DeleteWallet", Name = "DeleteWallet")]
+        [HttpGet("DeleteUser", Name = "DeleteUser")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<Response<string>> DeleteWallet(int userid)
+        public ActionResult<Response<string>> DeleteUser(int userid)
         {
             Response<string> response = userBll.DeleteUser(userid);
 
