@@ -117,7 +117,12 @@ namespace BudgifyBll
             };
         }
 
-        public Task<ResponsePocket> ModifyUser(user user, string icon, string name, string email, bool publicAccount)
+        public Response<SessionDto> ModifyUser(user user, string icon, string name, string email, bool publicAccount, string token)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Response<string> DeleteUser(int userid)
         {
             throw new NotImplementedException();
         }

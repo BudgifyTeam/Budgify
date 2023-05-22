@@ -60,9 +60,27 @@ namespace BudgifyApi3.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<ResponsePocket>> ModifyUser([FromBody] user user, string icon, string name, string email, Boolean publicAccount)
+        public ActionResult<SessionDto> ModifyUser([FromBody] user user, string icon, string name, string email, Boolean publicAccount, string token)
         {
-            ResponsePocket response = await userBll.ModifyUser(user, icon, name, email, publicAccount);
+            Response<SessionDto> response = userBll.ModifyUser(user, icon, name, email, publicAccount, token);
+
+            if (!response.code)
+            {
+                resError.message = response.message;
+                resError.code = 0;
+
+                return StatusCode(StatusCodes.Status400BadRequest, response);
+            }
+            return StatusCode(StatusCodes.Status200OK, response);
+        }
+
+        [HttpGet("DeleteWallet", Name = "DeleteWallet")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<Response<string>> DeleteWallet(int userid)
+        {
+            Response<string> response = userBll.DeleteUser(userid);
 
             if (!response.code)
             {
