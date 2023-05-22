@@ -60,9 +60,9 @@ namespace BudgifyApi3.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<SessionDto> ModifyUser([FromBody] user user, string icon, string name, string email, Boolean publicAccount, string token)
+        public async Task<ActionResult<SessionDto>> ModifyUser([FromBody] user user, string icon, string name, string email, Boolean publicAccount, string token)
         {
-            Response<SessionDto> response = userBll.ModifyUser(user, icon, name, email, publicAccount, token);
+            Response<SessionDto> response = await userBll.ModifyUser(user, icon, name, email, publicAccount, token);
 
             if (!response.code)
             {
@@ -78,9 +78,9 @@ namespace BudgifyApi3.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<Response<string>> DeleteUser(int userid)
+        public async Task<ActionResult<Response<string>>> DeleteUser(int userid)
         {
-            Response<string> response = userBll.DeleteUser(userid);
+            Response<string> response = await userBll.DeleteUser(userid);
 
             if (!response.code)
             {
