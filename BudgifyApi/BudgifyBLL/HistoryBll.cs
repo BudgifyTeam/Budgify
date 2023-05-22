@@ -29,7 +29,7 @@ namespace BudgifyBll
                 {
                     response.message += " Error al obtener el historial";
                 }
-                if (!response.history.Incomes.Any() && !response.history.Expenses.Any())
+                if (!response.history.Items.Any())
                 {
                     response.message = $"El usuario no cuenta con gastos o ingresos para el rango: {range}";
                     response.code = false;

@@ -23,12 +23,11 @@ namespace BudgifyDal
         {
             ResponseHistory response = new ResponseHistory();
             try {
-                var history = new HistoryDto
-                {
-                    Incomes = GetIncomesByRange(GetIncomeList(userid), range, date).ToArray(),
-                    Expenses = GetExpensesByRange(GetExpenseList(userid), range, date).ToArray()
+                var incomes = GetIncomesByRange(GetIncomeList(userid), range, date);
+                var expenses = GetExpensesByRange(GetExpenseList(userid), range, date);
+                response.history = new HistoryDto { 
+                    Items = OrderFinancialItemsByDate(GetFinancialItems(incomes, expenses)),
                 };
-                response.history = history;
                 response.code = true;
             }
             catch (Exception e) {
@@ -37,6 +36,43 @@ namespace BudgifyDal
             }
             return response;
         }
+        public List<FinancialItem> GetFinancialItems(List<IncomeDto> incomes, List<ExpenseDto> expenses)
+        {
+            var list = new List<FinancialItem>(incomes.Count + expenses.Count);
+
+            foreach (var income in incomes)
+            {
+                var item = CreateFinancialItem("income", income.value, income.date, income.wallet, "none");
+                list.Add(item);
+            }
+
+            foreach (var expense in expenses)
+            {
+                var item = CreateFinancialItem("expense", expense.value, expense.date, expense.wallet, expense.category);
+                list.Add(item);
+            }
+
+            return list;
+        }
+
+        private FinancialItem CreateFinancialItem(string name, double value, DateTime date, string type, string category)
+        {
+            return new FinancialItem
+            {
+                name = name,
+                value = value,
+                date = date,
+                type = type,
+                category = category
+            };
+        }
+        public FinancialItem[] OrderFinancialItemsByDate(List<FinancialItem> financialItems)
+        {
+            financialItems.Sort((item1, item2) => item1.date.CompareTo(item2.date));
+            return financialItems.ToArray();
+        }
+
+
         public List<IncomeDto> GetIncomeList(int userid) {
             var incList = _utilsDal.GetIncomesByUserId(userid);
             incList = _utilsDal.AsignWalletToIncomes(incList);
