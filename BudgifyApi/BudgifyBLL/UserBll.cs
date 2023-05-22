@@ -117,14 +117,40 @@ namespace BudgifyBll
             };
         }
 
-        public Response<SessionDto> ModifyUser(user user, string icon, string name, string email, bool publicAccount, string token)
+        public async Task<Response<SessionDto>> ModifyUser(user user, string icon, string name, string email, bool publicAccount, string token)
         {
-            throw new NotImplementedException();
+            Response<SessionDto> response = new Response<SessionDto>();
+            try
+            {
+                response = await _userDal.ModifyUser(user, icon, name, email, publicAccount, token);
+                if (!response.code)
+                {
+                    response.message += " Error al modificar el usuario";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.message += ex.Message;
+            }
+            return response;
         }
 
-        public Response<string> DeleteUser(int userid)
+        public async Task<Response<string>> DeleteUser(int userid)
         {
-            throw new NotImplementedException();
+            Response<string> response = new Response<string>();
+            try
+            {
+                response = await _userDal.DeleteUser(userid);
+                if (!response.code)
+                {
+                    response.message += " Error al eliminar el usuario";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.message += ex.Message;
+            }
+            return response;
         }
     }
 }

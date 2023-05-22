@@ -129,6 +129,15 @@ namespace BudgifyDal
 
             return $"Error al crear la categoría '{responses.First(res => res.code).message}'.";
         }
+        public Task<Response<string>> DeleteUser(int userid)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Response<SessionDto>> ModifyUser(user user, string icon, string name, string email, bool publicAccount, string token)
+        {
+            throw new NotImplementedException();
+        }
 
         private int GetLastUserId()
         {
@@ -166,6 +175,6 @@ namespace BudgifyDal
             return _appDbContext.users.FirstOrDefault(u =>u.username == username).users_id;
         }
 
-        
+
     }
 }

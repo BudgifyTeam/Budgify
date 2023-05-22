@@ -92,7 +92,7 @@ namespace BudgifyBll
                 response = await _walletDal.ModifyWallet(wallet, total, icon, name);
                 if (!response.code)
                 {
-                    response.message = "Error al modificar la cartera";
+                    response.message += "Error al modificar la cartera";
                 }
             }
             catch (Exception ex)
