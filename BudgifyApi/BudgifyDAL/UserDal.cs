@@ -31,7 +31,7 @@ namespace BudgifyDal
             var username = user.Username;
             var token = user.Token;
             try {
-                if (UserExist(username))
+                if (UsernameExist(username))
                 {
                     if (ValidateToken(token, username))
                     {
@@ -129,14 +129,69 @@ namespace BudgifyDal
 
             return $"Error al crear la categoría '{responses.First(res => res.code).message}'.";
         }
-        public Task<Response<string>> DeleteUser(int userid)
+        public async Task<Response<string>> DeleteUser(int userid)
         {
-            throw new NotImplementedException();
+            Response<string> response = new Response<string>();
+            try
+            {
+                var user = GetUser(userid);
+                user.status = false;
+                await _appDbContext.SaveChangesAsync();
+                response.message = " Se eliminó el usuario exitosamente";
+                response.code = true;
+                return response;
+            }
+            catch (Exception e) {
+                response.message += e.Message;
+                response.code = false;
+                return response;
+            }
         }
 
-        public Task<Response<SessionDto>> ModifyUser(user user, string icon, string name, string email, bool publicAccount, string token)
+        public async Task<Response<Session>> ModifyUser(int userid, string icon, string name, string email, bool publicAccount, string token)
         {
-            throw new NotImplementedException();
+            Response<Session> response = new Response<Session>();
+            try
+            {
+                var oldUser = GetUser(userid);
+                if (oldUser.username != name){ 
+                    if (UsernameExist(name))
+                    {
+                        response.code = false;
+                        response.message = " El nombre de usuario ya existe";
+                        return response;
+                    }
+                }
+                if (oldUser.email != email) {
+                    if (EmailExist(email))
+                    {
+                        response.code = false;
+                        response.message = " El email ya esta en uso por otro usuario";
+                        return response;
+                    }
+                }
+                oldUser.icon = icon;
+                oldUser.username = name;
+                oldUser.email = email;
+                oldUser.token = token;
+                oldUser.publicaccount = publicAccount;
+                await _appDbContext.SaveChangesAsync();
+                response.code = true;
+                response.message = "Se modificó correctamente el usuario";
+                var usertosession = new UserLogin
+                {
+                    Token = oldUser.token,
+                    Username = oldUser.username
+                };
+                response.data = GetSession(usertosession);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.code = false;
+                response.message = ex.Message;
+                return response;
+            }
         }
 
         private int GetLastUserId()
@@ -160,7 +215,7 @@ namespace BudgifyDal
             return !(user == null);
         }
 
-        public bool UserExist(string username)
+        public bool UsernameExist(string username)
         {
             var user = _appDbContext.users.FirstOrDefault(u => u.username == username && u.status == true);
             return user != null;
