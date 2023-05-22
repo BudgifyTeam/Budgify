@@ -66,3 +66,10 @@ public class ResponseHistory
     public HistoryDto history { get; set; }
 
 }
+
+public class ResponseCategoryStat { 
+    public string? message { get; set; }
+    public Boolean code { get; set; }
+    public StatsCategory[] stats { get; set; }
+    public double total { get; set; }
+}
