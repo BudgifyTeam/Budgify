@@ -1,10 +1,5 @@
 ﻿using BudgifyModels;
 using BudgifyModels.Dto;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BudgifyDal
 {
@@ -25,6 +20,14 @@ namespace BudgifyDal
             _pocketDal = pd;
         }
 
+        /// <summary>
+        /// Creates an expense record.
+        /// </summary>
+        /// <param name="newExpense">The expense to create.</param>
+        /// <param name="wallet_id">The ID of the wallet associated with the expense.</param>
+        /// <param name="pocket_id">The ID of the pocket associated with the expense.</param>
+        /// <param name="categoryid">The ID of the category associated with the expense.</param>
+        /// <returns>A response object containing information about the created expense.</returns>
        public async Task<ResponseExpense> CreateExpense(Expense newExpense, int wallet_id, int pocket_id, int categoryid)
         {
             ResponseExpense response = new ResponseExpense();
@@ -66,6 +69,11 @@ namespace BudgifyDal
             return response;
         }
 
+        /// <summary>
+        /// Deletes an expense record.
+        /// </summary>
+        /// <param name="expenseid">The ID of the expense to delete.</param>
+        /// <returns>A response object containing information about the deleted expense.</returns>
        public async Task<ResponseExpense> DeleteExpense(int expenseid)
         {
             ResponseExpense response = new ResponseExpense();
@@ -95,6 +103,14 @@ namespace BudgifyDal
             return response;
         }
 
+        /// <summary>
+        /// Modifies an expense record.
+        /// </summary>
+        /// <param name="ModifiedExpense">The modified expense information.</param>
+        /// <param name="wallet_id">The ID of the wallet associated with the expense.</param>
+        /// <param name="pocket_id">The ID of the pocket associated with the expense.</param>
+        /// <param name="categoryid">The ID of the category associated with the expense.</param>
+        /// <returns>A response object containing information about the modified expense.</returns>
         public async Task<ResponseExpense> ModifyExpense(ExpenseDto ModifiedExpense, int wallet_id, int pocket_id, int categoryid)
         {
             ResponseExpense response = new ResponseExpense();
@@ -134,6 +150,12 @@ namespace BudgifyDal
 
             return response;
         }
+        
+        /// <summary>
+        /// Assigns wallets to expenses in the provided list.
+        /// </summary>
+        /// <param name="list">The array of expenses to assign wallets to.</param>
+        /// <returns>An array of expenses with assigned wallets.</returns>
         public Expense[] AsignWalletToExpenses(Expense[] list)
         {
             for (int i = 0; i < list.Length; i++)
@@ -144,6 +166,12 @@ namespace BudgifyDal
             }
             return list;
         }
+        
+        /// <summary>
+        /// Assigns pockets to expenses in the provided list.
+        /// </summary>
+        /// <param name="list">The array of expenses to assign pockets to.</param>
+        /// <returns>An array of expenses with assigned pockets.</returns>
         public Expense[] AsignPocketToExpenses(Expense[] list)
         {
             for (int i = 0; i < list.Length; i++)
@@ -154,6 +182,12 @@ namespace BudgifyDal
             }
             return list;
         }
+        
+        /// <summary>
+        /// Assigns categories to expenses in the provided list.
+        /// </summary>
+        /// <param name="list">The array of expenses to assign categories to.</param>
+        /// <returns>An array of expenses with assigned categories.</returns>
         public Expense[] AsignCategoryToExpenses(Expense[] list) {
             for (int i = 0; i < list.Length; i++)
             {
