@@ -176,6 +176,11 @@ namespace BudgifyDal
         {
             return _appDbContext.pockets.FirstOrDefault(u => u.pocket_id == id);
         }
+        
+        /// <summary>
+        /// Retrieves the ID of the last income in the database.
+        /// </summary>
+        /// <returns>The ID of the last income.</returns>
         public int GetLastIncomeId() {
             try
             {
@@ -186,6 +191,11 @@ namespace BudgifyDal
                 return 2000002;
             }
         }
+        
+        /// <summary>
+        /// Retrieves the ID of the last expense in the database.
+        /// </summary>
+        /// <returns>The ID of the last expense.</returns>
         public int GetLastExpenseId() {
             try
             {
@@ -196,6 +206,11 @@ namespace BudgifyDal
                 return 13000002;
             }
         }
+        
+        /// <summary>
+        /// Retrieves the ID of the last budget in the database.
+        /// </summary>
+        /// <returns>The ID of the last budget.</returns>
         private int GetLastBudgetId()
         {
             try
@@ -207,6 +222,11 @@ namespace BudgifyDal
                 return 1000001;
             }
         }
+        
+        /// <summary>
+        /// Retrieves the ID of the last category in the database.
+        /// </summary>
+        /// <returns>The ID of the last category.</returns>
          private int GetLastCategoryId()
         {
             try
@@ -218,6 +238,11 @@ namespace BudgifyDal
                 return 460000002;
             }
         }
+
+        /// <summary>
+        /// Retrieves the ID of the last wallet in the database.
+        /// </summary>
+        /// <returns>The ID of the last wallet.</returns>
         private int GetLastWalletId()
         {
             try
@@ -229,6 +254,11 @@ namespace BudgifyDal
                 return 35000002;
             }
         }
+        
+        /// <summary>
+        /// Retrieves the ID of the last pocket in the database.
+        /// </summary>
+        /// <returns>The ID of the last pocket.</returns>
         private int GetLastPocketId()
         {
             try
@@ -240,54 +270,111 @@ namespace BudgifyDal
                 return 24000002;
             }
         }
+        
+        /// <summary>
+        /// Retrieves the user with the specified ID.
+        /// </summary>
+        /// <param name="id">The ID of the user to retrieve.</param>
+        /// <returns>The user object.</returns>
         public user GetUser(int id)
         {
             return _appDbContext.users.FirstOrDefault(u => u.users_id == id);
         }
+        
+        /// <summary>
+        /// Retrieves the budget associated with the user ID.
+        /// </summary>
+        /// <param name="id">The ID of the user to retrieve the budget for.</param>
+        /// <returns>The budget object.</returns>
         public Budget GetBudgetByUserId(int id)
         {
             return _appDbContext.budget.FirstOrDefault(u => u.users_id == id);
         }
-
+        
+        /// <summary>
+        /// Retrieves the categories associated with the user ID.
+        /// </summary>
+        /// <param name="id">The ID of the user to retrieve the categories for.</param>
+        /// <returns>An array of categories.</returns>
         public Category[] GetCategoriesByUserId(int id)
         {
             return _appDbContext.categories.Where(c => c.users_id == id && c.status == "active").ToArray();
         }
-
+        
+        /// <summary>
+        /// Retrieves the expenses associated with the user ID.
+        /// </summary>
+        /// <param name="id">The ID of the user to retrieve the expenses for.</param>
+        /// <returns>An array of expenses.</returns>
         public Expense[] GetExpensesByUserId(int id)
         {
             return _appDbContext.expenses.Where(c => c.users_id == id && c.status == "active").ToArray();
         }
-
+        
+        /// <summary>
+        /// Retrieves the incomes associated with the user ID.
+        /// </summary>
+        /// <param name="id">The ID of the user to retrieve the incomes for.</param>
+        /// <returns>An array of incomes.</returns>
         public Income[] GetIncomesByUserId(int id)
         {
             return _appDbContext.incomes.Where(c => c.users_id == id && c.status == "active").ToArray();
         }
 
+        /// <summary>
+        /// Retrieves the pockets associated with the user ID.
+        /// </summary>
+        /// <param name="id">The ID of the user to retrieve the pockets for.</param>
+        /// <returns>An array of pockets.</returns>
         public Pocket[] GetPocketsByUserId(int id)
         {
             return _appDbContext.pockets.Where(c => c.users_id == id && c.status == "active").ToArray();
         }
 
+        /// <summary>
+        /// Retrieves the wallets associated with the user ID.
+        /// </summary>
+        /// <param name="id">The ID of the user to retrieve the wallets for.</param>
+        /// <returns>An array of wallets.</returns>
         public Wallet[] GetWalletsByUserId(int id)
         {
             return _appDbContext.wallets.Where(c => c.users_id == id && c.status == "active").ToArray();
         }
 
+        /// <summary>
+        /// Retrieves the expenses associated with the category ID.
+        /// </summary>
+        /// <param name="id">The ID of the category to retrieve the expenses for.</param>
+        /// <returns>An array of expenses.</returns>
         public Expense[] GetExpensesByCategory(int id) {
             return _appDbContext.expenses.Where(c => c.category_id == id && c.status == "active").ToArray();
         }
 
+        /// <summary>
+        /// Retrieves the incomes associated with the wallet ID.
+        /// </summary>
+        /// <param name="id">The ID of the wallet to retrieve the incomes for.</param>
+        /// <returns>An array of incomes.</returns>
         internal Income[] GetIncomesByWallet(int id)
         {
             return _appDbContext.incomes.Where(c => c.wallet_id == id && c.status == "active").ToArray();
         }
 
+        /// <summary>
+        /// Retrieves the expenses associated with the wallet ID.
+        /// </summary>
+        /// <param name="id">The ID of the wallet to retrieve the expenses for.</param>
+        /// <returns>An array of expenses.</returns>
         internal Expense[] GetExpensesByWallet(int id)
         {
             return _appDbContext.expenses.Where(c => c.wallet_id == id && c.status == "active").ToArray();
         }
 
+        /// <summary>
+        /// Retrieves the expenses associated with the pocket ID.
+        /// </summary>
+        /// <param name="id">The ID of the pocket to retrieve the expenses for.</param>
+        /// <returns>An array of expenses.</returns>
         internal Expense[] GetExpensesByPocket(int id)
         {
             return _appDbContext.expenses.Where(c => c.pocket_id == id && c.status == "active").ToArray();
