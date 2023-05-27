@@ -19,6 +19,12 @@ namespace BudgifyDal
             _appDbContext = db;
             _utilsDal = utils;
         }
+
+        /// <summary>
+        /// Updates the total value of a pocket based on its associated expenses.
+        /// </summary>
+        /// <param name="pocketid">The ID of the pocket.</param>
+        /// <returns>A response containing the updated pocket information.</returns>
         public async Task<Response<Pocket>> updatePocketValue(int pocketid)
         {
             Response<Pocket> response = new Response<Pocket>();
@@ -41,6 +47,11 @@ namespace BudgifyDal
             return response;
         }
 
+        /// <summary>
+        /// Assigns the user to each pocket in the provided list.
+        /// </summary>
+        /// <param name="list">The array of pockets.</param>
+        /// <returns>The updated array of pockets with the user assigned.</returns>
         public Pocket[] AsignUserToPocket(Pocket[] list)
         {
             for (int i = 0; i < list.Length; i++)
@@ -52,6 +63,14 @@ namespace BudgifyDal
             return list;
         }
 
+        /// <summary>
+        /// Creates a new pocket for a user.
+        /// </summary>
+        /// <param name="userid">The ID of the user.</param>
+        /// <param name="name">The name of the pocket.</param>
+        /// <param name="icon">The URL of the pocket's icon.</param>
+        /// <param name="goal">The goal value for the pocket.</param>
+        /// <returns>A response containing the created pocket information.</returns>
         public async Task<ResponsePocket> CreatePocket(int userid, string name, string icon, double goal)
         {
             ResponsePocket response = new ResponsePocket();
@@ -68,6 +87,12 @@ namespace BudgifyDal
             return response;
         }
 
+        /// <summary>
+        /// Deletes a pocket and updates the total value of another pocket.
+        /// </summary>
+        /// <param name="pocketid">The ID of the pocket to be deleted.</param>
+        /// <param name="newPocket">The ID of the pocket to receive the updated total value.</param>
+        /// <returns>A response containing the result of the deletion and the updated pocket information.</returns>
         public async Task<ResponsePocket> DeletePocket(int pocketid, int newPocket)
         {
             ResponsePocket response = new ResponsePocket();
@@ -95,6 +120,12 @@ namespace BudgifyDal
             return response;
         }
 
+        /// <summary>
+        /// Changes the total value of a pocket.
+        /// </summary>
+        /// <param name="total">The new total value for the pocket.</param>
+        /// <param name="newPocket">The ID of the pocket to be updated.</param>
+        /// <returns>A response containing the updated pocket information.</returns>
         private async Task<ResponsePocket> ChangePocketToPocket(double total, int newPocket)
         {
             ResponsePocket res = new ResponsePocket();
@@ -123,6 +154,14 @@ namespace BudgifyDal
             }
         }
 
+        /// <summary>
+        /// Modifies the properties of a pocket.
+        /// </summary>
+        /// <param name="Pocket">The PocketDto object containing the pocket's information.</param>
+        /// <param name="total">The new total value for the pocket.</param>
+        /// <param name="icon">The new icon URL for the pocket.</param>
+        /// <param name="name">The new name for the pocket.</param>
+        /// <returns>A response containing the modified pocket information.</returns>
         public async Task<ResponsePocket> ModifyPocket(PocketDto Pocket, double total, string icon, string name)
         {
             ResponsePocket response = new ResponsePocket();
