@@ -19,6 +19,13 @@ namespace BudgifyDal
             _utilsDal = fn;
         }
 
+        /// <summary>
+        /// Retrieves the financial history for a specific user based on the given date and range.
+        /// </summary>
+        /// <param name="userid">The ID of the user.</param>
+        /// <param name="date">The date for filtering the history.</param>
+        /// <param name="range">The range for filtering the history (e.g., "day", "week", "month", "year").</param>
+        /// <returns>A ResponseHistory object containing the financial history.</returns>
         public ResponseHistory GetHistory(int userid, DateTime date, string range)
         {
             ResponseHistory response = new ResponseHistory();
@@ -36,6 +43,13 @@ namespace BudgifyDal
             }
             return response;
         }
+
+        /// <summary>
+        /// Retrieves a list of FinancialItem objects by combining the given incomes and expenses.
+        /// </summary>
+        /// <param name="incomes">The list of IncomeDto objects.</param>
+        /// <param name="expenses">The list of ExpenseDto objects.</param>
+        /// <returns>A list of FinancialItem objects.</returns>
         public List<FinancialItem> GetFinancialItems(List<IncomeDto> incomes, List<ExpenseDto> expenses)
         {
             var list = new List<FinancialItem>(incomes.Count + expenses.Count);
@@ -55,6 +69,15 @@ namespace BudgifyDal
             return list;
         }
 
+        /// <summary>
+        /// Creates a new instance of the FinancialItem class with the specified properties.
+        /// </summary>
+        /// <param name="name">The name of the financial item.</param>
+        /// <param name="value">The value or amount of the financial item.</param>
+        /// <param name="date">The date of the financial item.</param>
+        /// <param name="type">The type of the financial item.</param>
+        /// <param name="category">The category of the financial item.</param>
+        /// <returns>A new instance of the FinancialItem class.</returns>
         private FinancialItem CreateFinancialItem(string name, double value, DateTime date, string type, string category)
         {
             return new FinancialItem
@@ -66,18 +89,34 @@ namespace BudgifyDal
                 category = category
             };
         }
+
+        /// <summary>
+        /// Orders a list of financial items by their date in ascending order.
+        /// </summary>
+        /// <param name="financialItems">The list of financial items to be ordered.</param>
+        /// <returns>The ordered array of financial items.</returns>
         public FinancialItem[] OrderFinancialItemsByDate(List<FinancialItem> financialItems)
         {
             financialItems.Sort((item1, item2) => item1.date.CompareTo(item2.date));
             return financialItems.ToArray();
         }
 
-
+        /// <summary>
+        /// Retrieves a list of income items for a specific user.
+        /// </summary>
+        /// <param name="userid">The ID of the user.</param>
+        /// <returns>The list of income items for the user.</returns>
         public List<IncomeDto> GetIncomeList(int userid) {
             var incList = _utilsDal.GetIncomesByUserId(userid);
             incList = _utilsDal.AsignWalletToIncomes(incList);
             return incList.Select(Utils.GetIncomeDto).ToList();
         }
+
+        /// <summary>
+        /// Retrieves a list of expense items for a specific user.
+        /// </summary>
+        /// <param name="userid">The ID of the user.</param>
+        /// <returns>The list of expense items for the user.</returns>
         public List<ExpenseDto> GetExpenseList(int userid)
         {
             var expList = _utilsDal.GetExpensesByUserId(userid);
@@ -87,6 +126,13 @@ namespace BudgifyDal
             return expList.Select(Utils.GetExpenseDto).ToList();
         }
 
+        /// <summary>
+        /// Filters a list of expense items based on a specified range and date.
+        /// </summary>
+        /// <param name="expenses">The list of expense items.</param>
+        /// <param name="range">The range to filter the expense items (day, week, month, year).</param>
+        /// <param name="date">The reference date for filtering.</param>
+        /// <returns>A filtered list of expense items based on the specified range and date.</returns>
         private List<ExpenseDto> GetExpensesByRange(List<ExpenseDto> expenses, string range, DateTime date)
         {
             switch (range)
@@ -106,6 +152,13 @@ namespace BudgifyDal
             }
         }
 
+        /// <summary>
+        /// Filters a list of income items based on a specified range and date.
+        /// </summary>
+        /// <param name="incomeList">The list of income items.</param>
+        /// <param name="range">The range to filter the income items (day, week, month, year).</param>
+        /// <param name="date">The reference date for filtering.</param>
+        /// <returns>A filtered list of income items based on the specified range and date.</returns>
         private List<IncomeDto> GetIncomesByRange(List<IncomeDto> incomeList, string range, DateTime date)
         {
             switch (range)
