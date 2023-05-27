@@ -9,16 +9,32 @@ using System.Threading.Tasks;
 
 namespace BudgifyBll
 {
+
+    /// <summary>
+    /// The business logic layer for managing wallets. It communicates with the data layer.
+    /// </summary>
     public class WalletBll
     {
         private readonly UtilsDal _utilsDal;
         private readonly WalletDal _walletDal;
+
+        /// <summary>
+        /// Initializes a new instance of the WalletBll class with the specified database context.
+        /// </summary>
+        /// <param name="db">The AppDbContext object representing the database context.</param>
         public WalletBll(AppDbContext db)
         {
             _utilsDal = new UtilsDal(db);
             _walletDal = new WalletDal(db, _utilsDal);
         }
 
+        /// <summary>
+        /// Creates a new wallet for a user.
+        /// </summary>
+        /// <param name="userid">The ID of the user.</param>
+        /// <param name="name">The name of the wallet.</param>
+        /// <param name="icon">The icon of the wallet.</param>
+        /// <returns>A ResponseWallet object containing the result of the creation operation.</returns>
         public async Task<ResponseWallet> CreateWallet(int userid, string name, string icon)
         {
             ResponseWallet response = new ResponseWallet();
@@ -37,6 +53,12 @@ namespace BudgifyBll
             return response;
         }
 
+        /// <summary>
+        /// Deletes a wallet and assigns its associated expenses to a new wallet.
+        /// </summary>
+        /// <param name="walletid">The ID of the wallet to delete.</param>
+        /// <param name="newWallet">The ID of the new wallet to assign the expenses.</param>
+        /// <returns>A ResponseWallet object containing the result of the deletion operation.</returns>
         public async Task<ResponseWallet> DeleteWallet(int walletid, int newWallet)
         {
             ResponseWallet response = new ResponseWallet();
@@ -55,6 +77,11 @@ namespace BudgifyBll
             return response;
         }
 
+        /// <summary>
+        /// Retrieves the wallets associated with a user.
+        /// </summary>
+        /// <param name="userid">The ID of the user.</param>
+        /// <returns>A ResponseList of WalletDto objects containing the wallets associated with the user.</returns>
         public ResponseList<WalletDto> GetWallets(int userid)
         {
             var response = new ResponseList<WalletDto>();
@@ -84,6 +111,15 @@ namespace BudgifyBll
             return response;
         }
 
+
+        /// <summary>
+        /// Modifies a wallet by updating its properties with the provided values.
+        /// </summary>
+        /// <param name="wallet">The WalletDto object representing the wallet to modify.</param>
+        /// <param name="total">The new total value of the wallet.</param>
+        /// <param name="icon">The new icon for the wallet.</param>
+        /// <param name="name">The new name for the wallet.</param>
+        /// <returns>A ResponseWallet object containing the result of the modification operation.</returns>
         public async Task<ResponseWallet> ModifyWallet(WalletDto wallet, double total, string icon , string name)
         {
             ResponseWallet response = new ResponseWallet();
