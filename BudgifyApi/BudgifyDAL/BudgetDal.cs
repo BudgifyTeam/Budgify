@@ -18,6 +18,18 @@ namespace BudgifyDal
             _utilsDal = fn;
         }
 
+        /// <summary>
+        /// Updates the budget for a user.
+        /// </summary>
+        /// <param name="userId">The ID of the user for whom to update the budget.</param>
+        /// <returns>A Response object containing the updated budget information.</returns>
+        /// <remarks>
+        /// This method calculates the budget value for a user based on their incomes and expenses.
+        /// It retrieves the existing budget for the user and updates its value accordingly.
+        /// The updated budget value is calculated by subtracting the total expenses from the total incomes.
+        /// If there are no expenses or incomes, the budget value is set to 0.
+        /// </remarks>
+        /// <exception cref="Exception">Thrown if there is an error updating the budget.</exception>
         public async Task<Response<Budget>> updateBudget(int userId)
         {
             Response<Budget> response = new Response<Budget>();
