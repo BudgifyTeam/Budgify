@@ -16,6 +16,12 @@ namespace BudgifyDal
         {
             _appDbContext = db;
         }
+
+        /// <summary>
+        /// Creates a new budget for the specified user.
+        /// </summary>
+        /// <param name="userid">The ID of the user associated with the budget.</param>
+        /// <returns>A message indicating the result of the budget creation.</returns>
         public async Task<string> CreateBudget(int userid)
         {
             try
@@ -36,6 +42,13 @@ namespace BudgifyDal
                 return ex.Message;
             }
         }
+
+        /// <summary>
+        /// Creates a new category with the specified parameters.
+        /// </summary>
+        /// <param name="userid">The ID of the user associated with the category.</param>
+        /// <param name="name">The name of the category.</param>
+        /// <returns>A response object containing the result of the category creation.</returns>
         public async Task<ResponseCategory> CreateCategory(int userid, string name)
         {
             ResponseCategory response = new ResponseCategory();
@@ -63,6 +76,14 @@ namespace BudgifyDal
                 return response;
             }
         }
+
+        /// <summary>
+        /// Creates a new wallet with the specified parameters.
+        /// </summary>
+        /// <param name="userid">The ID of the user associated with the wallet.</param>
+        /// <param name="name">The name of the wallet.</param>
+        /// <param name="icon">The icon associated with the wallet.</param>
+        /// <returns>A response object containing the result of the wallet creation.</returns>
         public async Task<ResponseWallet> CreateWallet(int userid, string name, string icon)
         {
             ResponseWallet response = new ResponseWallet();
@@ -91,6 +112,15 @@ namespace BudgifyDal
             }
             return response;
         }
+
+        /// <summary>
+        /// Creates a new pocket with the specified parameters.
+        /// </summary>
+        /// <param name="userid">The ID of the user associated with the pocket.</param>
+        /// <param name="name">The name of the pocket.</param>
+        /// <param name="goal">The goal amount for the pocket.</param>
+        /// <param name="icon">The icon associated with the pocket.</param>
+        /// <returns>A response object containing the result of the pocket creation.</returns>
         public async Task<ResponsePocket> CreatePocket(int userid, string name, double goal, string icon)
         {
             ResponsePocket response = new ResponsePocket();
@@ -120,6 +150,12 @@ namespace BudgifyDal
             }
             return response;
         }
+
+        /// <summary>
+        /// Assigns wallets to incomes in the provided list.
+        /// </summary>
+        /// <param name="list">The array of incomes to assign wallets to.</param>
+        /// <returns>The updated array of incomes with assigned wallets.</returns>
         public Income[] AsignWalletToIncomes(Income[] list)
         {
             for (int i = 0; i < list.Length; i++)
@@ -130,6 +166,12 @@ namespace BudgifyDal
             }
             return list;
         }
+
+        /// <summary>
+        /// Assigns wallets to expenses in the provided list.
+        /// </summary>
+        /// <param name="list">The array of expenses to assign wallets to.</param>
+        /// <returns>The updated array of expenses with assigned wallets.</returns>
         public Expense[] AsignWalletToExpenses(Expense[] list)
         {
             for (int i = 0; i < list.Length; i++)
@@ -140,6 +182,12 @@ namespace BudgifyDal
             }
             return list;
         }
+
+        /// <summary>
+        /// Assigns pockets to expenses in the provided list.
+        /// </summary>
+        /// <param name="list">The array of expenses to assign pockets to.</param>
+        /// <returns>The updated array of expenses with assigned pockets.</returns>
         public Expense[] AsignPocketToExpenses(Expense[] list)
         {
             for (int i = 0; i < list.Length; i++)
@@ -150,6 +198,13 @@ namespace BudgifyDal
             }
             return list;
         }
+
+
+        /// <summary>
+        /// Assigns categories to expenses in the provided list.
+        /// </summary>
+        /// <param name="list">The array of expenses to assign categories to.</param>
+        /// <returns>The updated array of expenses with assigned categories.</returns>
         public Expense[] AsignCategoryToExpenses(Expense[] list)
         {
             for (int i = 0; i < list.Length; i++)
@@ -160,18 +215,42 @@ namespace BudgifyDal
             }
             return list;
         }
+
+        /// <summary>
+        /// Retrieves a wallet by user ID.
+        /// </summary>
+        /// <param name="id">The ID of the user.</param>
+        /// <returns>The wallet associated with the user ID, or null if not found.</returns>
         public Wallet GetWalletByUserId(int id)
         {
             return _appDbContext.wallets.FirstOrDefault(u => u.users_id == id);
         }
+
+        /// <summary>
+        /// Retrieves a wallet by ID.
+        /// </summary>
+        /// <param name="id">The ID of the wallet.</param>
+        /// <returns>The wallet with the specified ID, or null if not found.</returns>
         public Wallet GetWallet(int id)
         {
             return _appDbContext.wallets.FirstOrDefault(u => u.wallet_id == id);
         }
+
+        /// <summary>
+        /// Retrieves a category by ID.
+        /// </summary>
+        /// <param name="id">The ID of the category.</param>
+        /// <returns>The category with the specified ID, or null if not found.</returns>
         public Category GetCategory(int id)
         {
             return _appDbContext.categories.FirstOrDefault(u => u.category_id == id);
         }
+
+        /// <summary>
+        /// Retrieves a pocket by ID.
+        /// </summary>
+        /// <param name="id">The ID of the pocket.</param>
+        /// <returns>The pocket with the specified ID, or null if not found.</returns>
         public Pocket GetPocket(int id)
         {
             return _appDbContext.pockets.FirstOrDefault(u => u.pocket_id == id);
