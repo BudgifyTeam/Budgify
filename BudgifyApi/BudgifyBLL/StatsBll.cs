@@ -9,16 +9,31 @@ using System.Threading.Tasks;
 
 namespace BudgifyBll
 {
+    /// <summary>
+    /// Represents the business logic layer for handling statistics-related operations.
+    /// </summary>
     public class StatsBll
     {
         private readonly UtilsDal _utilsDal;
         private readonly StatsDal _statsDal;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StatsBll"/> class.
+        /// </summary>
+        /// <param name="db">The instance of the application's database context.</param>
         public StatsBll(AppDbContext db)
         {
             _utilsDal = new UtilsDal(db);
             _statsDal = new StatsDal(db, _utilsDal);
         }
 
+        /// <summary>
+        /// Gets the expenses by category for a specified user and time range.
+        /// </summary>
+        /// <param name="userid">The ID of the user.</param>
+        /// <param name="range">The time range for the statistics.</param>
+        /// <param name="date">The reference date for the statistics.</param>
+        /// <returns>A <see cref="ResponseCategoryStat"/> object containing the category statistics.</returns>
         public ResponseCategoryStat GetExpensesByCategory(int userid, string range, DateTime date)
         {
             var response = new ResponseCategoryStat();

@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace BudgifyBll
 {
+    /// <summary>
+    /// Represents the business logic layer for managing expense-related operations.
+    /// </summary>
     public class ExpenseBll
     {
         private readonly UtilsDal _utilsDal;
@@ -16,6 +19,11 @@ namespace BudgifyBll
         private readonly BudgetDal _budgifyDal;
         private readonly WalletDal _walletDal;
         private readonly PocketDal _pocketDal;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExpenseBll"/> class with the specified <see cref="AppDbContext"/> object.
+        /// </summary>
+        /// <param name="db">The database context.</param>
         public ExpenseBll(AppDbContext db)
         {
             _utilsDal = new UtilsDal(db);
@@ -25,6 +33,16 @@ namespace BudgifyBll
             _expenseDal = new ExpenseDal(db, _utilsDal, _budgifyDal, _walletDal, _pocketDal);
         }
 
+        /// <summary>
+        /// Creates a new expense for a user.
+        /// </summary>
+        /// <param name="userid">The ID of the user.</param>
+        /// <param name="value">The value of the expense.</param>
+        /// <param name="date">The date of the expense.</param>
+        /// <param name="wallet_id">The ID of the wallet associated with the expense.</param>
+        /// <param name="pocket_id">The ID of the pocket associated with the expense.</param>
+        /// <param name="category_id">The ID of the category associated with the expense.</param>
+        /// <returns>A <see cref="Task{ResponseExpense}"/> representing the asynchronous operation, containing the response for the expense creation.</returns>
         public async Task<ResponseExpense> CreateExpense(int userid, double value, DateTime date, int wallet_id, int pocket_id, int category_id)
         {
             ResponseExpense response = new ResponseExpense();
@@ -50,7 +68,12 @@ namespace BudgifyBll
             }
             return response;
         }
-                
+
+        /// <summary>
+        /// Deletes an expense.
+        /// </summary>
+        /// <param name="expenseid">The ID of the expense to delete.</param>
+        /// <returns>A <see cref="Task{ResponseExpense}"/> representing the asynchronous operation, containing the response for the expense deletion.</returns>
         public async Task<ResponseExpense> DeleteExpense(int expenseid)
         {
             ResponseExpense response = new ResponseExpense();
@@ -69,6 +92,12 @@ namespace BudgifyBll
             return response;
         }
 
+        /// <summary>
+        /// Retrieves a list of expenses for a user within the specified range.
+        /// </summary>
+        /// <param name="userid">The ID of the user.</param>
+        /// <param name="range">The range for filtering the expenses (e.g., day, week, month, year).</param>
+        /// <returns>A <see cref="ResponseList{ExpenseDto}"/> representing the response containing the list of expenses.</returns>
         public ResponseList<ExpenseDto> GetExpenses(int userid, string range)
         {
             var response = new ResponseList<ExpenseDto>();
@@ -100,7 +129,14 @@ namespace BudgifyBll
             }
             return response;
         }
-       
+
+        /// <summary>
+        /// Retrieves a list of expenses for a user within the specified range and date.
+        /// </summary>
+        /// <param name="userId">The ID of the user.</param>
+        /// <param name="range">The range for filtering the expenses (e.g., day, week, month, year).</param>
+        /// <param name="date">The date for filtering the expenses.</param>
+        /// <returns>A <see cref="ResponseList{ExpenseDto}"/> representing the response containing the list of expenses.</returns>
         public ResponseList<ExpenseDto> GetExpensesDay(int userId, string range, DateTime date)
         {
             var response = new ResponseList<ExpenseDto>();
@@ -137,6 +173,14 @@ namespace BudgifyBll
             }
             return response;
         }
+
+        /// <summary>
+        /// Filters a list of expenses based on the specified range and date.
+        /// </summary>
+        /// <param name="expenses">The list of expenses to filter.</param>
+        /// <param name="range">The range for filtering the expenses (e.g., day, week, month, year).</param>
+        /// <param name="date">The date for filtering the expenses.</param>
+        /// <returns>A filtered list of expenses based on the specified range and date.</returns>
         private List<ExpenseDto> GetExpensesByRange(List<ExpenseDto> expenses, string range, DateTime date)
         {
             switch (range)
@@ -156,6 +200,14 @@ namespace BudgifyBll
             }
         }
 
+        /// <summary>
+        /// Modifies an existing expense.
+        /// </summary>
+        /// <param name="income">The modified expense data.</param>
+        /// <param name="wallet_id">The ID of the wallet associated with the expense.</param>
+        /// <param name="pocket_id">The ID of the pocket associated with the expense.</param>
+        /// <param name="categoryid">The ID of the category associated with the expense.</param>
+        /// <returns>A <see cref="Task{ResponseExpense}"/> representing the asynchronous operation, containing the response for the expense modification.</returns>
         public async Task<ResponseExpense> ModifyExpense(ExpenseDto income, int wallet_id, int pocket_id, int categoryid)
         {
             ResponseExpense response = new ResponseExpense();

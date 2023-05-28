@@ -6,6 +6,9 @@ using System.Collections.Generic;
 
 namespace BudgifyBll
 {
+    /// <summary>
+    /// Represents the business logic layer for managing users.
+    /// </summary>
     public class UserBll
     {
 
@@ -16,6 +19,11 @@ namespace BudgifyBll
         private readonly WalletDal _walletDal;
         private readonly PocketDal _pocketDal;
         private readonly BudgetDal _budgetDal;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserBll"/> class.
+        /// </summary>
+        /// <param name="db">The <see cref="AppDbContext"/> instance.</param>
         public UserBll(AppDbContext db)
         {
             _budgetDal = new BudgetDal(db, _utilsDal);
@@ -26,6 +34,12 @@ namespace BudgifyBll
             _incomeDal = new IncomeDal(db, _utilsDal, _budgetDal, _walletDal);
             _userDal = new UserDal(db, _utilsDal, _expenseDal, _incomeDal);
         }
+
+        /// <summary>
+        /// Registers a new user.
+        /// </summary>
+        /// <param name="user">The user registration information.</param>
+        /// <returns>A <see cref="Response{T}"/> object containing the registration result.</returns>
         public async Task<Response<user>> Register(UserRegister user)
         {
             Response<user> response = new Response<user>();
@@ -68,6 +82,12 @@ namespace BudgifyBll
 
             return response;
         }
+
+        /// <summary>
+        /// Logs in a user.
+        /// </summary>
+        /// <param name="user">The user login information.</param>
+        /// <returns>A <see cref="Response{T}"/> object containing the login result.</returns>
         public Response<SessionDto> Login(UserLogin user)
         {
             try
@@ -102,6 +122,12 @@ namespace BudgifyBll
                 };
             }
         }
+
+        /// <summary>
+        /// Converts a <see cref="Session"/> object to a <see cref="SessionDto"/> object.
+        /// </summary>
+        /// <param name="session">The session object to convert.</param>
+        /// <returns>A <see cref="SessionDto"/> object.</returns>
         public SessionDto GetSessionDto(Session session)
         {
             return new SessionDto
@@ -117,6 +143,16 @@ namespace BudgifyBll
             };
         }
 
+        /// <summary>
+        /// Modifies a user's information.
+        /// </summary>
+        /// <param name="userid">The ID of the user to modify.</param>
+        /// <param name="icon">The new icon for the user.</param>
+        /// <param name="name">The new name for the user.</param>
+        /// <param name="email">The new email for the user.</param>
+        /// <param name="publicAccount">The new public account status for the user.</param>
+        /// <param name="token">The new token for the user.</param>
+        /// <returns>A <see cref="Response{T}"/> object containing the modified user's session information.</returns>
         public async Task<Response<SessionDto>> ModifyUser(int userid, string icon, string name, string email, bool publicAccount, string token)
         {
             Response<SessionDto> response = new Response<SessionDto>();
@@ -145,6 +181,11 @@ namespace BudgifyBll
             return response;
         }
 
+        /// <summary>
+        /// Deletes a user.
+        /// </summary>
+        /// <param name="userid">The ID of the user to delete.</param>
+        /// <returns>A <see cref="Response{T}"/> object containing the deletion result.</returns>
         public async Task<Response<string>> DeleteUser(int userid)
         {
             Response<string> response = new Response<string>();
