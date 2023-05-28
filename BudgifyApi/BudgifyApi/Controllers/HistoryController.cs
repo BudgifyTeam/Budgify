@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BudgifyApi.Controllers
 {
+    /// <summary>
+    /// API controller for managing History related operations.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class HistoryController: ControllerBase
@@ -13,11 +16,21 @@ namespace BudgifyApi.Controllers
         private readonly HistoryBll _HistoryBll;
         private readonly ResponseError resError = new ResponseError();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HistoryController"/> class.
+        /// </summary>
+        /// <param name="db">The database context.</param>
         public HistoryController(AppDbContext db)
         {
             _HistoryBll = new HistoryBll(db);
         }
 
+        /// <summary>
+        /// Retrieves the history for a specific day.
+        /// </summary>
+        /// <param name="userid">The ID of the user.</param>
+        /// <param name="date">The date for the history (in string format).</param>
+        /// <returns>The history information for the specified day.</returns>
         [HttpGet("GetDayHistory", Name = "GetDayHistory")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -36,6 +49,12 @@ namespace BudgifyApi.Controllers
             return StatusCode(StatusCodes.Status200OK, response);
         }
 
+        /// <summary>
+        /// Retrieves the history for a specific week.
+        /// </summary>
+        /// <param name="userid">The ID of the user.</param>
+        /// <param name="date">The date for the history (in string format).</param>
+        /// <returns>The history information for the specified week.</returns>
         [HttpGet("GetWeekHistory", Name = "GetWeekHistory")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -54,6 +73,12 @@ namespace BudgifyApi.Controllers
             return StatusCode(StatusCodes.Status200OK, response);
         }
 
+        /// <summary>
+        /// Retrieves the history for a specific month.
+        /// </summary>
+        /// <param name="userid">The ID of the user.</param>
+        /// <param name="date">The date for the history (in string format).</param>
+        /// <returns>The history information for the specified month.</returns>
         [HttpGet("GetMonthHistory", Name = "GetMonthHistory")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -72,6 +97,12 @@ namespace BudgifyApi.Controllers
             return StatusCode(StatusCodes.Status200OK, response);
         }
 
+        /// <summary>
+        /// Retrieves the history for a specific year.
+        /// </summary>
+        /// <param name="userid">The ID of the user.</param>
+        /// <param name="date">The date for the history (in string format).</param>
+        /// <returns>The history information for the specified year.</returns>
         [HttpGet("GetYearHistory", Name = "GetYearHistory")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
