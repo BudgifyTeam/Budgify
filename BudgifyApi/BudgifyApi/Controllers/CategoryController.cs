@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BudgifyApi.Controllers
 {
+    /// <summary>
+    /// API controller for managing expenses.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class CategoryController: ControllerBase
