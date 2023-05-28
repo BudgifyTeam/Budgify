@@ -13,6 +13,8 @@ namespace BudgifyDal
     {
         private readonly AppDbContext _appDbContext;
         private readonly UtilsDal _utilsDal;
+        private readonly ExpenseDal _expenseDal;
+        private readonly IncomeDal _incomeDal;
 
         public WalletDal(AppDbContext db, UtilsDal utils)
         {
@@ -181,12 +183,23 @@ namespace BudgifyDal
             try
             {
                 var newWallet = _appDbContext.wallets.FirstOrDefault(i => i.wallet_id == wallet.wallet_id);
+                var budget = _appDbContext.budget.FirstOrDefault(b => b.users_id == newWallet.users_id);
                 newWallet.name = name;
+                if (newWallet.total > total)
+                {
+                    var val = newWallet.total - total;
+                    budget.value -= val;
+                }
+                if (newWallet.total < total)
+                {
+                    var val = total - newWallet.total;
+                    budget.value += val;
+                }
                 newWallet.total = total;
                 newWallet.icon = icon;
                 await _appDbContext.SaveChangesAsync();
                 response.code = true;
-                response.message = "Se modificó correctamente la categoria";
+                response.message = "Se modificó correctamente la cartera";
                 response.wallet = Utils.GetWalletDto(newWallet);
             }
             catch (Exception ex)
