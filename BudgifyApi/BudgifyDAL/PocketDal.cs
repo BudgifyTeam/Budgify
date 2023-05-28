@@ -108,7 +108,7 @@ namespace BudgifyDal
                     return res;
                 }
                 var pocket = _appDbContext.pockets.FirstOrDefault(w => w.pocket_id == newPocket);
-                pocket.total = total;
+                pocket.total += total;
                 await _appDbContext.SaveChangesAsync();
                 res.message = "Se actualizó el valor de la cartera correctamente";
                 res.code = true;
