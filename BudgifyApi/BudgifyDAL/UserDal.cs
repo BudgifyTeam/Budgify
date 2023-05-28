@@ -26,6 +26,11 @@ namespace BudgifyDal
             _incomeDal = id;
         }
 
+        /// <summary>
+        /// Logs in the user with the provided login information.
+        /// </summary>
+        /// <param name="user">The user login information.</param>
+        /// <returns>A response object containing the result of the login operation and the user's session information.</returns>
         public Response<Session> Login(UserLogin user) {
             Response<Session> response = new Response<Session>();
             var username = user.Username;
@@ -61,6 +66,12 @@ namespace BudgifyDal
             }
         }
 
+
+        /// <summary>
+        /// Retrieves the session information for the specified user.
+        /// </summary>
+        /// <param name="user">The user login information.</param>
+        /// <returns>A session object containing the user's session information.</returns>
         public Session GetSession(UserLogin user)
         {
             var id = GetUserIdByUsername(user.Username);
@@ -84,11 +95,21 @@ namespace BudgifyDal
             return session;
         }
 
+        /// <summary>
+        /// Retrieves the icon of the user with the specified ID.
+        /// </summary>
+        /// <param name="id">The ID of the user.</param>
+        /// <returns>The icon of the user.</returns>
         private string GetIconByUserId(int id)
         {
             return _appDbContext.users.FirstOrDefault(u => u.users_id == id).icon;
         }
 
+        /// <summary>
+        /// Registers a new user.
+        /// </summary>
+        /// <param name="user">The user object containing the user information.</param>
+        /// <returns>A response object containing the result of the user registration.</returns>
         public async Task<Response<user>> RegisterUser(user user) {
             Response<user> response = new Response<user>();
             
@@ -113,6 +134,12 @@ namespace BudgifyDal
             }
             return response;
         }
+
+        /// <summary>
+        /// Creates default categories for the specified user.
+        /// </summary>
+        /// <param name="userid">The ID of the user.</param>
+        /// <returns>A message indicating the result of the default category creation.</returns>
         public async Task<string> CreateDefaultCategories(int userid)
         {
             var categories = new string[] { "comida", "ocio", "gastos fijos", "suscripciones" };
@@ -129,6 +156,12 @@ namespace BudgifyDal
 
             return $"Error al crear la categoría '{responses.First(res => res.code).message}'.";
         }
+
+        /// <summary>
+        /// Deletes the user with the specified ID.
+        /// </summary>
+        /// <param name="userid">The ID of the user to delete.</param>
+        /// <returns>A response object containing the result of the user deletion.</returns>
         public async Task<Response<string>> DeleteUser(int userid)
         {
             Response<string> response = new Response<string>();
@@ -148,6 +181,16 @@ namespace BudgifyDal
             }
         }
 
+        /// <summary>
+        /// Modifies the user with the specified parameters.
+        /// </summary>
+        /// <param name="userid">The ID of the user to modify.</param>
+        /// <param name="icon">The new icon for the user.</param>
+        /// <param name="name">The new name for the user.</param>
+        /// <param name="email">The new email for the user.</param>
+        /// <param name="publicAccount">The new public account status for the user.</param>
+        /// <param name="token">The new token for the user.</param>
+        /// <returns>A response object containing the result of the user modification.</returns>
         public async Task<Response<Session>> ModifyUser(int userid, string icon, string name, string email, bool publicAccount, string token)
         {
             Response<Session> response = new Response<Session>();
@@ -194,6 +237,10 @@ namespace BudgifyDal
             }
         }
 
+        /// <summary>
+        /// Retrieves the last user ID in the database.
+        /// </summary>
+        /// <returns>The last user ID, or 0 if the database is empty or an error occurs.</returns>
         private int GetLastUserId()
         {
             try {
@@ -205,31 +252,58 @@ namespace BudgifyDal
             }
         }
 
+        /// <summary>
+        /// Retrieves a user by ID.
+        /// </summary>
+        /// <param name="id">The ID of the user.</param>
+        /// <returns>The user with the specified ID, or null if not found.</returns>
         public user GetUser(int id)
         {
             return _appDbContext.users.FirstOrDefault(u => u.users_id == id);
         }
+
+        /// <summary>
+        /// Checks if an email exists in the database.
+        /// </summary>
+        /// <param name="Email">The email to check.</param>
+        /// <returns>True if the email exists, otherwise false.</returns>
         public bool EmailExist(string Email)
         {
             var user = _appDbContext.users.FirstOrDefault(u => u.email == Email);
             return !(user == null);
         }
 
+        /// <summary>
+        /// Checks if a username exists in the database.
+        /// </summary>
+        /// <param name="username">The username to check.</param>
+        /// <returns>True if the username exists, otherwise false.</returns>
         public bool UsernameExist(string username)
         {
             var user = _appDbContext.users.FirstOrDefault(u => u.username == username && u.status == true);
             return user != null;
         }
 
-        public bool ValidateToken(string token, string username) {
+        /// <summary>
+        /// Validates a token for a given username.
+        /// </summary>
+        /// <param name="token">The token to validate.</param>
+        /// <param name="username">The username to validate the token against.</param>
+        /// <returns>True if the token is valid for the username, otherwise false.</returns>
+        public bool ValidateToken(string token, string username)
+        {
             var user = _appDbContext.users.FirstOrDefault(u => u.username == username);
             return user.token == token;
         }
 
-        public int GetUserIdByUsername(string username) { 
-            return _appDbContext.users.FirstOrDefault(u =>u.username == username).users_id;
+        /// <summary>
+        /// Retrieves the user ID based on a given username.
+        /// </summary>
+        /// <param name="username">The username to get the ID for.</param>
+        /// <returns>The user ID for the given username, or 0 if not found.</returns>
+        public int GetUserIdByUsername(string username)
+        {
+            return _appDbContext.users.FirstOrDefault(u => u.username == username)?.users_id ?? 0;
         }
-
-
     }
 }

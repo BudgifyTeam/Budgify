@@ -19,6 +19,13 @@ namespace BudgifyDal
             _utilsDal = fn;
         }
 
+        /// <summary>
+        /// Retrieves the category statistics for a user based on the specified date and range.
+        /// </summary>
+        /// <param name="userid">The ID of the user.</param>
+        /// <param name="date">The date for filtering expenses.</param>
+        /// <param name="range">The range for filtering expenses (day, week, month, year).</param>
+        /// <returns>A response containing the category statistics.</returns>
         public ResponseCategoryStat GetExpenseByCategory(int userid, DateTime date, string range)
         {
             ResponseCategoryStat response = new ResponseCategoryStat();
@@ -43,6 +50,13 @@ namespace BudgifyDal
             }
             return response;
         }
+
+        /// <summary>
+        /// Retrieves the list of categories with their corresponding expenses and total value based on the provided expenses and categories.
+        /// </summary>
+        /// <param name="expenses">The list of expenses.</param>
+        /// <param name="categories">The list of categories.</param>
+        /// <returns>A tuple containing the array of StatsCategory objects and the total value of all categories.</returns>
         public (StatsCategory[], double) GetCategoriesList(List<ExpenseDto> expenses, List<Category> categories)
         {
             List<StatsCategory> stats = new List<StatsCategory>();
@@ -65,6 +79,11 @@ namespace BudgifyDal
             return (stats.ToArray(), bigTotal);
         }
 
+        /// <summary>
+        /// Sets the percentile value for each category in the specified list based on their total value and the total value of all categories.
+        /// </summary>
+        /// <param name="item">A tuple containing the list of categories and the total value.</param>
+        /// <returns>The updated list of categories with the percentile value set.</returns>
         public StatsCategory[] SetListPercentile((StatsCategory[] list, double total) item)
         {
             var catList = item.list;
@@ -81,6 +100,11 @@ namespace BudgifyDal
             return catList;
         }
 
+        /// <summary>
+        /// Retrieves a list of expenses for the specified user.
+        /// </summary>
+        /// <param name="userid">The ID of the user.</param>
+        /// <returns>A list of expense DTOs representing the user's expenses.</returns>
         public List<ExpenseDto> GetExpenseList(int userid)
         {
             var expList = _utilsDal.GetExpensesByUserId(userid);
@@ -90,6 +114,13 @@ namespace BudgifyDal
             return expList.Select(Utils.GetExpenseDto).ToList();
         }
 
+        /// <summary>
+        /// Retrieves a list of expenses filtered by the specified range and date.
+        /// </summary>
+        /// <param name="expenses">The list of expenses to filter.</param>
+        /// <param name="range">The range of the filter (e.g., "day", "week", "month", "year").</param>
+        /// <param name="date">The date used for filtering the expenses.</param>
+        /// <returns>A filtered list of expenses based on the specified range and date.</returns>
         private List<ExpenseDto> GetExpensesByRange(List<ExpenseDto> expenses, string range, DateTime date)
         {
             switch (range)

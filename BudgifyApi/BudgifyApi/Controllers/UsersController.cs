@@ -8,6 +8,9 @@ using System.Net;
 
 namespace BudgifyApi3.Controllers
 {
+    /// <summary>
+    /// Controller for managing users.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
@@ -20,6 +23,11 @@ namespace BudgifyApi3.Controllers
             userBll = new UserBll(db);
         }
 
+        /// <summary>
+        /// Registers a new user.
+        /// </summary>
+        /// <param name="user">The user registration information.</param>
+        /// <returns>The registered user.</returns>
         [HttpPost("Register", Name = "RegisterUser")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -38,6 +46,11 @@ namespace BudgifyApi3.Controllers
             return StatusCode(StatusCodes.Status200OK, response);
         }
 
+        /// <summary>
+        /// Logs in a user.
+        /// </summary>
+        /// <param name="user">The user login information.</param>
+        /// <returns>The user session.</returns>
         [HttpPost("Login", Name = "LoginUser")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -56,6 +69,16 @@ namespace BudgifyApi3.Controllers
             return StatusCode(StatusCodes.Status200OK, response);
         }
 
+        /// <summary>
+        /// Modifies a user's information.
+        /// </summary>
+        /// <param name="userid">The ID of the user to modify.</param>
+        /// <param name="icon">The new user icon.</param>
+        /// <param name="name">The new user name.</param>
+        /// <param name="email">The new user email.</param>
+        /// <param name="publicAccount">The new public account status.</param>
+        /// <param name="token">The user token.</param>
+        /// <returns>The modified user session.</returns>
         [HttpPut("ModifyUser", Name = "ModifyUser")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -74,6 +97,11 @@ namespace BudgifyApi3.Controllers
             return StatusCode(StatusCodes.Status200OK, response);
         }
 
+        /// <summary>
+        /// Deletes a user.
+        /// </summary>
+        /// <param name="userid">The ID of the user to delete.</param>
+        /// <returns>The response indicating the result of the delete operation.</returns>
         [HttpGet("DeleteUser", Name = "DeleteUser")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

@@ -13,11 +13,21 @@ namespace BudgifyApi.Controllers
         private readonly CategoryBll _categoryBll;
         private readonly ResponseError resError = new ResponseError();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CategoryController"/> class.
+        /// </summary>
+        /// <param name="db">The database context.</param>
         public CategoryController(AppDbContext db)
         {
             _categoryBll = new CategoryBll(db);
         }
-       
+
+        /// <summary>
+        /// Creates a new category.
+        /// </summary>
+        /// <param name="userid">The user ID.</param>
+        /// <param name="name">The category name.</param>
+        /// <returns>The response containing the created category.</returns>
         [HttpPost("CreateCategory", Name = "CreateCategory")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -36,6 +46,12 @@ namespace BudgifyApi.Controllers
             return StatusCode(StatusCodes.Status200OK, response);
         }
 
+        /// <summary>
+        /// Deletes a category.
+        /// </summary>
+        /// <param name="categoryid">The ID of the category to delete.</param>
+        /// <param name="newCategoryId">The ID of the category to replace the deleted one.</param>
+        /// <returns>The response indicating the success of the deletion.</returns>
         [HttpGet("DeleteCategory", Name = "DeleteCategory")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -54,6 +70,11 @@ namespace BudgifyApi.Controllers
             return StatusCode(StatusCodes.Status200OK, response);
         }
 
+        /// <summary>
+        /// Gets all categories for a user.
+        /// </summary>
+        /// <param name="userid">The user ID.</param>
+        /// <returns>The response containing the list of categories.</returns>
         [HttpGet("GetCategories", Name = "GetCategories")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -72,6 +93,11 @@ namespace BudgifyApi.Controllers
             return StatusCode(StatusCodes.Status200OK, response);
         }
 
+        /// <summary>
+        /// Modifies a category.
+        /// </summary>
+        /// <param name="category">The category data.</param>
+        /// <returns>The response indicating the success of the modification.</returns>
         [HttpPut("ModifyCategory", Name = "ModifyCategory")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BudgifyApi.Controllers
 {
+    /// <summary>
+    /// API controller for managing pockets.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class PocketController : ControllerBase
@@ -13,10 +16,23 @@ namespace BudgifyApi.Controllers
         private readonly PocketBll _PocketBll;
         private readonly ResponseError resError = new ResponseError();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PocketController"/> class.
+        /// </summary>
+        /// <param name="db">The database context.</param>
         public PocketController(AppDbContext db)
         {
             _PocketBll = new PocketBll(db);
         }
+
+        /// <summary>
+        /// Creates a new pocket for a user.
+        /// </summary>
+        /// <param name="userid">The ID of the user.</param>
+        /// <param name="name">The name of the pocket.</param>
+        /// <param name="icon">The icon of the pocket.</param>
+        /// <param name="goal">The goal amount of the pocket.</param>
+        /// <returns>An ActionResult containing the response with the created pocket.</returns>
         [HttpPost("CreatePocket", Name = "CreatePocket")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -35,6 +51,12 @@ namespace BudgifyApi.Controllers
             return StatusCode(StatusCodes.Status200OK, response);
         }
 
+        /// <summary>
+        /// Deletes a pocket.
+        /// </summary>
+        /// <param name="pocketid">The ID of the pocket to be deleted.</param>
+        /// <param name="newPocket">The ID of the pocket to be set as the new pocket.</param>
+        /// <returns>An ActionResult containing the response after deleting the pocket.</returns>
         [HttpGet("DeletePocket", Name = "DeletePocket")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -53,6 +75,14 @@ namespace BudgifyApi.Controllers
             return StatusCode(StatusCodes.Status200OK, response);
         }
 
+        /// <summary>
+        /// Modifies a pocket.
+        /// </summary>
+        /// <param name="pocket">The pocket object with updated information.</param>
+        /// <param name="total">The total amount of the pocket.</param>
+        /// <param name="icon">The icon of the pocket.</param>
+        /// <param name="name">The name of the pocket.</param>
+        /// <returns>An ActionResult containing the response after modifying the pocket.</returns>
         [HttpPut("ModifyPocket", Name = "ModifyPocket")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -71,6 +101,11 @@ namespace BudgifyApi.Controllers
             return StatusCode(StatusCodes.Status200OK, response);
         }
 
+        /// <summary>
+        /// Retrieves pockets for a user.
+        /// </summary>
+        /// <param name="userid">The ID of the user.</param>
+        /// <returns>An ActionResult containing the response with the list of pockets.</returns>
         [HttpGet("GetPockets", Name = "GetPockets")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

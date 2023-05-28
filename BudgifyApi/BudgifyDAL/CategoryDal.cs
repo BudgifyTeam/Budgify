@@ -19,7 +19,13 @@ namespace BudgifyDal
             _utilsDal = fn;
         }
 
-       public async Task<ResponseCategory> CreateCategory(int userid, string name)
+        /// <summary>
+        /// Creates a new category.
+        /// </summary>
+        /// <param name="userid">The ID of the user associated with the category.</param>
+        /// <param name="name">The name of the category.</param>
+        /// <returns>A ResponseCategory object containing the status and created category.</returns>
+        public async Task<ResponseCategory> CreateCategory(int userid, string name)
        {
            ResponseCategory response = new ResponseCategory();
            try
@@ -35,6 +41,12 @@ namespace BudgifyDal
            return response;
        }
 
+        /// <summary>
+        /// Changes the category of expenses.
+        /// </summary>
+        /// <param name="list">The array of expenses to be updated.</param>
+        /// <param name="categoryid">The ID of the new category.</param>
+        /// <returns>A ResponseList object containing the status and updated expenses.</returns>
         public async Task<ResponseList<Expense>> changeExpenseCategory(Expense[] list, int categoryid)
         {
             ResponseList<Expense> res = new ResponseList<Expense>();
@@ -66,6 +78,11 @@ namespace BudgifyDal
             }
         }
 
+        /// <summary>
+        /// Modifies the details of a category.
+        /// </summary>
+        /// <param name="newCategory">The updated details of the category.</param>
+        /// <returns>A ResponseCategory object indicating the status of the operation.</returns>
         public async Task<ResponseCategory> ModifyCategory(CategoryDto newCategory)
         {
             ResponseCategory response = new ResponseCategory();
@@ -88,6 +105,12 @@ namespace BudgifyDal
             return response;
         }
 
+        /// <summary>
+        /// Deletes a category and updates the expenses associated with it to a new category.
+        /// </summary>
+        /// <param name="categoryid">The ID of the category to be deleted.</param>
+        /// <param name="newCategory">The ID of the new category to assign the expenses to.</param>
+        /// <returns>A ResponseCategory object indicating the status of the operation.</returns>
         public async Task<ResponseCategory> DeleteCategory(int categoryid, int newCategory)
         {
             ResponseCategory response = new ResponseCategory();
@@ -112,6 +135,12 @@ namespace BudgifyDal
 
             return response;
         }
+
+        /// <summary>
+        /// Assigns the user information to each category in the provided list.
+        /// </summary>
+        /// <param name="list">The array of Category objects.</param>
+        /// <returns>An array of Category objects with user information assigned.</returns>
         public Category[] AsignUserToCategories(Category[] list)
         {
             for (int i = 0; i < list.Length; i++)

@@ -22,6 +22,13 @@ namespace BudgifyDal
             _budgetDal = bd;
             _walletDal = wd;
         }
+
+        /// <summary>
+        /// Creates a new income and updates the corresponding wallet and budget values.
+        /// </summary>
+        /// <param name="newIncome">The new income information.</param>
+        /// <param name="wallet_id">The ID of the wallet associated with the income.</param>
+        /// <returns>A response containing the created income information, updated budget value, and the result of the creation.</returns>
         public async Task<ResponseIncome> CreateIncome(Income newIncome, int wallet_id)
         {
             ResponseIncome response = new ResponseIncome();
@@ -58,6 +65,11 @@ namespace BudgifyDal
             return response;
         }
 
+        /// <summary>
+        /// Deletes an income and updates the corresponding wallet and budget values.
+        /// </summary>
+        /// <param name="incomeid">The ID of the income to be deleted.</param>
+        /// <returns>A response containing the deleted income information, updated budget value, and the result of the deletion.</returns>
         public async Task<ResponseIncome> DeleteIncome(int incomeid)
         {
             ResponseIncome response = new ResponseIncome();
@@ -84,6 +96,12 @@ namespace BudgifyDal
             return response;
         }
 
+        /// <summary>
+        /// Modifies an income and updates the corresponding wallet and budget values.
+        /// </summary>
+        /// <param name="modifiedIncome">The modified income information.</param>
+        /// <param name="wallet_id">The ID of the wallet associated with the income.</param>
+        /// <returns>A response containing the modified income information, updated budget value, and the result of the modification.</returns>
         public async Task<ResponseIncome> ModifyIncome(IncomeDto modifiedIncome, int wallet_id)
         {
             ResponseIncome response = new ResponseIncome();
@@ -112,6 +130,12 @@ namespace BudgifyDal
 
             return response;
         }
+
+        /// <summary>
+        /// Assigns the wallet to each income in the provided list.
+        /// </summary>
+        /// <param name="list">The array of incomes.</param>
+        /// <returns>The updated array of incomes with the wallet assigned.</returns>
         public Income[] AsignWalletToIncomes(Income[] list)
         {
             for (int i = 0; i < list.Length; i++)

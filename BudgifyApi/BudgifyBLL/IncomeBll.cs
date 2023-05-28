@@ -12,12 +12,20 @@ using static System.Collections.Specialized.BitVector32;
 
 namespace BudgifyBll
 {
+    /// <summary>
+    /// Represents the business logic layer for handling income-related operations.
+    /// </summary>
     public class IncomeBll
     {
         private readonly UtilsDal _utilsDal;
         private readonly IncomeDal _incomeDal;
         private readonly BudgetDal _budgifyDal;
         private readonly WalletDal _walletDal;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="IncomeBll"/> class.
+        /// </summary>
+        /// <param name="db">The instance of the application's database context.</param>
         public IncomeBll(AppDbContext db)
         {
            
@@ -27,6 +35,14 @@ namespace BudgifyBll
             _incomeDal = new IncomeDal(db, _utilsDal, _budgifyDal, _walletDal);
         }
 
+        /// <summary>
+        /// Creates a new income for a specified user and wallet.
+        /// </summary>
+        /// <param name="userid">The ID of the user.</param>
+        /// <param name="value">The value of the income.</param>
+        /// <param name="date">The date of the income.</param>
+        /// <param name="wallet_id">The ID of the wallet associated with the income.</param>
+        /// <returns>A <see cref="ResponseIncome"/> object containing the creation result.</returns>
         public async Task<ResponseIncome> CreateIncome(int userid, double value, DateTime date, int wallet_id)
         {
             ResponseIncome response = new ResponseIncome();
@@ -52,6 +68,11 @@ namespace BudgifyBll
             return response;
         }
 
+        /// <summary>
+        /// Deletes an income.
+        /// </summary>
+        /// <param name="incomeid">The ID of the income to delete.</param>
+        /// <returns>A <see cref="ResponseIncome"/> object containing the deletion result.</returns>
         public async Task<ResponseIncome> DeleteIncome(int incomeid)
         {
             ResponseIncome response = new ResponseIncome();
@@ -70,7 +91,13 @@ namespace BudgifyBll
             return response;
         }
 
-        public ResponseList<IncomeDto> GetIncomes(int userid, string range)//range{day, week, month, year}
+        /// <summary>
+        /// Gets the incomes for a specified user within a given range.
+        /// </summary>
+        /// <param name="userid">The ID of the user.</param>
+        /// <param name="range">The range of incomes to retrieve (day, week, month, year).</param>
+        /// <returns>A <see cref="ResponseList{IncomeDto}"/> object containing the user's incomes within the specified range.</returns>
+        public ResponseList<IncomeDto> GetIncomes(int userid, string range)
         {
             var response = new ResponseList<IncomeDto>();
             try
@@ -99,6 +126,14 @@ namespace BudgifyBll
             }
             return response;
         }
+
+        /// <summary>
+        /// Gets the incomes for a specified user within a given range and date.
+        /// </summary>
+        /// <param name="userId">The ID of the user.</param>
+        /// <param name="range">The range of incomes to retrieve (day, week, month, year).</param>
+        /// <param name="date">The specific date within the range.</param>
+        /// <returns>A <see cref="ResponseList{IncomeDto}"/> object containing the user's incomes within the specified range and date.</returns>
         public ResponseList<IncomeDto> GetIncomesDay(int userId, string range, DateTime date)
         {
             var response = new ResponseList<IncomeDto>();
@@ -134,6 +169,13 @@ namespace BudgifyBll
             return response;
         }
 
+        /// <summary>
+        /// Filters the list of incomes based on the specified range and date.
+        /// </summary>
+        /// <param name="incomeList">The list of incomes to filter.</param>
+        /// <param name="range">The range of incomes to retrieve (day, week, month, year).</param>
+        /// <param name="date">The specific date within the range.</param>
+        /// <returns>A filtered list of incomes based on the range and date.</returns>
         private List<IncomeDto> GetIncomesByRange(List<IncomeDto> incomeList, string range, DateTime date)
         {
             switch (range)
@@ -153,6 +195,12 @@ namespace BudgifyBll
             }
         }
 
+        /// <summary>
+        /// Modifies an existing income.
+        /// </summary>
+        /// <param name="income">The updated income information.</param>
+        /// <param name="wallet_id">The ID of the wallet associated with the income.</param>
+        /// <returns>A <see cref="ResponseIncome"/> object indicating the success of the modification.</returns>
         public async Task<ResponseIncome> ModifyIncome(IncomeDto income, int wallet_id)
         {
             ResponseIncome response = new ResponseIncome();
