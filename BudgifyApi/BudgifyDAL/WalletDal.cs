@@ -199,6 +199,7 @@ namespace BudgifyDal
                 newWallet.icon = icon;
                 await _appDbContext.SaveChangesAsync();
                 response.code = true;
+                response.budget = budget.value;
                 response.message = "Se modificó correctamente la cartera";
                 response.wallet = Utils.GetWalletDto(newWallet);
             }

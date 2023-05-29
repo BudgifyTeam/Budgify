@@ -48,6 +48,7 @@ public class ResponseWallet
     public string? message { get; set; }
     public Boolean code { get; set; }
     public WalletDto wallet { get; set; }
+    public double budget { get; set; }
 
 }
 
