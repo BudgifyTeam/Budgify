@@ -76,6 +76,83 @@ namespace BudgifyDal
                 return response;
             }
         }
+        public async Task<ResponseExpense> CreateWalletExpense(double value, int wallet_id, int users_id)
+        {
+            ResponseExpense response = new ResponseExpense();
+            try
+            {
+                var expense = new Expense
+                {
+                    category_id = GetCategoryByUserId(users_id, "ajustes"),
+                    expense_id = GetLastExpenseId() + 1,
+                    date = DateTime.Now.ToUniversalTime(),
+                    status = "active",
+                    users_id = users_id,
+                    value = value,
+                    user = GetUser(users_id),
+                    wallet = GetWallet(wallet_id),
+                    wallet_id = wallet_id,
+                    pocket_id = GetPocketByUserId(users_id, "default")
+                };
+                expense.category = GetCategory(expense.category_id);
+                expense.pocket = GetPocket(expense.pocket_id);
+                _appDbContext.expenses.Add(expense);
+                var pocket = expense.pocket;
+                pocket.total -= value;
+                await _appDbContext.SaveChangesAsync();
+                response.code = true;
+                response.message = "Se creó correctamente el ingreso";
+                response.expense = Utils.GetExpenseDto(expense);
+            }
+            catch (Exception ex)
+            {
+                response.code = false;
+                response.message = ex.Message;
+                return response;
+            }
+            return response;
+        }
+                
+        public async Task<ResponseIncome> CreateWalletIncome(double value, int wallet_id, int users_id)
+        {
+            ResponseIncome response = new ResponseIncome();
+            try
+            {
+                var income = new Income
+                {
+                    income_id = GetLastIncomeId() + 1,
+                    date = DateTime.Now.ToUniversalTime(),
+                    status = "active",
+                    users_id = users_id,
+                    value = value,
+                    user = GetUser(users_id),
+                    wallet = GetWallet(wallet_id),
+                    wallet_id = wallet_id,
+                };
+                _appDbContext.incomes.Add(income);
+                await _appDbContext.SaveChangesAsync();
+                response.code = true;
+                response.message = "Se creó correctamente el ingreso";
+                response.income = Utils.GetIncomeDto(income);
+
+            }
+            catch (Exception ex)
+            {
+                response.code = false;
+                response.message = ex.Message;
+                return response;
+            }
+            return response;
+        }
+        private int GetPocketByUserId(int userid, string name)
+        {
+            return _appDbContext.pockets.FirstOrDefault(p => p.users_id == userid && p.name == name).pocket_id;
+        }
+
+        private int GetCategoryByUserId(int userid, string name)
+        {
+            return _appDbContext.categories.FirstOrDefault(p => p.users_id == userid && p.name == name).category_id;
+        }
 
         /// <summary>
         /// Creates a new wallet with the specified parameters.

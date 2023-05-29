@@ -49,6 +49,9 @@ namespace BudgifyDal
                     }
                     wallet.total += incomes.Sum(i => i.value);
                 }
+                else {
+                    wallet.total -= expenses.Sum(i => i.value);
+                }
                 await _appDbContext.SaveChangesAsync();
                 response.data = wallet;
                 response.code = true;
@@ -185,15 +188,17 @@ namespace BudgifyDal
                 var newWallet = _appDbContext.wallets.FirstOrDefault(i => i.wallet_id == wallet.wallet_id);
                 var budget = _appDbContext.budget.FirstOrDefault(b => b.users_id == newWallet.users_id);
                 newWallet.name = name;
-                if (newWallet.total > total)
-                {
-                    var val = newWallet.total - total;
-                    budget.value -= val;
-                }
                 if (newWallet.total < total)
                 {
-                    var val = total - newWallet.total;
-                    budget.value += val;
+                    var change = total - newWallet.total;
+                    await _utilsDal.CreateWalletIncome(change, wallet.wallet_id, newWallet.users_id);
+                    budget.value += change;
+                }
+                if (newWallet.total > total)
+                {
+                    var change = newWallet.total - total;
+                    await _utilsDal.CreateWalletExpense(change, wallet.wallet_id, newWallet.users_id);
+                    budget.value -= change;
                 }
                 newWallet.total = total;
                 newWallet.icon = icon;

@@ -37,20 +37,28 @@ namespace BudgifyDal
                 var budget = _appDbContext.budget.FirstOrDefault(b => b.users_id == userId);
                 var incomes = _utilsDal.GetIncomesByUserId(userId);
                 var expenses = _utilsDal.GetExpensesByUserId(userId);
-                if (expenses.Any() && incomes.Any()) 
-                    budget.value = incomes.Sum(i => i.value) - expenses.Sum(i => i.value);
+                if (expenses.Any() && incomes.Any())
+                    budget.value += incomes.Sum(i => i.value) - expenses.Sum(i => i.value);
                 if (!expenses.Any())
                 {
                     if (!incomes.Any())
                     {
-                        budget.value = 0;
+                        budget.value += 0;
                         await _appDbContext.SaveChangesAsync();
                         response.data = budget;
                         response.code = true;
                         response.message = "se actualizó el presupesto correctamente";
                         return response;
                     }
-                    budget.value = incomes.Sum(i => i.value);
+                    budget.value += incomes.Sum(i => i.value);
+                }
+                else {
+                    budget.value -= expenses.Sum(i => i.value);
+                    await _appDbContext.SaveChangesAsync();
+                    response.data = budget;
+                    response.code = true;
+                    response.message = "se actualizó el presupesto correctamente";
+                    return response;
                 }
                 await _appDbContext.SaveChangesAsync();
                 response.data = budget;
