@@ -35,22 +35,19 @@ namespace BudgifyDal
                 var incomes = _utilsDal.GetIncomesByWallet(wallet_id);
                 var expenses = _utilsDal.GetExpensesByWallet(wallet_id);
                 if (expenses.Any() && incomes.Any())
-                    wallet.total += incomes.Sum(i => i.value) - expenses.Sum(i => i.value);
+                    wallet.total = incomes.Sum(i => i.value) - expenses.Sum(i => i.value);
                 if (!expenses.Any())
                 {
                     if (!incomes.Any())
                     {
-                        wallet.total += 0;
+                        wallet.total = 0;
                         await _appDbContext.SaveChangesAsync();
                         response.data = wallet;
                         response.code = true;
                         response.message = "se actualizó el total de la cartera correctamente";
                         return response;
                     }
-                    wallet.total += incomes.Sum(i => i.value);
-                }
-                else {
-                    wallet.total -= expenses.Sum(i => i.value);
+                    wallet.total = incomes.Sum(i => i.value);
                 }
                 await _appDbContext.SaveChangesAsync();
                 response.data = wallet;
@@ -64,7 +61,7 @@ namespace BudgifyDal
             }
             return response;
         }
-        
+
         /// <summary>
         /// Assigns users to wallets in the provided list.
         /// </summary>
